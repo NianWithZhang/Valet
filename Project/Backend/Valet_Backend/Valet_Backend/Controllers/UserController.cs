@@ -13,8 +13,6 @@ namespace Valet_Backend.Controllers
 	[ApiController]
 	public class UserController : ControllerBase
 	{
-		//public static SqlSugarClient db { get { return Program.db; } }
-
 		// GET api/user
 		[HttpGet]
 		public object checkUser(string id, string password)
@@ -22,6 +20,8 @@ namespace Valet_Backend.Controllers
 			//UserEntity user = db.Queryable<UserEntity>().InSingle(id);
 			
 			UserManager userManager = new UserManager();
+
+			NotDistributedFunctions.getCityName(38.418651, 114.645415);
 
 			return new { ans = userManager.checkUserPassword(id,password) };
 		}

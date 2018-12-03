@@ -9,7 +9,7 @@ namespace Valet_Backend.Model
 	{
 		public bool checkUserPassword(string id, string password)
 		{
-			UserEntity user = userDb.GetById(id);
+			User user = userDb.GetById(id);
 
 			return user != null && user.password == password;
 		}
@@ -19,7 +19,7 @@ namespace Valet_Backend.Model
 			if (userDb.GetById(id) == null)
 				return false;
 
-			return userDb.Insert(new UserEntity(id, password));
+			return userDb.Insert(new User(id, password));
 		}
 	}
 }

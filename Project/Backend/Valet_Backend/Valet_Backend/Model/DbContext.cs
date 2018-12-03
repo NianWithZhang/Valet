@@ -10,7 +10,7 @@ namespace Valet_Backend.Model
 	{
 
 		public SqlSugarClient db;
-		public SimpleClient<UserEntity> userDb { get { return new SimpleClient<UserEntity>(db); } }
+		public SimpleClient<User> userDb { get { return new SimpleClient<User>(db); } }
 		public SimpleClient<WardrobeEntity> wardrobeDb { get { return new SimpleClient<WardrobeEntity>(db); } }
 
 		public DbContext()

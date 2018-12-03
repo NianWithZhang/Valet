@@ -7,30 +7,30 @@ using System.Threading.Tasks;
 namespace Valet_Backend.Model
 {
 	[SugarTable("UserTable")]
-	public class UserEntity
+	public class User
 	{
 		public string id { get; set; }
 
 		public string password { get; set; }
 
-		public string recommendedItemUrl { get; set; }
-		public string recommendedItemPicUrl { get; set; }
+		public string recommendItemUrl { get; set; }
+		public string recommendItemPicUrl { get; set; }
 
-		public UserEntity()
+		public User()
 		{
 			id = "hello";
 			password = "hello";
-			recommendedItemUrl = "";
-			recommendedItemPicUrl = "";
+			recommendItemUrl = "";
+			recommendItemPicUrl = "";
 		}
 
-		public UserEntity(string _id, string _password)
+		public User(string _id, string _password)
 		{
 			id = _id;
 			password = _password;
 
-			recommendedItemUrl = "";
-			recommendedItemPicUrl = "";
+			recommendItemUrl = "";
+			recommendItemPicUrl = "";
 		}
 		
 		//public void resetRecomend()

@@ -22,9 +22,7 @@ namespace Valet_Backend.Controllers
 		[HttpGet("{id}")]
 		public ActionResult<string> Get(int id)
 		{
-			var count = Program.db.Queryable<UserEntity>().Count();
-
-			return count.ToString();//"value";
+			return "value";
 		}
 
 		// POST api/values
