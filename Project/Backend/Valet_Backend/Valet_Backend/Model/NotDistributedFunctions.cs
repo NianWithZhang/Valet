@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -12,7 +14,13 @@ namespace Valet_Backend.Model
 {
 	public class NotDistributedFunctions
 	{
-		public static string getCityName(double latitude, double longitude)
+		/// <summary>
+		/// 获取对应坐标位置的城市名称 用于天气查询
+		/// </summary>
+		/// <param name="latitude"></param>
+		/// <param name="longitude"></param>
+		/// <returns></returns>
+		public static string getLocationCityName(double latitude, double longitude)
 		{
 			Dictionary<string, string> parameters = new Dictionary<string, string>();
 
@@ -20,14 +28,37 @@ namespace Valet_Backend.Model
 			parameters.Add("output", "json");
 			parameters.Add("ak", Config.BaiduMapAk);
 
-			Console.WriteLine(HttpGet(Config.iGeoCodeUrl, parameters));
+			JObject result = (JObject)JsonConvert.DeserializeObject(HttpGet(Config.iGeoCodeUrl, parameters));
+			
+			//如果查找失败则默认为北京
+			int tempInt = 0;
+			if (!int.TryParse(result["status"].ToString(), out tempInt)||tempInt!=0)
+#if DEBUG
+				throw new Exception();
+#else
+			return "北京市";
+#endif
 
-			return "";
+			string ans = result["result"]["addressComponent"]["city"].ToString();
+			//string ans = ((JObject)JsonConvert.DeserializeObject(((JObject)JsonConvert.DeserializeObject(result["result"].ToString()))["addressComponent"].ToString()))["city"].ToString();
+
+			if (ans.Count() == 0)
+#if DEBUG
+				throw new Exception();
+#else
+			ans = "北京市"
+#endif
+
+			Console.WriteLine(ans);
+
+			return ans;
 		}
+
+		public static 
 
 		public static string testTaobao()
 		{
-			return HttpPostWithData("https://s.taobao.com/image");
+			return HttpPost_Taobao(Config.taobaoApiUrl, "C:\\Users\\黏黏\\Desktop\\arale.jpg");
 		}
 
 		/// <summary>
@@ -75,99 +106,99 @@ namespace Valet_Backend.Model
 			}
 		}
 
-		public static string HttpPost(string url, string postData = null, string contentType = null, int timeOut = 30, Dictionary<string, string> headers = null)
-		{
-			postData = postData ?? "";
-
-			using (HttpClient client = new HttpClient())
-			{
-				if (headers != null)
-				{
-					foreach (var header in headers)
-						client.DefaultRequestHeaders.Add(header.Key, header.Value);
-				}
-				using (HttpContent httpContent = new StringContent(postData, Encoding.UTF8))
-				{
-					if (contentType != null)
-						httpContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
-
-					HttpResponseMessage response = client.PostAsync(url, httpContent).Result;
-					return response.Content.ReadAsStringAsync().Result;
-				}
-			}
-		}
-
-
-
-		/// <summary>  
-		/// 获取文件集合对应的ByteArrayContent集合  
-		/// </summary>  
-		/// <param name="files"></param>  
-		/// <returns></returns>  
-		private static List<ByteArrayContent> GetFileByteArrayContent(List<string> files)
-		{
-			List<ByteArrayContent> list = new List<ByteArrayContent>();
-			foreach (var file in files)
-			{
-				var fileContent = new ByteArrayContent(File.ReadAllBytes(file));
-				fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-				{
-					FileName = Path.GetFileName(file)
-				};
-				list.Add(fileContent);
-			}
-			return list;
-		}
-		/// <summary>  
-		/// 获取键值集合对应的ByteArrayContent集合  
-		/// </summary>  
-		/// <param name="collection"></param>  
-		/// <returns></returns>  
-		private static List<ByteArrayContent> GetFormDataByteArrayContent(NameValueCollection collection)
-		{
-			List<ByteArrayContent> list = new List<ByteArrayContent>();
-			foreach (var key in collection.AllKeys)
-			{
-				var dataContent = new ByteArrayContent(Encoding.UTF8.GetBytes(collection[key]));
-				dataContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-				{
-					Name = key
-				};
-				list.Add(dataContent);
-			}
-			return list;
-		}
-
-		public static string HttpPostWithData(string url)
+		/// <summary>
+		/// 向淘宝识图API发送HttpPOST请求
+		/// </summary>
+		/// <param name="url"></param>
+		/// <param name="filePath"></param>
+		/// <returns></returns>
+		public static string HttpPost_Taobao(string url, string filePath)
 		{
 			using (HttpClient client = new HttpClient())
 			{
-				//client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/" + cmbResponseContentType.Text.ToLower()));//设定要响应的数据格式  
-				using (var content = new MultipartFormDataContent("----WebKitFormBoundary0KghpkBYOw88mgw6"))//表明是通过multipart/form-data的方式上传数据  
+				using (var httpContent = new MultipartFormDataContent())
 				{
-					//NameValueCollection formData = new NameValueCollection();
-					//formData.Add("file", "imgfile");
-					//var formDatas = GetFormDataByteArrayContent(formData);//获取键值集合对应的ByteArrayContent集合  
-					//List<string> filePaths = new List<string>();
-					//filePaths.Add("C:\\Users\\酒酿圆子蛋花汤\\Desktop\\632ADF55EE3B005A3F88D1368AB15F47.png");
-					//var files = GetFileByteArrayContent(filePaths);//获取文件集合对应的ByteArrayContent集合  
-					//Action<List<ByteArrayContent>> act = (dataContents) =>
-					//{//声明一个委托，该委托的作用就是将ByteArrayContent集合加入到MultipartFormDataContent中  
-					//	foreach (var byteArrayContent in dataContents)
-					//	{
-					//		content.Add(byteArrayContent);
-					//	}
-					//};
-					//act(formDatas);//执行act  
-					//act(files);//执行act  
-					var fileContent = new ByteArrayContent(File.ReadAllBytes("C:\\Users\\酒酿圆子蛋花汤\\Desktop\\632ADF55EE3B005A3F88D1368AB15F47.png"));
+					var fileContent = new ByteArrayContent(File.ReadAllBytes(filePath));
 					fileContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-					content.Add(fileContent, "imgfile", "need_a_name_here");
+					httpContent.Add(fileContent, "imgfile", "need_a_name_here");
 
-					var result = client.PostAsync(url, content).Result;//post请求  
-					return result.Content.ReadAsStringAsync().Result;//将响应结果显示在文本框内  
+					var result = client.PostAsync(url, httpContent).Result;//post请求
+					return result.Content.ReadAsStringAsync().Result;//将响应结果显示在文本框内
 				}
 			}
 		}
+
+
+		//Httppost 尝试
+		///// <summary>  
+		///// 获取文件集合对应的ByteArrayContent集合  
+		///// </summary>  
+		///// <param name="files"></param>  
+		///// <returns></returns>  
+		//private static List<ByteArrayContent> GetFileByteArrayContent(List<string> files)
+		//{
+		//	List<ByteArrayContent> list = new List<ByteArrayContent>();
+		//	foreach (var file in files)
+		//	{
+		//		var fileContent = new ByteArrayContent(File.ReadAllBytes(file));
+		//		fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+		//		{
+		//			FileName = Path.GetFileName(file)
+		//		};
+		//		list.Add(fileContent);
+		//	}
+		//	return list;
+		//}
+		///// <summary>  
+		///// 获取键值集合对应的ByteArrayContent集合  
+		///// </summary>  
+		///// <param name="collection"></param>  
+		///// <returns></returns>  
+		//private static List<ByteArrayContent> GetFormDataByteArrayContent(NameValueCollection collection)
+		//{
+		//	List<ByteArrayContent> list = new List<ByteArrayContent>();
+		//	foreach (var key in collection.AllKeys)
+		//	{
+		//		var dataContent = new ByteArrayContent(Encoding.UTF8.GetBytes(collection[key]));
+		//		dataContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+		//		{
+		//			Name = key
+		//		};
+		//		list.Add(dataContent);
+		//	}
+		//	return list;
+		//}
+
+		//	public static string HttpPostWithData(string url)
+		//	{
+		//		using (HttpClient client = new HttpClient())
+		//		{
+		//			//client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/" + cmbResponseContentType.Text.ToLower()));//设定要响应的数据格式  
+		//			using (var content = new MultipartFormDataContent("----WebKitFormBoundary0KghpkBYOw88mgw6"))//表明是通过multipart/form-data的方式上传数据  
+		//			{
+		//				//NameValueCollection formData = new NameValueCollection();
+		//				//formData.Add("file", "imgfile");
+		//				//var formDatas = GetFormDataByteArrayContent(formData);//获取键值集合对应的ByteArrayContent集合  
+		//				//List<string> filePaths = new List<string>();
+		//				//filePaths.Add("C:\\Users\\酒酿圆子蛋花汤\\Desktop\\632ADF55EE3B005A3F88D1368AB15F47.png");
+		//				//var files = GetFileByteArrayContent(filePaths);//获取文件集合对应的ByteArrayContent集合  
+		//				//Action<List<ByteArrayContent>> act = (dataContents) =>
+		//				//{//声明一个委托，该委托的作用就是将ByteArrayContent集合加入到MultipartFormDataContent中  
+		//				//	foreach (var byteArrayContent in dataContents)
+		//				//	{
+		//				//		content.Add(byteArrayContent);
+		//				//	}
+		//				//};
+		//				//act(formDatas);//执行act  
+		//				//act(files);//执行act  
+		//				var fileContent = new ByteArrayContent(File.ReadAllBytes("C:\\Users\\黏黏\\Desktop\\arale.jpg"));
+		//				fileContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+		//				content.Add(fileContent, "imgfile", "need_a_name_here");
+
+		//				var result = client.PostAsync(url, content).Result;//post请求  
+		//				return result.Content.ReadAsStringAsync().Result;//将响应结果显示在文本框内  
+		//			}
+		//		}
+		//	}
 	}
 }

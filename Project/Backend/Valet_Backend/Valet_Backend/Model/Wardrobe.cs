@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Valet_Backend.Model
 {
 	[SugarTable("WardrobeTable")]
-	public class WardrobeEntity
+	public class Wardrobe
 	{
 		public string user_id { get; set; }
 
@@ -15,13 +15,13 @@ namespace Valet_Backend.Model
 
 		public string name { get; set; }
 
-		public WardrobeEntity()
+		public Wardrobe()
 		{
 			user_id = "defaultUser";
 			id = 0;
 		}
 
-		public WardrobeEntity(string _user_id,string _name)
+		public Wardrobe(string _user_id,string _name)
 		{
 			user_id = _user_id;
 			name = _name;
