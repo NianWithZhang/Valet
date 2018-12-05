@@ -14,6 +14,7 @@ namespace Valet_Backend.Model
 {
 	public class NotDistributedFunctions
 	{
+		#region Weather
 		/// <summary>
 		/// 获取对应坐标位置的城市名称 用于天气查询
 		/// </summary>
@@ -29,10 +30,10 @@ namespace Valet_Backend.Model
 			parameters.Add("ak", Config.baiduMapAk);
 
 			JObject result = (JObject)JsonConvert.DeserializeObject(HttpGet(Config.iGeoCodeUrl, parameters));
-			
+
 			//如果查找失败则默认为北京
 			int tempInt = 0;
-			if (!int.TryParse(result["status"].ToString(), out tempInt)||tempInt!=0)
+			if (!int.TryParse(result["status"].ToString(), out tempInt) || tempInt != 0)
 #if DEBUG
 				throw new Exception();
 #else
@@ -49,22 +50,52 @@ namespace Valet_Backend.Model
 			ans = "北京市"
 #endif
 
-			Console.WriteLine(ans);
+			Console.WriteLine("查询城市结果 - " + ans);
 
 			return ans;
 		}
-
-		public static Weather getCityWeather(string cityName)
+		/// <summary>
+		/// 获取城市的天气信息
+		/// </summary>
+		/// <param name="cityName"></param>
+		/// <returns></returns>
+		public static WeatherInfo getCityWeather(string cityName)
 		{
 			Dictionary<string, string> parameters = new Dictionary<string, string>();
 
-			parameters.Add("cityName", cityName);
+			parameters.Add("cityname", cityName);
 			parameters.Add("key", Config.juheKey);
 
 			JObject result = (JObject)JsonConvert.DeserializeObject(HttpGet(Config.weatherApiUrl, parameters));
 
+			if (result["resultcode"].ToString() != "200")
+#if DEBUG
+				throw new Exception();
+#else
+			return new WeatherInfo();
+#endif
+			Console.WriteLine("查询天气结果 - " + result["result"]["sk"]["temp"].ToString());
 
+			return new WeatherInfo
+			{
+				temperature = double.Parse(result["result"]["sk"]["temp"].ToString()),
+				tempStr = result["result"]["today"]["temperature"].ToString(),
+				wind = result["result"]["today"]["wind"].ToString(),
+				weather = result["result"]["today"]["weather"].ToString(),
+				dressingAdvice = result["result"]["today"]["dressing_advice"].ToString()
+			};
 		}
+		/// <summary>
+		/// 获取坐标位置的天气信息
+		/// </summary>
+		/// <param name="latitude"></param>
+		/// <param name="longitude"></param>
+		/// <returns></returns>
+		public static WeatherInfo getLocationWeather(double latitude, double longitude)
+		{
+			return getCityWeather(getLocationCityName(latitude, longitude));
+		}
+		#endregion
 
 		public static string testTaobao()
 		{
