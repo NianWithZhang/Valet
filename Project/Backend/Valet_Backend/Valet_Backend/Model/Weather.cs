@@ -9,5 +9,9 @@ namespace Valet_Backend.Model
 	{
 		double temperature;
 
+		string tempDescription;
+		string weather;
+		string wind;
+		string dressingAdvice;
 	}
 }

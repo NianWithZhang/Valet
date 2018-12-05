@@ -26,7 +26,7 @@ namespace Valet_Backend.Model
 
 			parameters.Add("location", latitude.ToString() + "," + longitude.ToString());
 			parameters.Add("output", "json");
-			parameters.Add("ak", Config.BaiduMapAk);
+			parameters.Add("ak", Config.baiduMapAk);
 
 			JObject result = (JObject)JsonConvert.DeserializeObject(HttpGet(Config.iGeoCodeUrl, parameters));
 			
@@ -54,7 +54,17 @@ namespace Valet_Backend.Model
 			return ans;
 		}
 
-		public static 
+		public static Weather getCityWeather(string cityName)
+		{
+			Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+			parameters.Add("cityName", cityName);
+			parameters.Add("key", Config.juheKey);
+
+			JObject result = (JObject)JsonConvert.DeserializeObject(HttpGet(Config.weatherApiUrl, parameters));
+
+
+		}
 
 		public static string testTaobao()
 		{
