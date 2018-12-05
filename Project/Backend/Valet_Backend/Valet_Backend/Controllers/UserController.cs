@@ -21,9 +21,6 @@ namespace Valet_Backend.Controllers
 			
 			UserManager userManager = new UserManager();
 
-			NotDistributedFunctions.getLocationCityName(38.418651, 114.645415);
-			//Console.WriteLine(NotDistributedFunctions.testTaobao());
-
 			return new { ans = userManager.checkUserPassword(id,password) };
 		}
 

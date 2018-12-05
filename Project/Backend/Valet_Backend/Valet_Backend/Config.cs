@@ -20,7 +20,12 @@ namespace Valet_Backend
 
 		#region Taobao
 		//淘宝图片搜索API
-		public const string taobaoApiUrl = "https://s.taobao.com/image";
+		public const string taobaoPicApiUrl = "https://s.taobao.com/image";
+
+		//淘宝搜索结果地址
+		public const string taobaoSearchUrl = "https://s.taobao.com/search";
+
+		public const string taobaoItemUrl = "https://item.taobao.com/item.htm/";
 		#endregion
 
 		#region Juhe

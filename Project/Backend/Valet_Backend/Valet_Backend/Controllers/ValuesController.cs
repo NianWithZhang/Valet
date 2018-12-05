@@ -15,6 +15,12 @@ namespace Valet_Backend.Controllers
 		[HttpGet]
 		public ActionResult<IEnumerable<string>> Get()
 		{
+			//NotDistributedFunctions.getLocationCityName(38.418651, 114.645415);
+			//Console.WriteLine(NotDistributedFunctions.testTaobao());
+
+			TaobaoItem temp = NotDistributedFunctions.getTaobaoItem("");
+			return new string[] { temp.itemUrl, temp.picUrl };
+
 			return new string[] { "value1", "value2" };
 		}
 
