@@ -1,6 +1,6 @@
 package niannian.valet;
 
-public class UserCheckAns{
+public class UserCheckResponse {
     private boolean ans;
 
     public boolean isAns() {

@@ -37,24 +37,24 @@ public class LoginActivity extends AppCompatActivity {
 
 
         CheckUserService checkUserService = retrofit.create(CheckUserService.class);
-        Call<UserCheckAns> call = checkUserService.getInfo(userIdText.getText().toString(),passwordText.getText().toString());
-        call.enqueue(new Callback<UserCheckAns>() {
+        Call<UserCheckResponse> call = checkUserService.getInfo(userIdText.getText().toString(),passwordText.getText().toString());
+        call.enqueue(new Callback<UserCheckResponse>() {
             @Override
-            public void onResponse(Call<UserCheckAns> call, Response<UserCheckAns> response) {
+            public void onResponse(Call<UserCheckResponse> call, Response<UserCheckResponse> response) {
                 //测试数据返回
-                UserCheckAns userCheckAns = response.body();
-                //String outputText = String.valueOf(userCheckAns.getAns());
+                UserCheckResponse userCheckResponse = response.body();
+                //String outputText = String.valueOf(userCheckResponse.getAns());
 
-                System.out.println(userCheckAns.getAns());
+                System.out.println(userCheckResponse.getAns());
 
-//                if(userCheckAns.getAns())
-                    login(userCheckAns.getAns());
+//                if(userCheckResponse.getAns())
+                    login(userCheckResponse.getAns());
 
 //                Log.e("TAG", "response == " +  weatherEntity.getData().getGanmao());
             }
 
             @Override
-            public void onFailure(Call<UserCheckAns> call, Throwable t) {
+            public void onFailure(Call<UserCheckResponse> call, Throwable t) {
                 System.out.println(t.getMessage());
 //                Log.e("TAG", "Throwable : " + t);
             }
