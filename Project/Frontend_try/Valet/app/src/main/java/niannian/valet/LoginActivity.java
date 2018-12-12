@@ -1,6 +1,7 @@
 package niannian.valet;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -31,30 +32,30 @@ public class LoginActivity extends AppCompatActivity {
 //        final String outputText;
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://niannian.info/")//基础URL 建议以 / 结尾
+                .baseUrl("http://192.168.31.90/")//基础URL 建议以 / 结尾
                 .addConverterFactory(GsonConverterFactory.create())//设置 Json 转换器
                 .build();
 
 
         CheckUserService checkUserService = retrofit.create(CheckUserService.class);
-        Call<UserCheckResponse> call = checkUserService.getInfo(userIdText.getText().toString(),passwordText.getText().toString());
-        call.enqueue(new Callback<UserCheckResponse>() {
+        Call<UserCheckAns> call = checkUserService.getInfo(userIdText.getText().toString(),passwordText.getText().toString());
+        call.enqueue(new Callback<UserCheckAns>() {
             @Override
-            public void onResponse(Call<UserCheckResponse> call, Response<UserCheckResponse> response) {
+            public void onResponse(Call<UserCheckAns> call, Response<UserCheckAns> response) {
                 //测试数据返回
-                UserCheckResponse userCheckResponse = response.body();
-                //String outputText = String.valueOf(userCheckResponse.getAns());
+                UserCheckAns userCheckAns = response.body();
+                //String outputText = String.valueOf(userCheckAns.getAns());
 
-                System.out.println(userCheckResponse.getAns());
+                System.out.println(userCheckAns.getAns());
 
-//                if(userCheckResponse.getAns())
-                    login(userCheckResponse.getAns());
+//                if(userCheckAns.getAns())
+                    login(userCheckAns.getAns());
 
 //                Log.e("TAG", "response == " +  weatherEntity.getData().getGanmao());
             }
 
             @Override
-            public void onFailure(Call<UserCheckResponse> call, Throwable t) {
+            public void onFailure(Call<UserCheckAns> call, Throwable t) {
                 System.out.println(t.getMessage());
 //                Log.e("TAG", "Throwable : " + t);
             }
@@ -69,5 +70,12 @@ public class LoginActivity extends AppCompatActivity {
                 .setIcon(R.mipmap.ic_launcher)//图标
                 .create();
         alertDialog1.show();
+    }
+
+    public void tryChangeActivityButton_Click(View view){
+        Intent intent = new Intent(this, TestCameraActivity.class);
+        startActivity(intent);
+//        LoginActivity.this.finish();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
     }
 }
