@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -165,6 +166,39 @@ namespace Valet_Backend.Model
 			};
 		}
 		#endregion
+
+		/// <summary>
+		/// 接受POST请求上传文件存到wwwroot/upload中
+		/// </summary>
+		/// <param name="file"></param>
+		/// <returns></returns>
+		public static bool uploadFile(IFormFile file)
+		{
+			if (file != null)
+			{
+				//var files = HttpContext.Request.Form.Files;
+
+				string fileDir = Directory.GetCurrentDirectory() + "/wwwroot/upload";
+
+				if (!Directory.Exists(fileDir))
+				{
+					Directory.CreateDirectory(fileDir);
+				}
+				//文件名称
+				string projectFileName = file.FileName;
+
+				//上传的文件的路径
+				string filePath = fileDir + $@"\{projectFileName}";
+				using (FileStream fs = System.IO.File.Create(filePath))
+				{
+					file.CopyTo(fs);
+					fs.Flush();
+				}
+				return true;
+			}
+			else
+				return false;
+		}
 
 		/// <summary>
 		/// 将参数附加到url上
