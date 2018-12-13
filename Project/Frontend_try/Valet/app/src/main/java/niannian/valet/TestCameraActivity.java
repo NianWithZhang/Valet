@@ -100,6 +100,7 @@ public class TestCameraActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
+        //显示图片
         ContentResolver cr = this.getContentResolver();
 
         try {
@@ -110,6 +111,9 @@ public class TestCameraActivity extends AppCompatActivity {
         } catch (FileNotFoundException e) {
             Log.e("Exception", e.getMessage(),e);
         }
+
+
+
 //        switch (requestCode) {
 //            // 调用相机后返回
 //            case CAMERA_REQUEST_CODE:

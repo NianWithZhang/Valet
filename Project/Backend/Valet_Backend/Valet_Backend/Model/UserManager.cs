@@ -9,6 +9,9 @@ namespace Valet_Backend.Model
 	{
 		public bool checkUserPassword(string id, string password)
 		{
+			if (id == null)
+				return false;
+
 			User user = userDb.GetById(id);
 
 			return user != null && user.password == password;

@@ -28,36 +28,27 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginButton_Click(View view)
     {
-
-//        final String outputText;
-
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.31.90/")//基础URL 建议以 / 结尾
+                .baseUrl(getString(R.string.server_url))//基础URL 建议以 / 结尾
                 .addConverterFactory(GsonConverterFactory.create())//设置 Json 转换器
                 .build();
 
-
         CheckUserService checkUserService = retrofit.create(CheckUserService.class);
-        Call<UserCheckAns> call = checkUserService.getInfo(userIdText.getText().toString(),passwordText.getText().toString());
-        call.enqueue(new Callback<UserCheckAns>() {
+        Call<BooleanResponse> call = checkUserService.checkUserPassword(userIdText.getText().toString(),passwordText.getText().toString());
+        call.enqueue(new Callback<BooleanResponse>() {
             @Override
-            public void onResponse(Call<UserCheckAns> call, Response<UserCheckAns> response) {
+            public void onResponse(Call<BooleanResponse> call, Response<BooleanResponse> response) {
                 //测试数据返回
-                UserCheckAns userCheckAns = response.body();
-                //String outputText = String.valueOf(userCheckAns.getAns());
+                BooleanResponse userCheckAns = response.body();
 
                 System.out.println(userCheckAns.getAns());
 
-//                if(userCheckAns.getAns())
-                    login(userCheckAns.getAns());
-
-//                Log.e("TAG", "response == " +  weatherEntity.getData().getGanmao());
+                login(userCheckAns.getAns());
             }
 
             @Override
-            public void onFailure(Call<UserCheckAns> call, Throwable t) {
+            public void onFailure(Call<BooleanResponse> call, Throwable t) {
                 System.out.println(t.getMessage());
-//                Log.e("TAG", "Throwable : " + t);
             }
         });
 

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Valet</string>
+    <string name="server_url">http://10.198.75.60/</string>
 </resources>

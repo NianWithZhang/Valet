@@ -7,7 +7,7 @@ import retrofit2.http.Query;
 
 public interface CheckUserService {
     @GET("api/user")
-    Call<UserCheckAns> getInfo(
+    Call<BooleanResponse> checkUserPassword(
             @Query("id") String id,
             @Query("password") String password
     );
