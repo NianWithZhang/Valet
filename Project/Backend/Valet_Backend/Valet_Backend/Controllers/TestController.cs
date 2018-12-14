@@ -23,9 +23,9 @@ namespace Valet_Backend.Controllers
 		}
 
 		[HttpPost]
-		public object uploadFile(IFormFile file, string id)
+		public object uploadClothPic(IFormFile file, string userid,string clothid)
 		{
-			return new { ans = NotDistributedFunctions.uploadFile(file,id).ToString() };
+			return new { ans = NotDistributedFunctions.uploadClothPic(file,userid,clothid).ToString() };
 		}
 
 

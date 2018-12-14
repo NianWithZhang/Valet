@@ -10,7 +10,8 @@ import retrofit2.http.Query;
 
 public interface UploadClothImgService {
     @Multipart
-    @POST("api/cloth")
-    Call<Boolean> upload(@Query("id") String userID,
-                         @Part("file\"; filename=\"cloth.jpg\"") RequestBody img);
+    @POST("api/test")
+    Call<BooleanResponse> upload(@Query("userid") String userID,
+                         @Query("clothid") String clothID,
+                         @Part MultipartBody.Part img);
 }

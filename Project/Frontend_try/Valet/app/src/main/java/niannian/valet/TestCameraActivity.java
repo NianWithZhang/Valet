@@ -1,9 +1,12 @@
 package niannian.valet;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -18,13 +21,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -33,12 +41,15 @@ import static java.security.AccessController.getContext;
 public class TestCameraActivity extends AppCompatActivity {
 
     public static Uri imgUri;
-
+    public static File imgFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         requestCameraAndStoragePermission();
+
+        imgUri = null;
+        imgFile = null;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_camera);
@@ -73,6 +84,7 @@ public class TestCameraActivity extends AppCompatActivity {
     }
 
     public void testCameraButton_Click(View view) throws IOException {
+        Toast.makeText(this, "相机启动中", Toast.LENGTH_SHORT).show();
 //        AlertDialog alertDialog1 = new AlertDialog.Builder(this)
 //                .setTitle("emmmmm")//标题
 //                .setMessage(String.valueOf("测试相机"))//内容
@@ -87,17 +99,17 @@ public class TestCameraActivity extends AppCompatActivity {
         //相机请求码
         final int CAMERA_REQUEST_CODE = 2;
 
-        File tempFile = new File(Environment.getExternalStorageDirectory().getPath(), System.currentTimeMillis() + ".jpg");
+        imgFile = new File(Environment.getExternalStorageDirectory().getPath(), System.currentTimeMillis() + ".jpg");
         //跳转到调用系统相机
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 //        //判断版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {   //如果在Android7.0以上,使用FileProvider获取Uri
             intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            imgUri = FileProvider.getUriForFile(this, "niannian.valet.provider", tempFile);
+            imgUri = FileProvider.getUriForFile(this, "niannian.valet.provider", imgFile);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
         } else {    //否则使用Uri.fromFile(file)方法获取Uri
-            imgUri = Uri.fromFile(tempFile);
+            imgUri = Uri.fromFile(imgFile);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
         }
         startActivityForResult(intent, CAMERA_REQUEST_CODE);
@@ -106,6 +118,8 @@ public class TestCameraActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if(imgFile == null)
+            return;
 
         //显示图片
         ContentResolver cr = this.getContentResolver();
@@ -159,25 +173,39 @@ public class TestCameraActivity extends AppCompatActivity {
 //        }
     }
 
+
+    public String getUriPath(Uri uri, Activity activity) {
+        String path = "file:///storage/emulated/0/1544775026094.jpg";
+        return path;
+    }
+
     public void uploadButton_Click(View view){
+        if(imgUri == null)
+            return;
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.server_url))//基础URL 建议以 / 结尾
                 .addConverterFactory(GsonConverterFactory.create())//设置 Json 转换器
                 .build();
 
         UploadClothImgService service = retrofit.create(UploadClothImgService.class);
-        File file = new File(String.valueOf(imgUri));
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        Call<BooleanResponse> call = service.upload("1", requestBody );
-        call.enqueue(new Callback<Response>() {
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"), imgFile);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", imgFile.getName(), requestFile);
+        Call<BooleanResponse> call = service.upload("1","1", body );
+        call.enqueue(new Callback<BooleanResponse>() {
             @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                //。。。。。
+            public void onResponse(Call<BooleanResponse> call, Response<BooleanResponse> response) {
+                AlertDialog alertDialog1 = new AlertDialog.Builder(getApplicationContext())
+                        .setTitle("接口返回值")//标题
+                        .setMessage(String.valueOf(response.body().getAns()))//内容
+                        .setIcon(R.mipmap.ic_launcher)//图标
+                        .create();
+                alertDialog1.show();
             }
 
             @Override
-            public void onFailure(Call<Response> call, Throwable t) {
-                //。。。
+            public void onFailure(Call<BooleanResponse> call, Throwable t) {
+                System.out.println(t.getMessage());
             }
         });
 
