@@ -172,13 +172,13 @@ namespace Valet_Backend.Model
 		/// </summary>
 		/// <param name="file"></param>
 		/// <returns></returns>
-		public static bool uploadFile(IFormFile file)
+		public static bool uploadFile(IFormFile file,string id)
 		{
 			if (file != null)
 			{
 				//var files = HttpContext.Request.Form.Files;
 
-				string fileDir = Directory.GetCurrentDirectory() + "/wwwroot/upload";
+				string fileDir = Directory.GetCurrentDirectory() + "/wwwroot/upload/"+id;
 
 				if (!Directory.Exists(fileDir))
 				{

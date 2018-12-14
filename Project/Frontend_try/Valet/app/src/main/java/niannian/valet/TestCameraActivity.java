@@ -23,6 +23,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static java.security.AccessController.getContext;
+
 public class TestCameraActivity extends AppCompatActivity {
 
     public static Uri imgUri;
@@ -113,7 +120,6 @@ public class TestCameraActivity extends AppCompatActivity {
         }
 
 
-
 //        switch (requestCode) {
 //            // 调用相机后返回
 //            case CAMERA_REQUEST_CODE:
@@ -151,6 +157,30 @@ public class TestCameraActivity extends AppCompatActivity {
 //                }
 //                break;
 //        }
+    }
+
+    public void uploadButton_Click(View view){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.server_url))//基础URL 建议以 / 结尾
+                .addConverterFactory(GsonConverterFactory.create())//设置 Json 转换器
+                .build();
+
+        UploadClothImgService service = retrofit.create(UploadClothImgService.class);
+        File file = new File(String.valueOf(imgUri));
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        Call<BooleanResponse> call = service.upload("1", requestBody );
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                //。。。。。
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                //。。。
+            }
+        });
+
     }
 
 }

@@ -23,9 +23,9 @@ namespace Valet_Backend.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult uploadFile(IFormFile file)
+		public object uploadFile(IFormFile file, string id)
 		{
-			return new JsonResult(NotDistributedFunctions.uploadFile(file).ToString());
+			return new { ans = NotDistributedFunctions.uploadFile(file,id).ToString() };
 		}
 
 
