@@ -2,11 +2,9 @@ package niannian.valet;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -35,8 +33,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static java.security.AccessController.getContext;
 
 public class TestCameraActivity extends AppCompatActivity {
 
@@ -84,7 +80,7 @@ public class TestCameraActivity extends AppCompatActivity {
     }
 
     public void testCameraButton_Click(View view) throws IOException {
-        Toast.makeText(this, "相机启动中", Toast.LENGTH_SHORT).show();
+
 //        AlertDialog alertDialog1 = new AlertDialog.Builder(this)
 //                .setTitle("emmmmm")//标题
 //                .setMessage(String.valueOf("测试相机"))//内容
@@ -92,12 +88,19 @@ public class TestCameraActivity extends AppCompatActivity {
 //                .create();
 //        alertDialog1.show();
 
-//        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-//        photoPickerIntent.setType("image/*");
-//        startActivityForResult(photoPickerIntent, 1);
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED||ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "请先开启相机和存储权限", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Toast.makeText(this, "相机启动中", Toast.LENGTH_SHORT).show();
 
         //相机请求码
-        final int CAMERA_REQUEST_CODE = 2;
+        final int CAMERA_REQUEST_CODE = 1;
 
         imgFile = new File(Environment.getExternalStorageDirectory().getPath(), System.currentTimeMillis() + ".jpg");
         //跳转到调用系统相机
@@ -113,25 +116,59 @@ public class TestCameraActivity extends AppCompatActivity {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
         }
         startActivityForResult(intent, CAMERA_REQUEST_CODE);
+    }
 
+    public void testAlbumButton_Click(View view){
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, 2);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if(imgFile == null)
+        if(resultCode!=RESULT_OK){
+            Toast.makeText(this, "照片选取失败", Toast.LENGTH_SHORT).show();
             return;
+        }
 
         //显示图片
         ContentResolver cr = this.getContentResolver();
 
-        try {
-            Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(imgUri));
-            ImageView imageView = (ImageView) findViewById(R.id.cameraImgView);
-            /* 将Bitmap设定到ImageView */
-            imageView.setImageBitmap(bitmap);
-        } catch (FileNotFoundException e) {
-            Log.e("Exception", e.getMessage(),e);
+        switch (requestCode){
+            case 1:
+                if(imgUri == null)
+                    return;
+
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(imgUri));
+                    ImageView imageView = (ImageView) findViewById(R.id.cameraImgView);
+                    /* 将Bitmap设定到ImageView */
+                    imageView.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    Log.e("Exception", e.getMessage(),e);
+                }
+                break;
+            case 2:
+                imgUri = intent.getData();
+
+                if(imgUri == null)
+                    return;
+
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(imgUri));
+                    ImageView imageView = (ImageView) findViewById(R.id.cameraImgView);
+                    /* 将Bitmap设定到ImageView */
+                    imageView.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    Log.e("Exception", e.getMessage(),e);
+                }
+
+                String filePath = GetRealPathFromUri.getRealPathFromUri(this,imgUri);
+                imgFile = new File(filePath);
+
+                break;
         }
+
 
 
 //        switch (requestCode) {
@@ -174,13 +211,8 @@ public class TestCameraActivity extends AppCompatActivity {
     }
 
 
-    public String getUriPath(Uri uri, Activity activity) {
-        String path = "file:///storage/emulated/0/1544775026094.jpg";
-        return path;
-    }
-
     public void uploadButton_Click(View view){
-        if(imgUri == null)
+        if(imgFile == null)
             return;
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -195,12 +227,16 @@ public class TestCameraActivity extends AppCompatActivity {
         call.enqueue(new Callback<BooleanResponse>() {
             @Override
             public void onResponse(Call<BooleanResponse> call, Response<BooleanResponse> response) {
-                AlertDialog alertDialog1 = new AlertDialog.Builder(getApplicationContext())
-                        .setTitle("接口返回值")//标题
-                        .setMessage(String.valueOf(response.body().getAns()))//内容
-                        .setIcon(R.mipmap.ic_launcher)//图标
-                        .create();
-                alertDialog1.show();
+//                AlertDialog alertDialog1 = new AlertDialog.Builder(getApplicationContext())
+//                        .setTitle("接口返回值")//标题
+//                        .setMessage(String.valueOf(response.body().getAns()))//内容
+//                        .setIcon(R.mipmap.ic_launcher)//图标
+//                        .create();
+//                alertDialog1.show();
+                if(response.body().getAns())
+                    Toast.makeText(getApplicationContext(), "上传完成", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getApplicationContext(), "上传失败", Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -31,3 +31,13 @@ Response中name作为搜索页面tfsid
 
 https://s.taobao.com/search?app=imgsearch&tfsid=TB11nL8tgDqK1RjSZSyXXaxEVXa
 
+
+
+# 坑🕳
+
+#### 413 **Request Entity Too Large**
+
+nginx做反向代理时上传图片可能出现error 413 Request Entity Too Large
+
+打开nginx主配置文件nginx.conf，找到http{}，添加
+**client_max_body_size 50m;**

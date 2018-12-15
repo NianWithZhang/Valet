@@ -185,7 +185,7 @@ namespace Valet_Backend.Model
 					Directory.CreateDirectory(fileDir);
 				}
 				//文件名称
-				string projectFileName = clothPicFile.FileName;
+				string projectFileName = "cloth.jpg";//clothPicFile.FileName;
 
 				//上传的文件的路径
 				string filePath = fileDir + $@"\{projectFileName}";
