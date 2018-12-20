@@ -170,28 +170,28 @@ namespace Valet_Backend.Model
 		/// <summary>
 		/// 接受POST请求上传文件存到wwwroot/upload中
 		/// </summary>
-		/// <param name="clothPicFile"></param>
+		/// <param name="clothesPicFile"></param>
 		/// <returns></returns>
-		public static bool uploadClothPic(IFormFile clothPicFile,string userID,string clothID)
+		public static bool uploadClothesPic(IFormFile clothesPicFile,string userID,string clothesID)
 		{
-			if (clothPicFile != null)
+			if (clothesPicFile != null)
 			{
 				//var files = HttpContext.Request.Form.Files;
 
-				string fileDir = Directory.GetCurrentDirectory() + "/wwwroot/clothPic/"+userID+"/"+clothID;
+				string fileDir = Directory.GetCurrentDirectory() + "/wwwroot/clothesPic/"+userID+"/"+clothesID;
 
 				if (!Directory.Exists(fileDir))
 				{
 					Directory.CreateDirectory(fileDir);
 				}
 				//文件名称
-				string projectFileName = "cloth.jpg";//clothPicFile.FileName;
+				string projectFileName = "clothes.jpg";//clothPicFile.FileName;
 
 				//上传的文件的路径
 				string filePath = fileDir + $@"\{projectFileName}";
 				using (FileStream fs = System.IO.File.Create(filePath))
 				{
-					clothPicFile.CopyTo(fs);
+					clothesPicFile.CopyTo(fs);
 					fs.Flush();
 				}
 				return true;
