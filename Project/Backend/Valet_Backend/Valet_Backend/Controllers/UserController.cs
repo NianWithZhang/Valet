@@ -17,20 +17,20 @@ namespace Valet_Backend.Controllers
 		[HttpGet]
 		public object checkUser(string id, string password)
 		{
-			//UserEntity user = db.Queryable<UserEntity>().InSingle(id);
-			
-			UserManager userManager = new UserManager();
-
-			return new { ans = userManager.checkUserPassword(id,password) };
+			return new { ans = UserManager.checkPassword(id,password) };
 		}
 
 		// POST api/user
 		[HttpPost]
 		public object addUser(string id, string password)
 		{
-			UserManager userManager = new UserManager();
+			return new {ans = UserManager.register(id,password)};
+		}
 
-			return new {ans = userManager.registerNewUser(id,password)};
+		[HttpGet]
+		public IEnumerable<KeyValuePair<int,string>> getWardrobes(string id)
+		{
+			return UserManager.getWardrobes(id);
 		}
 	}
 }

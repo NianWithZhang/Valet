@@ -13,7 +13,10 @@ namespace Valet_Backend.Model
 
 		public string password { get; set; }
 
+		[SugarColumn(ColumnName = "recommend_item_url")]
 		public string recommendItemUrl { get; set; }
+
+		[SugarColumn(ColumnName = "recommend_item_pic_url")]
 		public string recommendItemPicUrl { get; set; }
 
 		public User()

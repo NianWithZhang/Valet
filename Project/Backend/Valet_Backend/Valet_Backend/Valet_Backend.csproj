@@ -13,6 +13,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\ClothesPic\**" />
+    <Content Remove="wwwroot\ClothesPic\**" />
+    <EmbeddedResource Remove="wwwroot\ClothesPic\**" />
+    <None Remove="wwwroot\ClothesPic\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
@@ -21,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\ClothesPic\" />
+    <Folder Include="wwwroot\ClothesPics\" />
   </ItemGroup>
 
 </Project>
