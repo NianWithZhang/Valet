@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Valet_Backend.Model
+namespace Valet_Backend.Model.Suit
 {
 	[SugarTable("SuitTable")]
 	public class Suit
@@ -22,17 +22,27 @@ namespace Valet_Backend.Model
 		[SugarColumn(ColumnName = "wearing_frequency")]
 		public int wearingFrequency { get; set; }
 
-		public Suit()
+		[SugarColumn(ColumnName = "last_wearing_time")]
+		public DateTime lastWearingTime { get; set; }
+
+		[SugarColumn(IsIgnore = true)]
+		public string picPath => Config.PicSaveDir + "SuitPics\\" + id.ToString() + ".jpg";
+
+		public Suit() { }
+
+		public Suit(string _name,int _wardobeID,double _warmthDegree)
 		{
+			name = _name;
+			wardrobeID = _wardobeID;
+
+			warmthDegree = _warmthDegree;
+			wearingFrequency = 0;
+			lastWearingTime = DateTime.MinValue;
 		}
 
-		public Suit(int _id,string _name,double _warmthDegree)
+		public void wear()
 		{
-			id = _id;
-			name = _name;
-			warmthDegree = _warmthDegree;
-
-			wearingFrequency = 0;
+			lastWearingTime = DateTime.Now;
 		}
 	}
 }

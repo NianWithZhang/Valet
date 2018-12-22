@@ -5,36 +5,37 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Valet_Backend.Model;
+using Valet_Backend.Model.Wardrobe;
 
 namespace Valet_Backend.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class WardrobeController : ControllerBase
-    {
+	[Route("api/[controller]")]
+	[ApiController]
+	public class WardrobeController : ControllerBase
+	{
 		[HttpGet]
-		public IEnumerable<KeyValuePair<int, string>> getClothes(int id)
+		public object getClothes(int id)
 		{
-			return WardrobeManager.getClothes(id);
+			return new { ans = WardrobeManager.getClothes(id) };
 		}
 
 		[HttpPost]
-		public bool addWardrobe(string user_id,string name)
+		public object addWardrobe(string user_id, string name)
 		{
-			return WardrobeManager.add(user_id,name);
+			return new { ans = WardrobeManager.add(user_id, name) };
 		}
 
 		[HttpPut]
-		public bool renameWardrobe(int id,string name)
+		public object renameWardrobe(int id, string name)
 		{
-			return WardrobeManager.rename(id,name);
+			return new { ans = WardrobeManager.rename(id, name) };
 		}
 
 		[HttpDelete]
-		public bool deleteWardrobe(int id)
+		public object deleteWardrobe(int id)
 		{
-			return WardrobeManager.delete(id);
+			return new { ans = WardrobeManager.delete(id) };
 		}
-		
-    }
+
+	}
 }

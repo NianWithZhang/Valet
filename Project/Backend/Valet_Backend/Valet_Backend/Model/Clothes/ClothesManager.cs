@@ -5,8 +5,11 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Valet_Backend.Model.Suit;
+using Valet_Backend.Model.User;
+using Valet_Backend.Model.Wardrobe;
 
-namespace Valet_Backend.Model
+namespace Valet_Backend.Model.Clothes
 {
 	public class ClothesManager : DbContext
 	{
@@ -23,24 +26,30 @@ namespace Valet_Backend.Model
 
 		public static bool add(IFormFile clothesPic, int wardrobeID, string name, ClothesType type,int thickness)
 		{
-			Wardrobe wardrobe = wardrobeDb.GetById(wardrobeID);
-
 			//确保衣橱存在
-			if (wardrobe == null)
+			if (WardrobeManager.exists(wardrobeID))
 				return false;
 
-			int clothesID = clothesDb.InsertReturnIdentity(new Clothes(wardrobe.id, name, type,thickness));
+			Clothes clothes = new Clothes(wardrobeID, name, type, thickness);
 
-			savePic(clothesPic, clothesID);
+			clothes.id = clothesDb.InsertReturnIdentity(clothes);
 
-			//TODO:开始准备推荐内容
+			savePic(clothesPic, clothes);
+			
+			//处理购衣推荐
+			foreach(string userID in UserManager.similarUsers(WardrobeManager.user(wardrobeID)))
+			{
+				TaobaoItem taobaoItem = TaobaoApi.getTaobaoItem(clothes.picPath);
+
+				UserManager.setRecommend(userID,taobaoItem);
+			}
 
 			return true;
 		}
-
-		public static bool savePic(IFormFile clothesPicFile, int clothesID)
+		public static bool savePic(IFormFile clothesPicFile, object clothes)
 		{
-			Clothes clothes = clothesDb.GetById(clothesID);
+			if (clothes is string)
+				clothes = clothesDb.GetById(clothes as string);
 
 			if (clothes == null)
 				return false;
@@ -53,24 +62,19 @@ namespace Valet_Backend.Model
 				{
 					Directory.CreateDirectory(fileDir);
 				}
-				//文件名称
-				string projectFileName = clothes.id.ToString() + ".jpg";
 
-				//上传的文件的路径
-				string filePath = fileDir + projectFileName;
-				FileStream fs = System.IO.File.Create(filePath);
+				string picPath = (clothes as Clothes).picPath;
+
+				FileStream fs = System.IO.File.Create(picPath);
 
 				clothesPicFile.CopyTo(fs);
 				fs.Flush();
 				fs.Close();
 
-				////TODO:需要？
-				//fs = File.OpenRead(filePath);
-
 				//根据图片获取主题色
-				double color = getPicMainColor(filePath);
-				clothes.color = color;
-				clothesDb.Update(clothes);
+				double color = getPicMainColor(picPath);
+				(clothes as Clothes).color = color;
+				clothesDb.Update(clothes as Clothes);
 
 				return true;
 			}
@@ -110,23 +114,20 @@ namespace Valet_Backend.Model
 			if (clothes == null)
 				return false;
 
-			deleteClothesPic(clothesID);
+			deleteClothesPic(clothes);
 
-			//TODO:删除对应的Suit
+			SuitManager.deleteByClothes(clothesID);
 
 			clothesDb.Delete(clothes);
-
-			//会自动级联删除？ 
-			//clothes_suitDb.Delete(x=>x.clothesID==clothes.id);
 
 			return true;
 		}
 
-		public static bool deleteClothesPic(int clothesID)
+		public static bool deleteClothesPic(Clothes clothes)
 		{
 			try
 			{
-				string filePath = Config.PicSaveDir + clothesID.ToString() + ".jpg";
+				string filePath = clothes.picPath;
 
 				if (File.Exists(filePath))
 					File.Delete(filePath);
@@ -143,17 +144,59 @@ namespace Valet_Backend.Model
 		public static bool changeWardrobe(int clothesID, int targetWardrobeID)
 		{
 			Clothes clothes = clothesDb.GetById(clothesID);
-			Wardrobe wardrobe = wardrobeDb.GetById(targetWardrobeID);
 
 			//确保衣橱和衣物存在
-			if (clothes == null || wardrobe == null)
+			if (clothes == null || !WardrobeManager.exists(targetWardrobeID))
 				return false;
 
 			//更换衣橱
 			clothes.wardrobeID = targetWardrobeID;
 
+			SuitManager.deleteByClothes(clothesID);
+
 			return clothesDb.Update(clothes);
 		}
+		public static bool changeWardrobe(int[] clothesIDs, int targetWardrobeID)
+		{
+			bool allChanged = true;
 
+			foreach (var clothesID in clothesIDs)
+				allChanged &= changeWardrobe(clothesIDs, targetWardrobeID);
+
+			return allChanged;
+		}
+
+		public static bool wear(int clothesID)
+		{
+			Clothes clothes = clothesDb.GetById(clothesID);
+
+			if (clothes == null)
+#if DEBUG
+				throw new Exception();
+#else
+			return false;
+#endif
+			WardrobeManager.wear(clothes.wardrobeID);
+
+			clothes.wear();
+
+			return clothesDb.Update(clothes);
+		}
+		public static bool wear(IEnumerable<int> clothesIDs)
+		{
+			bool allUpdated = true;
+
+			foreach (int clothesID in clothesIDs)
+				allUpdated &= wear(clothesID);
+
+			return allUpdated;
+		}
+
+		public static double calculateWarmthDegree(int[] clothesIDs)
+		{
+			//TODO
+
+			return 0;
+		}
 	}
 }

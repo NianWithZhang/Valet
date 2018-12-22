@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Valet_Backend.Model
+namespace Valet_Backend.Model.Suit
 {
 	public class WeatherInfo
 	{

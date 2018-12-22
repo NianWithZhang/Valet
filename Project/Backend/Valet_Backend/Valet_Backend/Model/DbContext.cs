@@ -8,21 +8,18 @@ namespace Valet_Backend.Model
 {
 	public class DbContext
 	{
-
-		public static SqlSugarClient db
-		{
-			get=>new SqlSugarClient(new ConnectionConfig()
+		protected static SqlSugarClient db => new SqlSugarClient(new ConnectionConfig()
 		{
 			ConnectionString = Config.ConnectionString,
-				 DbType = DbType.MySql,
-				 InitKeyType = InitKeyType.SystemTable //初始化主键和自增列信息到ORM的方式
-			 });
-		}
-		public static SimpleClient<User> userDb { get { return new SimpleClient<User>(db); } }
-		public static SimpleClient<Wardrobe> wardrobeDb { get { return new SimpleClient<Wardrobe>(db); } }
-		public static SimpleClient<Clothes> clothesDb { get { return new SimpleClient<Clothes>(db); } }
-		public static SimpleClient<Suit> suitDb { get { return new SimpleClient<Suit>(db); } }
-		public static SimpleClient<Clothes_Suit> clothes_suitDb { get { return new SimpleClient<Clothes_Suit>(db); } }
+			DbType = DbType.MySql,
+			InitKeyType = InitKeyType.SystemTable //初始化主键和自增列信息到ORM的方式
+		});
+
+		protected static SimpleClient<User.User> userDb => new SimpleClient<User.User>(db);
+		protected static SimpleClient<Wardrobe.Wardrobe> wardrobeDb => new SimpleClient<Wardrobe.Wardrobe>(db);
+		protected static SimpleClient<Clothes.Clothes> clothesDb => new SimpleClient<Clothes.Clothes>(db);
+		protected static SimpleClient<Suit.Suit> suitDb => new SimpleClient<Suit.Suit>(db);
+		protected static SimpleClient<Suit.Clothes_Suit> clothes_suitDb => new SimpleClient<Suit.Clothes_Suit>(db);
 
 		//public DbContext()
 		//{

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Valet_Backend.Model
+namespace Valet_Backend.Model.Suit
 {
 	[SugarTable("ClothesTable_SuitTable")]
 	public class Clothes_Suit

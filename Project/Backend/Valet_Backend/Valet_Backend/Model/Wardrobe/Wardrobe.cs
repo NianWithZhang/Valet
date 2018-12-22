@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Valet_Backend.Model
+namespace Valet_Backend.Model.Wardrobe
 {
 	[SugarTable("WardrobeTable")]
 	public class Wardrobe
@@ -16,16 +16,21 @@ namespace Valet_Backend.Model
 
 		public string name { get; set; }
 
-		public Wardrobe()
-		{
-			//user_id = "defaultUser";
-			//id = 0;
-		}
+		[SugarColumn(ColumnName = "last_used_time")]
+		public DateTime lastUsedTime { get; set; }
 
-		public Wardrobe(string _user_id,string _name)
+		public Wardrobe(){}
+
+		public Wardrobe(string _user_id, string _name)
 		{
 			userID = _user_id;
 			name = _name;
+			lastUsedTime = DateTime.MinValue;
+		}
+
+		public void wear()
+		{
+			lastUsedTime = DateTime.Now;
 		}
 	}
 }

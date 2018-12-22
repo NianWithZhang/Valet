@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 using Valet_Backend.Model;
+using Valet_Backend.Model.User;
 
 namespace Valet_Backend.Controllers
 {
@@ -13,24 +14,28 @@ namespace Valet_Backend.Controllers
 	[ApiController]
 	public class UserController : ControllerBase
 	{
-		// GET api/user
 		[HttpGet]
 		public object checkUser(string id, string password)
 		{
-			return new { ans = UserManager.checkPassword(id,password) };
-		}
-
-		// POST api/user
-		[HttpPost]
-		public object addUser(string id, string password)
-		{
-			return new {ans = UserManager.register(id,password)};
+			return new { ans = UserManager.check(id,password) };
 		}
 
 		[HttpGet]
-		public IEnumerable<KeyValuePair<int,string>> getWardrobes(string id)
+		public TaobaoItem getRecommend(string id)
 		{
-			return UserManager.getWardrobes(id);
+			return UserManager.getRecommend(id);
+		}
+		
+		[HttpPost]
+		public object addUser(string id, string password)
+		{
+			return new {ans = UserManager.create(id,password)};
+		}
+		
+		[HttpGet]
+		public object getWardrobes(string id)
+		{
+			return new { ans = UserManager.getWardrobes(id) };
 		}
 	}
 }

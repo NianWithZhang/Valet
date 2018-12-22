@@ -10,7 +10,7 @@ namespace Valet_Backend
 	{
 		public const string ConnectionString = "server=kousakareina.cn;uid=root;pwd=1234;database=ValetDB;charset=utf8";
 
-		public static string PicSaveDir { get { return Directory.GetCurrentDirectory() + "\\wwwroot\\ClothesPics\\"; } }
+		public static string PicSaveDir { get { return Directory.GetCurrentDirectory() + "\\wwwroot\\"; } }
 
 		//public const int thicknessMaximium = 10;
 		

@@ -12,6 +12,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Valet_Backend.Model.Suit;
+using Valet_Backend.Model.User;
 
 namespace Valet_Backend.Model
 {
@@ -141,7 +143,7 @@ namespace Valet_Backend.Model
 		/// <returns></returns>
 		public static TaobaoItem getTaobaoItem(string picPath)
 		{
-			string tfsid = uploadTaobaoApi("C:\\Users\\黏黏\\Desktop\\arale.jpg");
+			string tfsid = uploadTaobaoApi(picPath);
 
 			Dictionary<string, string> parameters = new Dictionary<string, string>();
 			parameters.Add("app","imgsearch");
