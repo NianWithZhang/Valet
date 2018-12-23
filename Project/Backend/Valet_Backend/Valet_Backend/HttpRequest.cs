@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace Valet_Backend
 {
+	public class BooleanResponse
+	{
+		public bool ans;
+
+		public BooleanResponse(bool _ans) { ans = _ans; }
+	}
+
 	public class HttpRequest
 	{
 		/// <summary>

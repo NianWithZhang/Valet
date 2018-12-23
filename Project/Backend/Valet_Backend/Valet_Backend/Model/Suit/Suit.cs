@@ -43,6 +43,7 @@ namespace Valet_Backend.Model.Suit
 		public void wear()
 		{
 			lastWearingTime = DateTime.Now;
+			wearingFrequency++;
 		}
 	}
 }

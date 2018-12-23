@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Valet_Backend.Controllers;
+using Valet_Backend.Model.Suit;
 using Valet_Backend.Model.User;
 
 namespace Valet_Backend.Model.Wardrobe
@@ -13,7 +15,7 @@ namespace Valet_Backend.Model.Wardrobe
 		/// </summary>
 		/// <param name="wardrobeID"></param>
 		/// <returns></returns>
-		public static bool exists(int wardrobeID)
+		public static bool exist(int wardrobeID)
 		{
 			return wardrobeDb.GetById(wardrobeID) != null;
 		}
@@ -31,17 +33,7 @@ namespace Valet_Backend.Model.Wardrobe
 			return wardrobeDb.DeleteById(wardrobeID);
 		}
 
-		public static List<KeyValuePair<int, string>> getClothes(int wardrobeID)
-		{
-			List<KeyValuePair<int, string>> ans = new List<KeyValuePair<int, string>>();
 
-			Wardrobe wardrobe = wardrobeDb.GetById(wardrobeID);
-
-			if (wardrobe == null)
-				return ans;
-
-			return clothesDb.GetList(x => x.wardrobeID == wardrobeID).OrderByDescending(x=>x.lastWearingTime).Select(x => new KeyValuePair<int, string>(x.id, x.name)).ToList();
-		}
 
 		public static bool rename(int wardrobeID, string newName)
 		{

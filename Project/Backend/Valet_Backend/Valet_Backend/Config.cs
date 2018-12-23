@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Valet_Backend.Model.Suit;
 
 namespace Valet_Backend
 {
@@ -13,6 +14,16 @@ namespace Valet_Backend
 		public static string PicSaveDir { get { return Directory.GetCurrentDirectory() + "\\wwwroot\\"; } }
 
 		//public const int thicknessMaximium = 10;
+		public static Dictionary<suitEvaluation, string> evaluationStrings = new Dictionary<suitEvaluation, string>()
+		{
+			{ suitEvaluation.TooThin,"只穿这点会冻感冒的"},
+			{ suitEvaluation.Thin,"只穿这些会冷的"},
+			{ suitEvaluation.LittleThin,"穿这些稍微有点点薄"},
+			{ suitEvaluation.JustOK,"穿着些差不多"},
+			{ suitEvaluation.LittleThick,"穿这些稍微有点点厚"},
+			{ suitEvaluation.Thick,"穿这么多会热的"},
+			{ suitEvaluation.TooThick,"穿这么多会热出毛病的"}
+		};
 		
 		#region API url&key
 
@@ -44,8 +55,6 @@ namespace Valet_Backend
 
 
 		//私有构造函数 防止被实例化
-		private Config()
-		{
-		}
+		private Config(){}
 	}
 }

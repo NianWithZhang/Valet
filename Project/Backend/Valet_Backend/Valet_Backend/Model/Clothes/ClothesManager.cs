@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Valet_Backend.Controllers;
 using Valet_Backend.Model.Suit;
 using Valet_Backend.Model.User;
 using Valet_Backend.Model.Wardrobe;
@@ -27,7 +28,7 @@ namespace Valet_Backend.Model.Clothes
 		public static bool add(IFormFile clothesPic, int wardrobeID, string name, ClothesType type,int thickness)
 		{
 			//确保衣橱存在
-			if (WardrobeManager.exists(wardrobeID))
+			if (WardrobeManager.exist(wardrobeID))
 				return false;
 
 			Clothes clothes = new Clothes(wardrobeID, name, type, thickness);
@@ -46,11 +47,8 @@ namespace Valet_Backend.Model.Clothes
 
 			return true;
 		}
-		public static bool savePic(IFormFile clothesPicFile, object clothes)
+		public static bool savePic(IFormFile clothesPicFile, Clothes clothes)
 		{
-			if (clothes is string)
-				clothes = clothesDb.GetById(clothes as string);
-
 			if (clothes == null)
 				return false;
 
@@ -63,7 +61,7 @@ namespace Valet_Backend.Model.Clothes
 					Directory.CreateDirectory(fileDir);
 				}
 
-				string picPath = (clothes as Clothes).picPath;
+				string picPath =clothes.picPath;
 
 				FileStream fs = System.IO.File.Create(picPath);
 
@@ -73,8 +71,8 @@ namespace Valet_Backend.Model.Clothes
 
 				//根据图片获取主题色
 				double color = getPicMainColor(picPath);
-				(clothes as Clothes).color = color;
-				clothesDb.Update(clothes as Clothes);
+				clothes.color = color;
+				clothesDb.Update(clothes);
 
 				return true;
 			}
@@ -83,8 +81,6 @@ namespace Valet_Backend.Model.Clothes
 		}
 		public static double getPicMainColor(string filePath)
 		{
-			//Image image = new Image<Rgba32>(fs);
-
 			Image img = Image.FromFile(filePath);
 
 			Bitmap bitmap = new Bitmap(img);
@@ -100,11 +96,15 @@ namespace Valet_Backend.Model.Clothes
 			if (clothes == null)
 				return false;
 
-			savePic(clothesPic, clothesID);
+			savePic(clothesPic, clothes);
 
 			clothes.modify(clothesName,type,thickness);
 
-			return true;
+			bool ans = clothesDb.Update(clothes);
+
+			SuitManager.regenerateWarmthDegreeByClothes(clothesID);
+
+			return ans;
 		}
 
 		public static bool delete(int clothesID)
@@ -117,10 +117,8 @@ namespace Valet_Backend.Model.Clothes
 			deleteClothesPic(clothes);
 
 			SuitManager.deleteByClothes(clothesID);
-
-			clothesDb.Delete(clothes);
-
-			return true;
+			
+			return clothesDb.Delete(clothes);
 		}
 
 		public static bool deleteClothesPic(Clothes clothes)
@@ -146,7 +144,7 @@ namespace Valet_Backend.Model.Clothes
 			Clothes clothes = clothesDb.GetById(clothesID);
 
 			//确保衣橱和衣物存在
-			if (clothes == null || !WardrobeManager.exists(targetWardrobeID))
+			if (clothes == null || !WardrobeManager.exist(targetWardrobeID))
 				return false;
 
 			//更换衣橱
@@ -192,11 +190,40 @@ namespace Valet_Backend.Model.Clothes
 			return allUpdated;
 		}
 
-		public static double calculateWarmthDegree(int[] clothesIDs)
+		public static KeyValuePair<bool,double> calculateWarmthDegree(int[] clothesIDs)
 		{
-			//TODO
+			bool allFound = true;
 
-			return 0;
+			double ans = 0;
+
+			foreach(var clothesID in clothesIDs)
+			{
+				Clothes clothes = clothesDb.GetById(clothesID);
+
+				if(clothes == null)
+				{
+#if DEBUG
+					throw new Exception();
+#else
+					allFound = false;
+					continue;
+#endif
+				}
+
+				ans += clothes.warmthDegree();
+			}
+
+			ans = 38 - ans;
+
+			return new KeyValuePair<bool, double>(allFound,ans);
+		}
+
+		public static ClothesResponseList getByWardrobe(int wardrobeID)
+		{
+			if (!WardrobeManager.exist(wardrobeID))
+				return new ClothesResponseList(new ClothesResponse[0]);
+
+			return new ClothesResponseList(clothesDb.GetList(x => x.wardrobeID == wardrobeID).OrderByDescending(x => x.lastWearingTime).Select(x => new ClothesResponse(x.id, x.name)).ToArray());
 		}
 	}
 }

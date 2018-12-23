@@ -7,7 +7,7 @@ namespace Valet_Backend.Model.Suit
 {
 	public class WeatherInfo
 	{
-		public double temperature = 20;
+		public double temperature = 16;
 
 		public string tempStr = "";
 		public string wind = "";

@@ -13,11 +13,7 @@ namespace Valet_Backend.Controllers
 	[ApiController]
 	public class WardrobeController : ControllerBase
 	{
-		[HttpGet]
-		public object getClothes(int id)
-		{
-			return new { ans = WardrobeManager.getClothes(id) };
-		}
+
 
 		[HttpPost]
 		public object addWardrobe(string user_id, string name)
@@ -36,6 +32,5 @@ namespace Valet_Backend.Controllers
 		{
 			return new { ans = WardrobeManager.delete(id) };
 		}
-
 	}
 }
