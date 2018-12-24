@@ -46,6 +46,7 @@ namespace Valet_Backend.Model.Clothes
 				}
 			}
 		}
+
 		/// <summary>
 		/// 通过淘宝搜图API搜索图片并返回最高匹配度商品
 		/// </summary>

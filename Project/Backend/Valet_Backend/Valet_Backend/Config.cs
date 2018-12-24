@@ -7,6 +7,9 @@ using Valet_Backend.Model.Suit;
 
 namespace Valet_Backend
 {
+	/// <summary>
+	/// 参数设置
+	/// </summary>
 	public class Config
 	{
 		/// <summary>
@@ -18,7 +21,7 @@ namespace Valet_Backend
 		/// 图片存储路径
 		/// </summary>
 		public static string PicSaveDir => Directory.GetCurrentDirectory() + "\\wwwroot\\";
-		
+
 		/// <summary>
 		/// 衣物评价描述列表
 		/// </summary>
@@ -52,7 +55,7 @@ namespace Valet_Backend
 		/// 淘宝图片搜索API
 		/// </summary>
 		public const string taobaoPicApiUrl = "https://s.taobao.com/image";
-		
+
 		/// <summary>
 		/// 淘宝搜索结果地址
 		/// </summary>
@@ -69,7 +72,7 @@ namespace Valet_Backend
 		/// 天气查询API
 		/// </summary>
 		public const string weatherApiUrl = "http://v.juhe.cn/weather/index";
-		
+
 		/// <summary>
 		/// 聚合数据API KEY
 		/// </summary>
@@ -77,8 +80,11 @@ namespace Valet_Backend
 		#endregion
 
 		#endregion
-		
-		///私有构造函数 防止被实例化
-		private Config(){}
+
+
+		/// <summary>
+		/// 私有构造函数 防止被实例化
+		/// </summary>
+		private Config() { }
 	}
 }
