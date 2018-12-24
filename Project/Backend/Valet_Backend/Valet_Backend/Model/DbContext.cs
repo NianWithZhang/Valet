@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Valet_Backend.Model
 {
+	/// <summary>
+	/// 各模块控制类Manager的基类 初始化数据库相关操作
+	/// </summary>
 	public class DbContext
 	{
 		protected static SqlSugarClient db => new SqlSugarClient(new ConnectionConfig()
@@ -20,6 +23,9 @@ namespace Valet_Backend.Model
 		protected static SimpleClient<Clothes.Clothes> clothesDb => new SimpleClient<Clothes.Clothes>(db);
 		protected static SimpleClient<Suit.Suit> suitDb => new SimpleClient<Suit.Suit>(db);
 		protected static SimpleClient<Suit.Clothes_Suit> clothes_suitDb => new SimpleClient<Suit.Clothes_Suit>(db);
+
+		////私有默认构造函数 防止被实例化
+		//private DbContext() { }
 
 		//public DbContext()
 		//{
