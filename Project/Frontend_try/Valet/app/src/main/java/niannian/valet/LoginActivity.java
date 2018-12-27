@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import retrofit2.Call;
@@ -21,6 +22,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText userIDText, passwordText;
 
+    private Switch rememberUserSwitch;
+
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
@@ -31,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
 
         userIDText = (EditText)findViewById(R.id.userIdText);
         passwordText = (EditText)findViewById(R.id.passwordText);
+
+        rememberUserSwitch = (Switch)findViewById(R.id.rememberUserSwitch);
 
         //获取SharedPreferences对象
         preferences = getSharedPreferences("preference", Context.MODE_PRIVATE);
@@ -83,14 +88,17 @@ public class LoginActivity extends AppCompatActivity {
         User.getInstance().setUserInfo(userIDText.getText().toString(),passwordText.getText().toString());
 
         if(editor!=null){
-            //存入键值对数据，注意此处的put[type]("key",value);
-            editor.putString("userid", User.getInstance().id);
-            editor.putString("password",User.getInstance().password);
+            if(rememberUserSwitch.isChecked()){
+                editor.putString("userid", User.getInstance().id);
+                editor.putString("password",User.getInstance().password);
 
-            editor.commit();
+                editor.commit();
+            }else{
+                editor.putString("userid",null);
+                editor.putString("password",null);
+                editor.commit();
+            }
         }
-
-
     }
 
     public void saveLoginInfo(){
