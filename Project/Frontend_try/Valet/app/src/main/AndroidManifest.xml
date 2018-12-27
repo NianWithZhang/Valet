@@ -23,8 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestCameraActivity">
-        </activity>
+        <activity android:name=".TestCameraActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -36,6 +35,10 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

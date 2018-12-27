@@ -101,12 +101,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void saveLoginInfo(){
-
-    }
-
     public void tryChangeActivityButton_Click(View view){
-        Intent intent = new Intent(this, TestCameraActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 //        LoginActivity.this.finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
@@ -135,4 +131,9 @@ public class LoginActivity extends AppCompatActivity {
         userIDText.setText(userid);
         passwordText.setText(password);
     }
+
+    private void registerButton_Click(View view){
+
+    }
+
 }
