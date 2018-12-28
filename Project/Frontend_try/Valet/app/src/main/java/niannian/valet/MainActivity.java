@@ -1,5 +1,7 @@
 package niannian.valet;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,12 +10,18 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +29,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private List<Pair<Integer,String>> wardrobes;
+//    private
 
-    private List<String> mDatas;
     RecyclerView suitRecyclerView;
 
     private Menu mainDrawer;
@@ -33,8 +42,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +63,7 @@ public class MainActivity extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         suitRecyclerView.setLayoutManager(linearLayoutManager);
+        initSnipper();
         //设置适配器
 //        mAdapter1 = new GalleryAdapter(this, mDatas1);
 //        recyclerview_horizontal1.setAdapter(mAdapter1);
@@ -70,13 +81,13 @@ public class MainActivity extends AppCompatActivity
 
     private void initSnipper(){
         // Setup spinner
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(new TestActivity.MyAdapter(
+        Spinner spinner = (Spinner) findViewById(R.id.selectWardrobeSpinner);
+        spinner.setAdapter(new MyAdapter(
                 toolbar.getContext(),
                 new String[]{
-                        "Section 1",
-                        "Section 2",
-                        "Section 3",
+                        "WardrobeName 1",
+                        "WardrobeName 2",
+                        "WardrobeName 3",
                 }));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -84,9 +95,9 @@ public class MainActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // When the given dropdown item is selected, show its contents in the
                 // container view.
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, TestActivity.PlaceholderFragment.newInstance(position + 1))
-                        .commit();
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.container, TestActivity.PlaceholderFragment.newInstance(position + 1))
+//                        .commit();
             }
 
             @Override
@@ -95,13 +106,47 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    protected void initData()
-    {
-        mDatas = new ArrayList<String>();
-        for (int i = 'A'; i < 'z'; i++)
-        {
-            mDatas.add("" + (char) i);
+    public static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
+        private final ThemedSpinnerAdapter.Helper mDropDownHelper;
+
+        public MyAdapter(Context context, String[] objects) {
+            super(context, android.R.layout.simple_list_item_1, objects);
+            mDropDownHelper = new ThemedSpinnerAdapter.Helper(context);
         }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            View view;
+
+            if (convertView == null) {
+                // Inflate the drop down using the helper's LayoutInflater
+                LayoutInflater inflater = mDropDownHelper.getDropDownViewInflater();
+                view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            } else {
+                view = convertView;
+            }
+
+            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            textView.setText(getItem(position));
+
+            return view;
+        }
+
+        @Override
+        public Resources.Theme getDropDownViewTheme() {
+            return mDropDownHelper.getDropDownViewTheme();
+        }
+
+        @Override
+        public void setDropDownViewTheme(Resources.Theme theme) {
+            mDropDownHelper.setDropDownViewTheme(theme);
+        }
+    }
+
+    private List<Pair<Integer,String>> getWardrobesAndWeather(int userID){
+
+
+return null;
     }
 
     @Override

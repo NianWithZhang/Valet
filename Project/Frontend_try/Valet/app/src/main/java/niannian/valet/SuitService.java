@@ -1,11 +1,10 @@
 package niannian.valet;
 
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface CheckUserService {
+public interface SuitService {
     @GET("api/user")
     Call<BooleanResponse> checkUserPassword(
             @Query("id") String id,

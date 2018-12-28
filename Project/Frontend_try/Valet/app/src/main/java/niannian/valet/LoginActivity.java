@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Pair;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -51,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())//设置 Json 转换器
                 .build();
 
-        CheckUserService checkUserService = retrofit.create(CheckUserService.class);
+        UserService checkUserService = retrofit.create(UserService.class);
         Call<BooleanResponse> call = checkUserService.checkUserPassword(userIDText.getText().toString(),passwordText.getText().toString());
         call.enqueue(new Callback<BooleanResponse>() {
             @Override
@@ -103,6 +101,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public void tryChangeActivityButton_Click(View view){
         Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+//        LoginActivity.this.finish();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+    }
+    public void tryChangeActivityButton1_Click(View view){
+        Intent intent = new Intent(this, TestActivity.class);
         startActivity(intent);
 //        LoginActivity.this.finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);

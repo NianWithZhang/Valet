@@ -28,6 +28,10 @@ public class User {
         return new Pair<>(id,password);
     }
 
+    public String getId(){
+        return id;
+    }
+
     public void resetUser(){
         id = null;
         password = null;

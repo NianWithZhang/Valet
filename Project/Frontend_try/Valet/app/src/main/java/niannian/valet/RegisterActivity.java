@@ -53,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())//设置 Json 转换器
                 .build();
 
-        CheckUserService checkUserService = retrofit.create(CheckUserService.class);
+        UserService checkUserService = retrofit.create(UserService.class);
         Call<BooleanResponse> call = checkUserService.checkUserPassword(userIDText.getText().toString(),passwordText.getText().toString());
         call.enqueue(new Callback<BooleanResponse>() {
             @Override

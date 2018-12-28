@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Valet</string>
-    <string name="server_url">http://192.168.1.9/</string>
+    <string name="server_url">http://192.168.1.4/</string>
 
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_activity_main"></string>
+    <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Valet</string>

@@ -84,6 +84,7 @@ namespace Valet_Backend.Controllers
 		/// <param name="wardrobe_id">衣橱ID</param>
 		/// <param name="temperature">当前温度</param>
 		/// <returns>衣橱中的穿搭的ID以及</returns>
+		[Route("wardrobe")]
 		[HttpGet]
 		public SuitResponseList getByWardrobe(int wardrobe_id, double temperature)
 		{
@@ -96,6 +97,7 @@ namespace Valet_Backend.Controllers
 		/// <param name="clothes">一套衣物ID列表</param>
 		/// <param name="temperature">当前温度</param>
 		/// <returns>评价结果</returns>
+		[Route("warmth")]
 		[HttpGet]
 		public EvaluationResponse getWarmth(int[] clothes, double temperature)
 		{
@@ -110,6 +112,7 @@ namespace Valet_Backend.Controllers
 		/// <param name="latitude">纬度</param>
 		/// <param name="longitude">经度</param>
 		/// <returns>根据指定的衣橱以及地理位置产生的天气信息以及推荐穿搭列表</returns>
+		[Route("advice")]
 		[HttpGet]
 		public SuitResponseList getAdvices(int wardrobe_id, double latitude, double longitude)
 		{
@@ -169,6 +172,7 @@ namespace Valet_Backend.Controllers
 		/// </summary>
 		/// <param name="clothes_ids">混搭中所有衣物ID</param>
 		/// <returns>操作结果 是否成功对所有衣物进行穿着操作</returns>
+		[Route("many")]
 		[HttpPut]
 		public BooleanResponse wear(int[] clothes_ids)
 		{
