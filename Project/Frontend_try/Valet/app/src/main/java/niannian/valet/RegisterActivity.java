@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Pair;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -18,7 +16,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LoginActivity extends AppCompatActivity {
+/**
+ * Created by niannian on 2018/12/27.
+ */
+
+public class RegisterActivity extends AppCompatActivity {
 
     private EditText userIDText, passwordText;
 
@@ -41,10 +43,10 @@ public class LoginActivity extends AppCompatActivity {
         preferences = getSharedPreferences("preference", Context.MODE_PRIVATE);
         editor = preferences.edit();
 
-        loadPreviousUser();
+        //loadPreviousUser();
     }
 
-    public void loginButton_Click(View view)
+    public void registerButton_Click(View view)
     {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.server_url))//基础URL 建议以 / 结尾
@@ -62,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),String.valueOf(userCheckAns.getAns()),Toast.LENGTH_SHORT).show();
                 System.out.println(userCheckAns.getAns());
 
-                login(userCheckAns.getAns());
+                register(userCheckAns.getAns());
             }
 
             @Override
@@ -74,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void login(boolean ans){
+    public void register(boolean ans){
         if(!ans) {
             //用户名或密码错误则自动删除之前记录的登陆信息
             editor.putString("userid",null);
@@ -100,42 +102,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
-
-    public void saveLoginInfo(){
-
-    }
-
-    public void tryChangeActivityButton_Click(View view){
+    public void goLoginPage(View view){
         Intent intent = new Intent(this, TestCameraActivity.class);
         startActivity(intent);
 //        LoginActivity.this.finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
     }
 
-    private void loadPreviousUser(){
-        //LoginActivity不关 所以不用检查
-//        //检查当前User是否已登陆用户
-//        Pair<String,String> UserInfo = User.getInstance().getUserInfo();
-//        if(UserInfo!=null){
-//            userIDText.setText(UserInfo.first);
-//            passwordText.setText(UserInfo.second);
-//
-//            return;
-//        }
-
-//        User.getInstance().resetUser();
-
-        String userid = preferences.getString("userid",null);
-        String password = preferences.getString("password",null);
-        if(userid == null||password == null) {
-            userid = "";
-            password = "";
-        }
-
-        userIDText.setText(userid);
-        passwordText.setText(password);
-    }
-    public void registerButton_Click(View view){
-
-    }
 }
