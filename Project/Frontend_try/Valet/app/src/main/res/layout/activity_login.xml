@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <view
+        class="android.support.v4.view.ViewPager"
+        id="@+id/view"
+        android:layout_width="411dp"
+        android:layout_height="660dp"
+        android:visibility="visible"
+        android:background="@color/colorAccentLight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/loginTitle"
         android:layout_width="wrap_content"
@@ -89,11 +99,11 @@
         android:layout_marginTop="12dp"
         android:gravity="center_horizontal"
         android:letterSpacing="-0.02"
+        android:text="密    码"
         android:textColor="@color/colorText"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/userIdText"
-        app:layout_constraintTop_toBottomOf="@+id/userIdText"
-        tools:text="密   码" />
+        app:layout_constraintTop_toBottomOf="@+id/userIdText" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -103,7 +113,7 @@
         android:layout_marginTop="96dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/Valet_icon_app" />
+        app:srcCompat="@drawable/valet_icon_app" />
 
     <Switch
         android:id="@+id/rememberUserSwitch"
