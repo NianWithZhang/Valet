@@ -32,9 +32,27 @@
 
 #### 2.4.1XXXXXXX(功能建模)
 
+```
+ppt11(p28)Regardless of the level of procedural abstraction, the UML activity diagram can be used to represent processing details.
+```
+
+
+
 #### 2.4.2XXXXXXX(数据建模)
 
+```
+ER图一个
+```
+
+
+
 #### 2.4.3XXXXXXX(行为建模)
+
+```
+ppt11(p4) create a sequence for each user case, build a state diagram for the system or classes
+```
+
+
 
 ## 三 非功能需求
 

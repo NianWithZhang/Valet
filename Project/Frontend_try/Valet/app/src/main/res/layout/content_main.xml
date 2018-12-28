@@ -8,4 +8,14 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/suitRecyclerView"
+        android:layout_width="412dp"
+        android:layout_height="400"
+        android:layout_marginTop="52dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
