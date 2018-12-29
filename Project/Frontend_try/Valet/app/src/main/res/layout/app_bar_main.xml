@@ -21,8 +21,10 @@
 
             <Spinner
                 android:id="@+id/selectWardrobeSpinner"
-                android:layout_width="100dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
+                android:dropDownWidth="match_parent"
+                android:popupBackground="@color/colorAccentLight"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
             <Button
