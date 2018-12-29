@@ -9,14 +9,14 @@ import android.widget.ArrayAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import niannian.valet.Data.ClothesImformation;
+import niannian.valet.ResponseModel.Clothes;
 import niannian.valet.R;
 //import android.widget.Spinner;
 
 public class ManageClothesActivity extends Activity {
     private ArrayAdapter<String> arr_adapter;
     RecyclerView recyclerView;
-    List<ClothesImformation> Fruits=new ArrayList<>();
+    List<Clothes> Fruits=new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -33,12 +33,5 @@ public class ManageClothesActivity extends Activity {
 
         RecyclerViewAdapter adapt=new RecyclerViewAdapter(Fruits);
         recyclerView.setAdapter(adapt);
-////
-
-        arr_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data_list);
-        //设置样式
-        arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //加载适配器
-        //spinner.setAdapter(arr_adapter);
     }
 }
