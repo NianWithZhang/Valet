@@ -26,14 +26,31 @@ namespace Valet_Backend.Controllers
 		public string name;
 
 		/// <summary>
+		/// 衣物类型
+		/// </summary>
+		public ClothesType type;
+
+		/// <summary>
 		/// 初始化成员变量
 		/// </summary>
 		/// <param name="_id"></param>
 		/// <param name="_name"></param>
-		public ClothesResponse(int _id,string _name)
+		public ClothesResponse(int _id,string _name,ClothesType _type)
 		{
 			id = _id;
 			name = _name;
+			type = _type;
+		}
+
+		/// <summary>
+		/// 按照指定衣物获取对应返回信息
+		/// </summary>
+		/// <param name="clothes">指定的衣物</param>
+		public ClothesResponse(Clothes clothes)
+		{
+			id = clothes.id;
+			name = clothes.name;
+			type = clothes.type;
 		}
 	}
 	/// <summary>
@@ -81,7 +98,7 @@ namespace Valet_Backend.Controllers
 		[HttpGet]
 		public Clothes getClothesInfo(int id)
 		{
-			return ClothesManager.getInfo(id);
+			return ClothesManager.get(id);
 		}
 
 		/// <summary>

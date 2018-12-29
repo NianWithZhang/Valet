@@ -2,6 +2,8 @@ package niannian.valet;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,10 +26,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -111,22 +120,24 @@ public class MainActivity extends AppCompatActivity
 
     private void setBestSuitsViewPager(){
         // Setup viewPager
-        List<Pair<String,Fragment>> fragments = new List<Pair<String, Fragment>>();
+        List<Pair<String,String>> fragments = new ArrayList<Pair<String,String>>();
+        fragments.add(new Pair<String,String>("testFragment0","https://i1.hdslb.com/bfs/archive/28091e573523fd7666e36b9f9194d6a1d27a876c.jpg@160w_100h.jpg"));
+        fragments.add(new Pair<String,String>("testFragment1","https://i1.hdslb.com/bfs/archive/058e858056ba4fbb008d4337ca47ffcf802217ec.jpg@160w_100h.webp"));
 
         bestSuitsViewPager = (ViewPager) findViewById(R.id.bestSuitsViewPager);
-        bestSuitsViewPager.setAdapter(new BestSuitsPagerAdapter(getSupportFragmentManager(),new String[]{"http://img.blog.csdn.net/20150415145840351"}));
+        bestSuitsViewPager.setAdapter(new BestSuitsPagerAdapter(getSupportFragmentManager(),fragments));
     }
     public class BestSuitsPagerAdapter extends FragmentPagerAdapter {
 
-        private  List<Pair<String,Fragment>> mFragmentPair;
-        public BestSuitsPagerAdapter(FragmentManager fm, List<Pair<String,Fragment>> mFragmentPair) {
+        private  List<Pair<String,String>> mFragmentPair;
+        public BestSuitsPagerAdapter(FragmentManager fm, List<Pair<String,String>> mFragmentPair) {
             super(fm);
             this.mFragmentPair = mFragmentPair;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return mFragmentPair.get(position).second;
+            return FuckFragment.newInstance("hello","hi");//mFragmentPair.get(position).second);
         }
 
         @Override
@@ -134,9 +145,118 @@ public class MainActivity extends AppCompatActivity
             return mFragmentPair.size();
         }
 
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            return  mFragmentPair.get(position).first;
+//        }
+    }
+
+    public static class BestSuitFragment1 extends Fragment {
+        // TODO: Rename parameter arguments, choose names that match
+        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+//    private static final String ARG_PARAM1 = "param1";
+//    private static final String ARG_PARAM2 = "param2";
+        private static final String URL = "https://i2.hdslb.com/bfs/archive/931203046d1dba2b69c472e9a6ff294e47491609.jpg@160w_100h.jpg";
+
+        //    // TODO: Rename and change types of parameters
+//    private String mParam1;
+//    private String mParam2;
+        private String url;
+
+        private OnFragmentInteractionListener mListener;
+
+        public BestSuitFragment1() {
+            // Required empty public constructor
+        }
+
+        // TODO: Rename and change types and number of parameters
+        public static BestSuitFragment1 newInstance(String _url) {
+            BestSuitFragment1 fragment = new BestSuitFragment1();
+            Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+            args.putString(URL,_url);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
         @Override
-        public CharSequence getPageTitle(int position) {
-            return  mFragmentPair.get(position).first;
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (getArguments() != null) {
+                url = getArguments().getString(URL);
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
+            }
+        }
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            // Inflate the layout for this fragment
+            View view = inflater.inflate(R.layout.fragment_best_suit, container, false);
+//        setImage((ImageView)view.findViewById(R.id.testImage));
+            return view;
+        }
+
+//        private void setImage(ImageView image)
+//        {
+//            OkHttpUtils.get().url(url).tag(image)
+//                    .build()
+//                    .connTimeOut(20000).readTimeOut(20000).writeTimeOut(20000)
+//                    .execute(new BitmapCallback() {
+//                        @Override
+//                        public void onError(Call call, Exception e) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onResponse(Call call, Bitmap bitmap) {
+//                            ImageView image = (ImageView)call.request().tag();
+//                            image.setImageBitmap(bitmap);
+//                        }
+//                    });
+//        }
+
+
+        // TODO: Rename method, update argument and hook method into UI event
+        public void onButtonPressed(Uri uri) {
+            if (mListener != null) {
+                mListener.onFragmentInteraction(uri);
+            }
+        }
+
+        @Override
+        public void onAttach(Context context) {
+            super.onAttach(context);
+            if (context instanceof niannian.valet.BestSuitFragment.OnFragmentInteractionListener) {
+                mListener = (OnFragmentInteractionListener) context;
+            } else {
+                throw new RuntimeException(context.toString()
+                        + " must implement OnFragmentInteractionListener");
+            }
+        }
+
+        @Override
+        public void onDetach() {
+            super.onDetach();
+            mListener = null;
+        }
+
+        /**
+         * This interface must be implemented by activities that contain this
+         * fragment to allow an interaction in this fragment to be communicated
+         * to the activity and potentially other fragments contained in that
+         * activity.
+         * <p>
+         * See the Android Training lesson <a href=
+         * "http://developer.android.com/training/basics/fragments/communicating.html"
+         * >Communicating with Other Fragments</a> for more information.
+         */
+        public interface OnFragmentInteractionListener {
+            // TODO: Update argument type and name
+            void onFragmentInteraction(Uri uri);
         }
     }
 
