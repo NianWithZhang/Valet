@@ -21,17 +21,18 @@
 
             <Spinner
                 android:id="@+id/selectWardrobeSpinner"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+            <Button
+                android:id="@+id/button3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
-
-            <TextView
-                android:id="@+id/wardrobeNameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="Button" />
 
         </android.support.v7.widget.Toolbar>
+
 
 
     </android.support.design.widget.AppBarLayout>

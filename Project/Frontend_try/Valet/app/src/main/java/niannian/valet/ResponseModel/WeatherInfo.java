@@ -1,4 +1,4 @@
-package niannian.valet;
+package niannian.valet.ResponseModel;
 
 public class WeatherInfo {
     //温度

@@ -1,4 +1,4 @@
-package niannian.valet;
+package niannian.valet.ResponseModel;
 
 public class BooleanResponse {
     private boolean ans;

@@ -63,7 +63,11 @@ public class MainActivity extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         suitRecyclerView.setLayoutManager(linearLayoutManager);
-        initSnipper();
+        initWardrobeSnipper(new String[]{
+                "Wardr 1",
+                "Wa 2",
+                "WardrobeName123123123 3",
+        });
         //设置适配器
 //        mAdapter1 = new GalleryAdapter(this, mDatas1);
 //        recyclerview_horizontal1.setAdapter(mAdapter1);
@@ -79,16 +83,13 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void initSnipper(){
+    private void initWardrobeSnipper(String[] wardrobeNames){
         // Setup spinner
         Spinner spinner = (Spinner) findViewById(R.id.selectWardrobeSpinner);
         spinner.setAdapter(new MyAdapter(
                 toolbar.getContext(),
-                new String[]{
-                        "WardrobeName 1",
-                        "WardrobeName 2",
-                        "WardrobeName 3",
-                }));
+                wardrobeNames
+                ));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity
 //                getSupportFragmentManager().beginTransaction()
 //                        .replace(R.id.container, TestActivity.PlaceholderFragment.newInstance(position + 1))
 //                        .commit();
+
             }
 
             @Override

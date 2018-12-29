@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import niannian.valet.ResponseModel.BooleanResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

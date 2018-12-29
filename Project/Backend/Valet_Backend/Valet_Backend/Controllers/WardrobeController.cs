@@ -16,14 +16,10 @@ namespace Valet_Backend.Controllers
 	/// </summary>
 	public class WardrobeResponse
 	{
-		/// <summary>
-		/// 衣橱ID
-		/// </summary>
+		//衣橱ID
 		int id;
-
-		/// <summary>
-		/// 衣橱名称
-		/// </summary>
+		
+		//衣橱名称
 		string name;
 
 		/// <summary>

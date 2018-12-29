@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import niannian.valet.ResponseModel.BooleanResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -105,12 +106,12 @@ public class LoginActivity extends AppCompatActivity {
 //        LoginActivity.this.finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
     }
-    public void tryChangeActivityButton1_Click(View view){
-        Intent intent = new Intent(this, TestActivity.class);
-        startActivity(intent);
-//        LoginActivity.this.finish();
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
-    }
+//    public void tryChangeActivityButton1_Click(View view){
+//        Intent intent = new Intent(this, TestActivity.class);
+//        startActivity(intent);
+////        LoginActivity.this.finish();
+//        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+//    }
 
     private void loadPreviousUser(){
         //LoginActivity不关 所以不用检查
