@@ -42,7 +42,7 @@ namespace Valet_Backend.Model.Clothes
 		public int wearingFrequency { get; set; }
 
 		[SugarColumn(IsIgnore = true)]
-		public string picPath => Config.PicSaveDir + "ClothesPics\\" + id.ToString() + ".jpg";
+		public string picPath => Config.PicSaveDir + "clothespics\\" + id.ToString() + ".jpg";
 
 		public Clothes() { }
 

@@ -50,7 +50,7 @@ namespace Valet_Backend.Model.Suit
 		/// 穿搭图片保存路径
 		/// </summary>
 		[SugarColumn(IsIgnore = true)]
-		public string picPath => Config.PicSaveDir + "SuitPics\\" + id.ToString() + ".jpg";
+		public string picPath => Config.PicSaveDir + "suitpics\\" + id.ToString() + ".jpg";
 
 		/// <summary>
 		/// 默认构造函数

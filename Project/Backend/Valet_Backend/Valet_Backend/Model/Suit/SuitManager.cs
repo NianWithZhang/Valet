@@ -66,7 +66,7 @@ namespace Valet_Backend.Model.Suit
 			if (suitDb.GetById(suitID) == null)
 				return new ClothesResponseList();
 
-			return new ClothesResponseList(clothes_suitDb.GetList(x => x.suitID == suitID).Select(x => new ClothesResponse(x.clothesID, ClothesManager.getInfo(x.clothesID).name)).ToArray());
+			return new ClothesResponseList(clothes_suitDb.GetList(x => x.suitID == suitID).Select(x => new ClothesResponse(ClothesManager.get(x.clothesID))).ToArray());
 		}
 		#endregion
 

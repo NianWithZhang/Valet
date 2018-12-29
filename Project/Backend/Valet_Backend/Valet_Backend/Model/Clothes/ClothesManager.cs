@@ -24,7 +24,7 @@ namespace Valet_Backend.Model.Clothes
 		/// </summary>
 		/// <param name="clothesID">衣物ID</param>
 		/// <returns>编号对应的衣物 未找到的返回null</returns>
-		public static Clothes getInfo(int clothesID)
+		public static Clothes get(int clothesID)
 		{
 			Clothes clothes = clothesDb.GetById(clothesID);
 
@@ -50,7 +50,7 @@ namespace Valet_Backend.Model.Clothes
 			return new ClothesResponseList(new ClothesResponse[0]);
 #endif
 
-			return new ClothesResponseList(clothesDb.GetList(x => x.wardrobeID == wardrobeID).OrderByDescending(x => x.lastWearingTime).Select(x => new ClothesResponse(x.id, x.name)).ToArray());
+			return new ClothesResponseList(clothesDb.GetList(x => x.wardrobeID == wardrobeID).OrderByDescending(x => x.lastWearingTime).Select(x => new ClothesResponse(x.id, x.name,x.type)).ToArray());
 		}
 
 		#endregion
