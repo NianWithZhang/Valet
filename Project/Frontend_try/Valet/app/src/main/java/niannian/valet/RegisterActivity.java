@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import niannian.valet.ResponseModel.BooleanResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())//设置 Json 转换器
                 .build();
 
-        CheckUserService checkUserService = retrofit.create(CheckUserService.class);
+        UserService checkUserService = retrofit.create(UserService.class);
         Call<BooleanResponse> call = checkUserService.checkUserPassword(userIDText.getText().toString(),passwordText.getText().toString());
         call.enqueue(new Callback<BooleanResponse>() {
             @Override

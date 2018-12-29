@@ -89,6 +89,7 @@ namespace Valet_Backend.Controllers
 		/// </summary>
 		/// <param name="wardrobe_id">衣橱编号</param>
 		/// <returns>衣物列表</returns>
+		[Route("wardrobe")]
 		[HttpGet]
 		public ClothesResponseList getByWardrobe(int wardrobe_id)
 		{
@@ -135,6 +136,7 @@ namespace Valet_Backend.Controllers
 		/// <param name="clothes_ids">需要变更衣橱的衣物ID列表</param>
 		/// <param name="wardrobe_id">衣橱ID</param>
 		/// <returns>变更结果 是否全部变更成功</returns>
+		[Route("many")]
 		[HttpPut]
 		public BooleanResponse changeClothesWardrobe(int[] clothes_ids,int wardrobe_id)
 		{
@@ -150,6 +152,7 @@ namespace Valet_Backend.Controllers
 		/// <param name="type">修改后衣物类型</param>
 		/// <param name="thickness">修改后衣物厚度</param>
 		/// <returns>变更结果 是否修改成功</returns>
+		[Route("modify")]
 		[HttpPut]
 		public BooleanResponse modifyClothes(IFormFile pic,int id,string name,ClothesType type,int thickness)
 		{
@@ -175,6 +178,7 @@ namespace Valet_Backend.Controllers
 		/// </summary>
 		/// <param name="ids">需要删除的衣物ID列表</param>
 		/// <returns>删除结果 是否成功删除所有衣物</returns>
+		[Route("many")]
 		[HttpDelete]
 		public BooleanResponse deleteClothes(int[] ids)
 		{

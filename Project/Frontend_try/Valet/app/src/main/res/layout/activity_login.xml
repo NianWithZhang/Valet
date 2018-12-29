@@ -25,11 +25,11 @@
         android:layout_marginTop="36dp"
         android:gravity="center_horizontal"
         android:letterSpacing="-0.02"
+        android:text="Valet"
         android:textColor="#a16960"
         android:textSize="40sp"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        tools:text="Valet" />
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <EditText
         android:id="@+id/userIdText"
@@ -74,6 +74,17 @@
         android:layout_height="53dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="60dp"
+        android:onClick="tryChangeActivityButton_Click"
+        android:text="try_Change_Activity"
+        app:layout_constraintStart_toStartOf="@+id/passwordText"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="188dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="116dp"
         android:onClick="tryChangeActivityButton_Click"
         android:text="try_Change_Activity"
         app:layout_constraintStart_toStartOf="@+id/passwordText"

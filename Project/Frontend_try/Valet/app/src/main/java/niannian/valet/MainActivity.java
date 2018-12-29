@@ -1,6 +1,12 @@
 package niannian.valet;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.design.widget.NavigationView;
@@ -8,33 +14,41 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private List<Pair<Integer,String>> wardrobes;
+//    private
 
-    private List<String> mDatas;
     RecyclerView suitRecyclerView;
 
     private Menu mainDrawer;
     private Spinner selectWardrobeSnipper;
     private Toolbar toolbar;
+    private ViewPager bestSuitsViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -48,16 +62,21 @@ public class MainActivity extends AppCompatActivity
         mainDrawer = ((NavigationView)findViewById(R.id.nav_view)).getMenu();
         mainDrawer.getItem(0).setChecked(true);
 
-        suitRecyclerView = (RecyclerView)findViewById(R.id.suitRecyclerView);
-        //设置布局管理器
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        suitRecyclerView.setLayoutManager(linearLayoutManager);
-        //设置适配器
-//        mAdapter1 = new GalleryAdapter(this, mDatas1);
-//        recyclerview_horizontal1.setAdapter(mAdapter1);
+//        suitRecyclerView = (RecyclerView)findViewById(R.id.suitRecyclerView);
+//        //设置布局管理器
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        suitRecyclerView.setLayoutManager(linearLayoutManager);
 
+        initWardrobeSnipper(new String[]{
+                "Wardr 1",
+                "Wa 2",
+                "WardrobeName123123123 3",
+        });
 
+        setBestSuitsViewPager();
+
+        //设置左导航栏抽屉
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -68,25 +87,20 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void initSnipper(){
+    private void initWardrobeSnipper(String[] wardrobeNames){
         // Setup spinner
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(new TestActivity.MyAdapter(
-                toolbar.getContext(),
-                new String[]{
-                        "Section 1",
-                        "Section 2",
-                        "Section 3",
-                }));
+        selectWardrobeSnipper = (Spinner) findViewById(R.id.selectWardrobeSpinner);
+        selectWardrobeSnipper.setAdapter(new WardrobeSpinnerAdapter(toolbar.getContext(),wardrobeNames));
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        selectWardrobeSnipper.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // When the given dropdown item is selected, show its contents in the
                 // container view.
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, TestActivity.PlaceholderFragment.newInstance(position + 1))
-                        .commit();
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.container, TestActivity.PlaceholderFragment.newInstance(position + 1))
+//                        .commit();
+
             }
 
             @Override
@@ -95,13 +109,79 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    protected void initData()
-    {
-        mDatas = new ArrayList<String>();
-        for (int i = 'A'; i < 'z'; i++)
-        {
-            mDatas.add("" + (char) i);
+    private void setBestSuitsViewPager(){
+        // Setup viewPager
+        List<Pair<String,Fragment>> fragments = new List<Pair<String, Fragment>>();
+
+        bestSuitsViewPager = (ViewPager) findViewById(R.id.bestSuitsViewPager);
+        bestSuitsViewPager.setAdapter(new BestSuitsPagerAdapter(getSupportFragmentManager(),new String[]{"http://img.blog.csdn.net/20150415145840351"}));
+    }
+    public class BestSuitsPagerAdapter extends FragmentPagerAdapter {
+
+        private  List<Pair<String,Fragment>> mFragmentPair;
+        public BestSuitsPagerAdapter(FragmentManager fm, List<Pair<String,Fragment>> mFragmentPair) {
+            super(fm);
+            this.mFragmentPair = mFragmentPair;
         }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentPair.get(position).second;
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentPair.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return  mFragmentPair.get(position).first;
+        }
+    }
+
+    private class WardrobeSpinnerAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
+        private final ThemedSpinnerAdapter.Helper mDropDownHelper;
+
+        public WardrobeSpinnerAdapter(Context context, String[] objects) {
+            super(context, android.R.layout.simple_list_item_1, objects);
+            mDropDownHelper = new ThemedSpinnerAdapter.Helper(context);
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            View view;
+
+            if (convertView == null) {
+                // Inflate the drop down using the helper's LayoutInflater
+                LayoutInflater inflater = mDropDownHelper.getDropDownViewInflater();
+                view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            } else {
+                view = convertView;
+            }
+
+            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            textView.setText(getItem(position));
+            textView.setTextColor(getResources().getColor(R.color.colorText));
+
+            return view;
+        }
+
+        @Override
+        public Resources.Theme getDropDownViewTheme() {
+            return mDropDownHelper.getDropDownViewTheme();
+        }
+
+        @Override
+        public void setDropDownViewTheme(Resources.Theme theme) {
+            mDropDownHelper.setDropDownViewTheme(theme);
+        }
+    }
+
+    private List<Pair<Integer,String>> getWardrobesAndWeather(int userID){
+
+
+return null;
     }
 
     @Override
