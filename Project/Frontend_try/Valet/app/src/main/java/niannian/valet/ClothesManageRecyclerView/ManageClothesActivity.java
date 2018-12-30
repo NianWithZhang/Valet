@@ -9,14 +9,14 @@ import android.widget.ArrayAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import niannian.valet.ResponseModel.Clothes;
+import niannian.valet.ResponseModel.ClothesResponse;
 import niannian.valet.R;
 //import android.widget.Spinner;
 
 public class ManageClothesActivity extends Activity {
     //private ArrayAdapter<String> arr_adapter;
     RecyclerView recyclerView;
-    List<Clothes> Fruits=new ArrayList<>();
+    List<ClothesResponse> Fruits=new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
 

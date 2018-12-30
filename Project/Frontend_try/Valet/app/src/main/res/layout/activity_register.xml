@@ -139,7 +139,6 @@
         android:layout_width="41dp"
         android:layout_height="39dp"
         android:layout_marginStart="204dp"
-        android:onClick=""
         android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="@+id/passwordText"
         app:layout_constraintTop_toTopOf="@+id/passwordText"

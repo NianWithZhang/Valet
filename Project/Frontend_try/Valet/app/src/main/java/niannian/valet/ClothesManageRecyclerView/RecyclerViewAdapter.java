@@ -10,12 +10,12 @@ import android.widget.TextView;
 import java.util.List;
 
 import niannian.valet.R;
-import niannian.valet.ResponseModel.Clothes;
+import niannian.valet.ResponseModel.ClothesResponse;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyHolder> {
-    List<Clothes> Clothes;
+    List<ClothesResponse> Clothes;
 
-    public RecyclerViewAdapter(List<Clothes> Fruits){
+    public RecyclerViewAdapter(List<ClothesResponse> Fruits){
         this.Clothes=Fruits;
     }
 
@@ -29,7 +29,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        Clothes currentClothes=Clothes.get(position);
+        ClothesResponse currentClothes=Clothes.get(position);
         //holder.imageView.setImageResource(currentClothes.image);
         holder.textView.setText(currentClothes.name);
     }

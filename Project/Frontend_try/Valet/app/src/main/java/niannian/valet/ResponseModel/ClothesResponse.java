@@ -5,7 +5,7 @@ import android.widget.Switch;
 import niannian.valet.R;
 
 
-public class Clothes implements UrlPic {
+public class ClothesResponse implements UrlPic {
 
     public int id;
 

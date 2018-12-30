@@ -38,6 +38,8 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="text"
+        android:singleLine="true"
+        android:textColor="@color/colorText"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/userIdTextView"
         app:layout_constraintTop_toBottomOf="@+id/userIdTextView" />
@@ -48,10 +50,23 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:ems="10"
-        android:inputType="text"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:textColor="@color/colorText"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/PasswordTextView"
         app:layout_constraintTop_toBottomOf="@+id/PasswordTextView" />
+
+    <ImageButton
+        android:id="@+id/passwordVisibleButton"
+        android:layout_width="41dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="204dp"
+        android:background="@android:color/transparent"
+        android:onClick="passwordVisibleButton_Click"
+        app:layout_constraintStart_toStartOf="@+id/passwordText"
+        app:layout_constraintTop_toTopOf="@+id/passwordText"
+        app:srcCompat="@drawable/eye_icon" />
 
     <Button
         android:id="@+id/loginButton"
