@@ -15,7 +15,7 @@ namespace Valet_Backend
 		/// <summary>
 		/// 数据库连接字符串
 		/// </summary>
-		public const string ConnectionString = "server=kousakareina.cn;uid=root;pwd=1234;database=ValetDB;charset=utf8";
+		public const string ConnectionString = "server=localhost;uid=root;pwd=1234;database=ValetDB;charset=utf8";
 
 		/// <summary>
 		/// 图片存储路径

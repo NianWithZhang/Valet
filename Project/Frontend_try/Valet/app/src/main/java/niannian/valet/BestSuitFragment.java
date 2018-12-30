@@ -55,12 +55,12 @@ public class BestSuitFragment extends Fragment {
      * @return A new instance of fragment BestSuitFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BestSuitFragment newInstance() {
+    public static BestSuitFragment newInstance(String _url) {
         BestSuitFragment fragment = new BestSuitFragment();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
-//        args.putString(URL,_url);
+        args.putString(URL,_url);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,7 +69,7 @@ public class BestSuitFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-//url = getArguments().getString(URL);
+            url = getArguments().getString(URL);
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
         }
@@ -81,45 +81,28 @@ public class BestSuitFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_best_suit, container, false);
-//        setImage((ImageView)view.findViewById(R.id.testImage));
+        setImage((ImageView)view.findViewById(R.id.testImage));
         return view;
     }
 
-//    private void setImage(ImageView image)
-//    {
-//        OkHttpUtils.get().url(url).tag(image)
-//                .build()
-//                .connTimeOut(20000).readTimeOut(20000).writeTimeOut(20000)
-//                .execute(new BitmapCallback() {
-//                    @Override
-//                    public void onError(Call call, Exception e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, Bitmap bitmap) {
-//                        ImageView image = (ImageView)call.request().tag();
-//                        image.setImageBitmap(bitmap);
-//                    }
-//                });
-//    }
+    private void setImage(ImageView image)
+    {
+        OkHttpUtils.get().url(url).tag(image)
+                .build()
+                .connTimeOut(20000).readTimeOut(20000).writeTimeOut(20000)
+                .execute(new BitmapCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
 
+                    }
 
-//    private void initView(ImageView image) {
-//        // TODO Auto-generated method stub
-//        BitmapUtils bitmapUtils = new BitmapUtils(this);
-//        // 加载网络图片
-//        bitmapUtils.display(image,
-//                "https://img-my.csdn.net/uploads/201407/26/1406383290_9329.jpg");
-//
-//        // 加载本地图片(路径以/开头， 绝对路径)
-//        // bitmapUtils.display(imageView, "/sdcard/test.jpg");
-//
-//        // 加载assets中的图片(路径以assets开头)
-//        // bitmapUtils.display(imageView, "assets/img/wallpaper.jpg");
-//
-//    }
-
+                    @Override
+                    public void onResponse(Call call, Bitmap bitmap) {
+                        ImageView image = (ImageView)call.request().tag();
+                        image.setImageBitmap(bitmap);
+                    }
+                });
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -128,16 +111,16 @@ public class BestSuitFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+//    }
 
     @Override
     public void onDetach() {

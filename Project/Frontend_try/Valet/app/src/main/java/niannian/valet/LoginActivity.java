@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -137,8 +138,16 @@ public class LoginActivity extends AppCompatActivity {
         passwordText.setText(password);
     }
 
-    private void registerButton_Click(View view){
+    public void registerButton_Click(View view){
 
+    }
+
+    public void passwordVisibleButton_Click(View view){
+//        ImageButton button = (ImageButton) view;
+
+
+        Toast.makeText(this,String.valueOf(userIDText.getInputType()),Toast.LENGTH_SHORT).show();
+//        if(passwordText.getInputType())
     }
 
 }
