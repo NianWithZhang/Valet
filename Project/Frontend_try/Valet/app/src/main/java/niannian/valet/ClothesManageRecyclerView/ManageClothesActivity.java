@@ -14,7 +14,7 @@ import niannian.valet.R;
 //import android.widget.Spinner;
 
 public class ManageClothesActivity extends Activity {
-    private ArrayAdapter<String> arr_adapter;
+    //private ArrayAdapter<String> arr_adapter;
     RecyclerView recyclerView;
     List<Clothes> Fruits=new ArrayList<>();
 
