@@ -11,7 +11,6 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import niannian.valet.ClothesManageRecyclerView.ManageClothesActivity;
 import niannian.valet.ResponseModel.BooleanResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -109,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
     }
     public void tryChangeActivityButton1_Click(View view){
-        Intent intent = new Intent(this, ManageClothesActivity.class);
+        Intent intent = new Intent(this, ManageClothes.class);
         startActivity(intent);
 //        LoginActivity.this.finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);

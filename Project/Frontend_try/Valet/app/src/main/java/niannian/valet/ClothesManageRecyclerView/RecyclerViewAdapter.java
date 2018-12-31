@@ -11,12 +11,13 @@ import java.util.List;
 
 import niannian.valet.R;
 import niannian.valet.ResponseModel.ClothesResponse;
+import niannian.valet.ResponseModel.ClothesResponseList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyHolder> {
-    List<ClothesResponse> Clothes;
+    ClothesResponseList Clothes;
 
-    public RecyclerViewAdapter(List<ClothesResponse> Fruits){
-        this.Clothes=Fruits;
+    public RecyclerViewAdapter(ClothesResponseList ClothesList){
+        this.Clothes=ClothesList;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        ClothesResponse currentClothes=Clothes.get(position);
+        ClothesResponse currentClothes=Clothes.clothes[position];
         //holder.imageView.setImageResource(currentClothes.image);
         holder.textView.setText(currentClothes.name);
     }
@@ -38,15 +39,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return Clothes.size();
+        return Clothes.clothes.length;
     }
     class MyHolder extends RecyclerView.ViewHolder{
-        ImageView imageView;
+        //ImageView imageView;
         TextView textView;
         public MyHolder(View itemView) {
             super(itemView);
-            textView=(TextView)itemView.findViewById(R.id.clothesName);
-            imageView=(ImageView) itemView.findViewById(R.id.clothesImage);
+            textView=(TextView)itemView.findViewById(R.id.clothesNameText);
+            //imageView=(ImageView) itemView.findViewById(R.id.clothesImage);
         }
     }
 }

@@ -15,6 +15,11 @@ public class ClothesResponse implements UrlPic {
     //衣物类型
     public int type;
 
+    public ClothesResponse(int id,String name,int type){
+        this.id=id;
+        this.name=name;
+        this.type=type;
+    }
     //获取衣物的图片路径
     public String url(){return R.string.server_url+"\\clothespics\\"+String.valueOf(id)+".jpg";}
 
