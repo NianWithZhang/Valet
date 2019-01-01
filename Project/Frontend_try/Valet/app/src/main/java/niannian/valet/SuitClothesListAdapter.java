@@ -59,6 +59,7 @@ public class SuitClothesListAdapter extends RecyclerView.Adapter<SuitClothesList
 
     @Override
     public int getItemCount() {
+        int temp = clothes.size();
         return clothes.size();
     }
 }

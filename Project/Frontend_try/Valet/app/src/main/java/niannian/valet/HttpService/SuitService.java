@@ -17,13 +17,6 @@ public interface SuitService {
             @Query("longitude") Double longitude
     );
 
-    //获取指定衣橱的所有穿搭列表以及冷暖信息
-    @GET("api/suit/wardrobe")
-    Call<SuitResponseList> getByWardrobe(
-            @Query("wardrobe_id") Integer id,
-            @Query("temperature") Double temperature
-    );
-
     //获取穿搭对用的所有衣物列表
     @GET("api/suit")
     Call<ClothesResponseList> getClothes(
