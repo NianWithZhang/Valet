@@ -4,6 +4,7 @@ import niannian.valet.ResponseModel.BooleanResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
 import niannian.valet.ResponseModel.SuitResponseList;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
@@ -33,6 +34,12 @@ public interface SuitService {
     //选择今日穿着
     @PUT("api/suit")
     Call<BooleanResponse> wear(
+            @Query("id") Integer id
+    );
+
+    //删除指定穿搭
+    @DELETE("api/suit")
+    Call<BooleanResponse> delete(
             @Query("id") Integer id
     );
 }

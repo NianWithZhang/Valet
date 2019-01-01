@@ -2,6 +2,7 @@ package niannian.valet;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -135,7 +136,27 @@ public class WearSuitActivity extends AppCompatActivity {
     }
 
     public void deleteSuitButton_Click(View view){
-        
+        SuitService service = RetrofitClient.newService(this,SuitService.class);
+        retrofit2.Call<BooleanResponse> call = service.delete(id);
+        call.enqueue(new Callback<BooleanResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<BooleanResponse> call, Response<BooleanResponse> response) {
+                BooleanResponse booleanResponse = response.body();
+
+                //成功删除穿搭
+                if(booleanResponse.getAns()){
+                    MainActivity.activity.freshSuits();
+                    Toast.makeText(getBaseContext(),"删除成功",Toast.LENGTH_SHORT).show();
+                    returnButton_wearSuit_Click(null);
+                }else
+                    Toast.makeText(getBaseContext(),"出错 请退出后重试",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<BooleanResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     //返回按钮被按下

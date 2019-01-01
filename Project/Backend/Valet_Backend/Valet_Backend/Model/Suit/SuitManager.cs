@@ -154,12 +154,11 @@ namespace Valet_Backend.Model.Suit
 			return true;
 #endif
 
-			if (!suitDb.Delete(suit))
-				return false;
+			clothes_suitDb.Delete(x => x.suitID == suit.id);
 
 			deleteSuitPic(suit);
 
-			return clothes_suitDb.Delete(x => x.suitID == suit.id);
+			return suitDb.Delete(suit);
 		}
 		/// <summary>
 		/// 删除指定穿搭的图片

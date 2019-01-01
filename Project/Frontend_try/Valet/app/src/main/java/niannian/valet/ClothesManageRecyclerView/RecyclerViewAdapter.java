@@ -66,7 +66,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(MyHolder holder, final int position) {
+    public void onBindViewHolder(final MyHolder holder, final int position) {
         ClothesResponse currentClothes=Clothes.clothes[position];
         //holder.imageView.setImageResource(currentClothes.image);
         holder.textView.setText(currentClothes.name);
@@ -86,7 +86,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //之后扩展使用
         AllMaps.put(position,true);
 
-
+        holder.itemView.findViewById(R.id.clothesCard).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                int pos = holder.getLayoutPosition();
+                onItemClickListener.onItemClickListener(holder.itemView,pos);
+            }
+        });
     }
 
 
@@ -112,11 +118,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             checkBox = (CheckBox) itemView.findViewById(R.id.checkboxChooseClothes);
         }
 
-        public void onClick(View v) {
-            if (listener != null) {
-                listener.onItemClickListener(v, getPosition());
-            }
-        }
+//        public void onClick(View v) {
+//            if (listener != null) {
+//                listener.onItemClickListener(v, getPosition());
+//            }
+//        }
 
     }
     public void setItemClickListener(RecyclerViewOnItemClickListener onItemClickListener) {
