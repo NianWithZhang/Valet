@@ -21,6 +21,11 @@ public class ClothesResponse extends UrlPic {
     //获取衣物的图片路径
     public String url(Context context){return context.getString(R.string.server_url)+"/clothespics/"+String.valueOf(id)+".jpg";}
 
+    public ClothesResponse(int id,String name,int type){
+        this.id=id;
+        this.name=name;
+        this.type=type;
+    }
     //获取衣物的图片路径
     public static String url(Context context,Integer _id){return context.getString(R.string.server_url)+"/clothespics/"+String.valueOf(_id)+".jpg";}
 

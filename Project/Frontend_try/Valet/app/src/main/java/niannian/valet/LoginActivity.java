@@ -102,12 +102,12 @@ public class LoginActivity extends AppCompatActivity {
 //        LoginActivity.this.finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
     }
-//    public void tryChangeActivityButton1_Click(View view){
-//        Intent intent = new Intent(this, TestActivity.class);
-//        startActivity(intent);
-////        LoginActivity.this.finish();
-//        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
-//    }
+    public void tryChangeActivityButton1_Click(View view){
+        Intent intent = new Intent(this, ManageClothes.class);
+        startActivity(intent);
+//        LoginActivity.this.finish();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+    }
 
     private void loadPreviousUser(){
         //LoginActivity不关 所以不用检查
