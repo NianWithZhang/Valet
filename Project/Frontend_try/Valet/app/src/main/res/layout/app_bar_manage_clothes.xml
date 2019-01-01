@@ -29,7 +29,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:background="@android:color/transparent"
-                    android:onClick="deleteClothes_deleteClothesButton_Click"
+                    android:onClick="ManageClothes_Button_Click"
                     app:layout_constraintEnd_toStartOf="@+id/moveClothesButton"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/trash_icon" />
@@ -41,7 +41,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:background="@android:color/transparent"
-                    android:onClick="moveClothes_moveClothesButton_Click"
+                    android:onClick="ManageClothes_Button_Click"
                     app:layout_anchorGravity="right|top"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
