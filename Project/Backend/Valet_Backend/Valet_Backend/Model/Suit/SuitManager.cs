@@ -53,7 +53,7 @@ namespace Valet_Backend.Model.Suit
 			if (!WardrobeManager.exist(wardrobeID))
 				return new SuitResponseList(new WeatherInfo(), new SuitResponse[0]);
 
-			return new SuitResponseList(new WeatherInfo(), suitDb.GetList(x => x.wardrobeID == wardrobeID).OrderByDescending(x => x.lastWearingTime).Select(x => new SuitResponse(x.id, x.name, evaluate(x.warmthDegree, temperature))).ToArray());
+			return new SuitResponseList(new WeatherInfo(), suitDb.GetList(x => x.wardrobeID == wardrobeID).OrderByDescending(x => x.lastWearingTime).OrderBy(x=>Math.Abs(x.warmthDegree-temperature)).Select(x => new SuitResponse(x.id, x.name, evaluate(x.warmthDegree, temperature))).ToArray());
 		}
 
 		/// <summary>
@@ -90,6 +90,9 @@ namespace Valet_Backend.Model.Suit
 
 			foreach (int clothesID in clothesIDs)
 				list.Add(new Clothes_Suit(clothesID, suit.id));
+
+			if (suitPic != null)
+				savePic(suitPic, suit);
 
 			//插入数据库并返回操作结果
 			return clothes_suitDb.InsertRange(list.ToArray());

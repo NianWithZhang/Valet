@@ -51,7 +51,7 @@ namespace Valet_Backend.Model.Clothes
 			return new ClothesResponseList(new ClothesResponse[0]);
 #endif
 
-			return new ClothesResponseList(clothesDb.GetList(x => x.wardrobeID == wardrobeID).OrderByDescending(x => x.lastWearingTime).Select(x => new ClothesResponse(x.id, x.name,x.type)).ToArray());
+			return new ClothesResponseList(clothesDb.GetList(x => x.wardrobeID == wardrobeID).OrderByDescending(x => x.lastWearingTime).Select(x => new ClothesResponse(x.id, x.name, x.type)).ToArray());
 		}
 
 		#endregion
@@ -67,7 +67,7 @@ namespace Valet_Backend.Model.Clothes
 		/// <param name="type">新衣物类型</param>
 		/// <param name="thickness">新衣物厚度指数</param>
 		/// <returns></returns>
-		public static bool add(IFormFile clothesPic, int wardrobeID, string name, ClothesType type,int thickness)
+		public static bool add(IFormFile clothesPic, int wardrobeID, string name, ClothesType type, int thickness)
 		{
 			//确保衣橱存在
 			if (!WardrobeManager.exist(wardrobeID))
@@ -84,10 +84,10 @@ namespace Valet_Backend.Model.Clothes
 			//处理购衣推荐
 			if (taobaoItem != null)
 			{
-					Thread setCommendThread = new Thread(new ParameterizedThreadStart(UserManager.setRecommend_thread));
-					setCommendThread.Start(new SetRecommendInfo(UserManager.similarUsers(WardrobeManager.user(wardrobeID)), taobaoItem));
-					//已改为多线程执行
-					//UserManager.setRecommend(userID,taobaoItem);
+				Thread setCommendThread = new Thread(new ParameterizedThreadStart(UserManager.setRecommend_thread));
+				setCommendThread.Start(new SetRecommendInfo(UserManager.similarUsers(WardrobeManager.user(wardrobeID)), taobaoItem));
+				//已改为多线程执行
+				//UserManager.setRecommend(userID,taobaoItem);
 			}
 
 			return true;
@@ -115,7 +115,7 @@ namespace Valet_Backend.Model.Clothes
 					Directory.CreateDirectory(fileDir);
 				}
 
-				string picPath =clothes.picPath;
+				string picPath = clothes.picPath;
 
 				FileStream fs = System.IO.File.Create(picPath);
 
@@ -163,7 +163,7 @@ namespace Valet_Backend.Model.Clothes
 		/// <param name="type">衣物新类型</param>
 		/// <param name="thickness">衣物新厚度</param>
 		/// <returns>修改结果 是否修改成功</returns>
-		public static bool modify(IFormFile clothesPic, int clothesID, string clothesName, ClothesType type,int thickness)
+		public static bool modify(IFormFile clothesPic, int clothesID, string clothesName, ClothesType type, int thickness)
 		{
 			Clothes clothes = clothesDb.GetById(clothesID);
 
@@ -172,10 +172,11 @@ namespace Valet_Backend.Model.Clothes
 				return false;
 
 			//保存衣物照片
-			savePic(clothesPic, clothes);
+			if (clothesPic != null)
+				savePic(clothesPic, clothes);
 
 			//修改衣物信息
-			clothes.modify(clothesName,type,thickness);
+			clothes.modify(clothesName, type, thickness);
 
 			//执行更新数据库操作并保存更新结果
 			bool ans = clothesDb.Update(clothes);
@@ -242,7 +243,7 @@ namespace Valet_Backend.Model.Clothes
 			deleteClothesPic(clothes);
 
 			SuitManager.deleteByClothes(clothesID);
-			
+
 			return clothesDb.Delete(clothes);
 		}
 		/// <summary>
@@ -335,17 +336,17 @@ namespace Valet_Backend.Model.Clothes
 		/// </summary>
 		/// <param name="clothesIDs">一套穿搭中的衣物ID列表</param>
 		/// <returns>Key标识是否找到全部衣物 Value表示该穿搭的最适宜温度</returns>
-		public static KeyValuePair<bool,double> calculateWarmthDegree(int[] clothesIDs)
+		public static KeyValuePair<bool, double> calculateWarmthDegree(int[] clothesIDs)
 		{
 			bool allFound = true;
 
 			double ans = 0;
 
-			foreach(var clothesID in clothesIDs)
+			foreach (var clothesID in clothesIDs)
 			{
 				Clothes clothes = clothesDb.GetById(clothesID);
 
-				if(clothes == null)
+				if (clothes == null)
 				{
 #if DEBUG
 					throw new Exception();
@@ -361,7 +362,7 @@ namespace Valet_Backend.Model.Clothes
 
 			ans = 38 - ans;
 
-			return new KeyValuePair<bool, double>(allFound,ans);
+			return new KeyValuePair<bool, double>(allFound, ans);
 		}
 
 		#endregion

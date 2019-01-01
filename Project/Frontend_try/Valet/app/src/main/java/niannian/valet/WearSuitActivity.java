@@ -134,6 +134,10 @@ public class WearSuitActivity extends AppCompatActivity {
         });
     }
 
+    public void deleteSuitButton_Click(View view){
+        
+    }
+
     //返回按钮被按下
     public void returnButton_wearSuit_Click(View view){
         this.finish();

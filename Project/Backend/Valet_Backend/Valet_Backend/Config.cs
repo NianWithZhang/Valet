@@ -30,7 +30,7 @@ namespace Valet_Backend
 			{ suitEvaluation.TooThin,"只穿这点会冻感冒的"},
 			{ suitEvaluation.Thin,"只穿这些会冷的"},
 			{ suitEvaluation.LittleThin,"穿这些稍微有点点薄"},
-			{ suitEvaluation.JustOK,"穿着些差不多"},
+			{ suitEvaluation.JustOK,"穿这些差不多"},
 			{ suitEvaluation.LittleThick,"穿这些稍微有点点厚"},
 			{ suitEvaluation.Thick,"穿这么多会热的"},
 			{ suitEvaluation.TooThick,"穿这么多会热出毛病的"}
