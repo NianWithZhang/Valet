@@ -10,12 +10,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.CardView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
@@ -26,12 +27,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import niannian.valet.HttpService.RetrofitClient;
@@ -49,14 +50,15 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-//    public static Context context;
-
-    public WeatherInfo weather;
+//    public WeatherInfo weather;
 
     private Menu mainDrawer;
     private Spinner selectWardrobeSnipper;
     private Toolbar toolbar;
     private ViewPager bestSuitsViewPager;
+    private RecyclerView allSuitsRecyclerView;
+
+    public Integer currentWardrobeID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +77,6 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-        initWardrobes();
-        setBestSuitsViewPager();
-
         //设置左导航栏抽屉
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -88,11 +87,20 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        initWardrobes();
+
         //设置导航栏默认选中值
         mainDrawer = ((NavigationView)findViewById(R.id.nav_view)).getMenu();
         mainDrawer.getItem(0).setChecked(true);
 
-//        context = this;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        freshSuits();
+//        initWardrobes();
     }
 
     private void initWardrobes(){
@@ -111,9 +119,11 @@ public class MainActivity extends AppCompatActivity
                     wardrobeNames.add(wardrobe.getName());
                 }
 
-                Pair<List<Integer>,List<String>> suits = new Pair<List<Integer>,List<String>>(wardrobeIDs,wardrobeNames);
+                Pair<List<Integer>,List<String>> wardrobes = new Pair<List<Integer>,List<String>>(wardrobeIDs,wardrobeNames);
 
-                initWardrobeSnipper(suits);
+                setBestSuitsViewPager();
+
+                initWardrobeSnipper(wardrobes);
             }
 
             @Override
@@ -138,7 +148,9 @@ public class MainActivity extends AppCompatActivity
 
 //                Toast.makeText(view.getContext(),"snipperItemSelected",Toast.LENGTH_SHORT).show();
 
-                freshSuits(wardrobes.first.get(position));
+                currentWardrobeID = wardrobes.first.get(position);
+
+                freshSuits();
             }
 
             @Override
@@ -147,22 +159,15 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public void testButton_Click(View view){
 
-    }
-
-
-    public void freshSuits(Integer wardrobeId){
-//        List<Pair<Integer,String>> suits = new ArrayList<Pair<Integer,String>>();
-//        suits.add(new Pair<Integer,String>(1,"testSuitName1"));
-//        suits.add(new Pair<Integer,String>(2,"testSuitName2"));
-//        fragments.add(new Pair<Integer,String>("testFragment1","https://i1.hdslb.com/bfs/archive/058e858056ba4fbb008d4337ca47ffcf802217ec.jpg@160w_100h.webp"));
+    public void freshSuits(){
 
         //获取位置信息
         Location location = GetLocationUtil.getLocatioon(this,this);
 
+        //刷新最合适的几件穿搭
         SuitService service = RetrofitClient.newService(this,SuitService.class);
-        retrofit2.Call<SuitResponseList> call = service.getAdvices(wardrobeId,location.getLatitude(),location.getLongitude());
+        retrofit2.Call<SuitResponseList> call = service.getAdvices(currentWardrobeID,location.getLatitude(),location.getLongitude());
         call.enqueue(new Callback<SuitResponseList>() {
             @Override
             public void onResponse(retrofit2.Call<SuitResponseList> call, Response<SuitResponseList> response) {
@@ -180,6 +185,9 @@ public class MainActivity extends AppCompatActivity
                 updateBestSuits(suits);
 
                 freshWeather(suitResponseList.weather);
+
+                //设置所有穿搭需要先获取天气
+                setAllSuits(currentWardrobeID,suitResponseList.weather.temperature);
             }
 
             @Override
@@ -352,7 +360,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
     private void freshWeather(WeatherInfo weather){
         TextView temperatureText = findViewById(R.id.temperatureText);
         TextView windInfoText = findViewById(R.id.windInfoText);
@@ -363,6 +370,50 @@ public class MainActivity extends AppCompatActivity
         wearingAdviceText.setText(weather.dressingAdvice);
     }
 
+    //刷新所有穿搭列表
+    private void setAllSuits(final Integer wardrobeID, Double temperature){
+        SuitService service = RetrofitClient.newService(this,SuitService.class);
+        retrofit2.Call<SuitResponseList> call = service.getByWardrobe(wardrobeID,temperature);
+        call.enqueue(new Callback<SuitResponseList>() {
+            @Override
+            public void onResponse(retrofit2.Call<SuitResponseList> call, Response<SuitResponseList> response) {
+                SuitResponseList suitResponseList = response.body();
+
+                List<Pair<Integer,String>> suits = new ArrayList<Pair<Integer,String>>();
+
+                for(SuitResponse suit:suitResponseList.suits)
+                    suits.add(new Pair<Integer,String>(suit.getId(),suit.getName()));
+
+                allSuitsRecyclerView = (RecyclerView)findViewById(R.id.allSuitsRecyclerView_main);
+
+//                StaggeredGridLayoutManager sgm=
+//                        new StaggeredGridLayoutManager(1,
+//                                StaggeredGridLayoutManager.VERTICAL);
+                allSuitsRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()){
+                    @Override
+                    public boolean canScrollVertically() {
+                        //解决ScrollView里存在多个RecyclerView时滑动卡顿的问题
+                        //如果你的RecyclerView是水平滑动的话可以重写canScrollHorizontally方法
+                        return false;
+                    }
+                });
+                WearSuitRecyclerViewAdapter myAdapter = new WearSuitRecyclerViewAdapter(getBaseContext(), Arrays.asList(suitResponseList.suits));
+                allSuitsRecyclerView.setAdapter(myAdapter);
+
+                allSuitsRecyclerView.setNestedScrollingEnabled(false);
+                allSuitsRecyclerView.setHasFixedSize(true);
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<SuitResponseList> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void wearNewSuitButton_Click(View view){
+        Toast.makeText(this,"选择新穿搭",Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onBackPressed() {

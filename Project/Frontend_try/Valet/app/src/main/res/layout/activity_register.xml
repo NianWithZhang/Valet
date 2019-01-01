@@ -6,57 +6,84 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
 
+    <view
+        class="android.support.v4.view.ViewPager"
+        id="@+id/view"
+        android:layout_width="411dp"
+        android:layout_height="660dp"
+        android:background="@color/colorAccentLight"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/registerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:layout_marginStart="8dp"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
         android:letterSpacing="-0.02"
         android:text="Valet"
         android:textColor="#a16960"
         android:textSize="40sp"
-        app:layout_constraintStart_toEndOf="@+id/welcomeTextView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.544"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.159" />
 
     <TextView
         android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center_horizontal"
         android:letterSpacing="-0.02"
         android:text="欢迎加入"
         android:textColor="#a27169"
         android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/registerTitle"
+        app:layout_constraintTop_toTopOf="@+id/registerTitle" />
 
     <ImageButton
         android:id="@+id/goBackLoginButton"
         android:layout_width="33dp"
         android:layout_height="47dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
         android:onClick="backLoginButton_Click"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.091"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.322"
         app:srcCompat="@drawable/left_array" />
 
     <EditText
         android:id="@+id/userIdText_register"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="text"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/userIdTextView"
-        app:layout_constraintTop_toBottomOf="@+id/userIdTextView" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/passwordText_register"
@@ -97,14 +124,13 @@
         android:id="@+id/userIdTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginEnd="196dp"
         android:letterSpacing="-0.02"
         android:text="用户名"
         android:textColor="@color/colorText"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/goBackLoginButton"
-        app:layout_constraintTop_toBottomOf="@+id/goBackLoginButton" />
+        app:layout_constraintBottom_toTopOf="@+id/userIdText_register"
+        app:layout_constraintEnd_toEndOf="@+id/userIdText_register" />
 
     <TextView
         android:id="@+id/PasswordTextView"

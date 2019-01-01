@@ -2,7 +2,7 @@ package niannian.valet.ResponseModel;
 
 public class WeatherInfo {
     //温度
-    public double temperature = 16;
+    public Double temperature = 16D;
 
     //温度（包含'℃'的字符串）
     public String tempStr = "";
