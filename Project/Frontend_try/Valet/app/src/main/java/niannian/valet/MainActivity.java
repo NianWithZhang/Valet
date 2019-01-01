@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
     public static MainActivity activity;
 
     private Menu mainDrawer;
-    private Spinner selectWardrobeSnipper;
+    private Spinner selectWardrobeSpinner;
     private Toolbar toolbar;
     private ViewPager bestSuitsViewPager;
     private RecyclerView allSuitsRecyclerView;
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity
 //    protected void onPostResume() {
 //        super.onPostResume();
 //
-////        freshSuits();
+////        freshClothes();
 ////        initWardrobes();
 //    }
 
@@ -182,10 +182,10 @@ public class MainActivity extends AppCompatActivity
     }
     private void initWardrobeSnipper(final Pair<List<Integer>,List<String>> wardrobes){
         // Setup spinner
-        selectWardrobeSnipper = (Spinner) findViewById(R.id.selectWardrobeSpinner);
-        selectWardrobeSnipper.setAdapter(new WardrobeSpinnerAdapter(toolbar.getContext(),wardrobes.second));
+        selectWardrobeSpinner = (Spinner) findViewById(R.id.selectWardrobeSpinner);
+        selectWardrobeSpinner.setAdapter(new WardrobeSpinnerAdapter(toolbar.getContext(),wardrobes.second));
 
-        selectWardrobeSnipper.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        selectWardrobeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // When the given dropdown item is selected, show its contents in the

@@ -101,7 +101,7 @@ public class AddClothesActivity extends AppCompatActivity {
 
 //                Toast.makeText(view.getContext(),"snipperItemSelected",Toast.LENGTH_SHORT).show();
 
-                //freshSuits(wardrobes.first.get(position));
+                //freshClothes(wardrobes.first.get(position));
             }
 
             @Override
