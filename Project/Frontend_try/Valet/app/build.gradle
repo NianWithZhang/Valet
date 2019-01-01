@@ -36,4 +36,5 @@ dependencies {
     implementation 'com.android.support:gridlayout-v7:28.0.0'
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
     implementation 'com.github.xxl6097:okhttputils:2.4.1'
+    implementation 'com.longsh:OptionFrame:1.0.0'
 }

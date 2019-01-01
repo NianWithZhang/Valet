@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
+
+import com.longsh.optionframelibrary.OptionCenterDialog;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 import niannian.valet.ClothesManageRecyclerView.RecyclerViewAdapter;
 import niannian.valet.ResponseModel.ClothesResponseList;
@@ -24,6 +32,8 @@ public class ManageClothes extends AppCompatActivity
 
     RecyclerView recyclerView;
     ClothesResponseList clothesList=new ClothesResponseList();
+     public ArrayList<Integer> selectedIdList=new ArrayList<>();
+    RecyclerViewAdapter adapt=new RecyclerViewAdapter(clothesList);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +48,19 @@ public class ManageClothes extends AppCompatActivity
         /////设置LayoutManager
 
 
-        RecyclerViewAdapter adapt=new RecyclerViewAdapter(clothesList);
+
         recyclerView.setAdapter(adapt);
+
+        adapt.setItemClickListener(new RecyclerViewAdapter.RecyclerViewOnItemClickListener() {
+            @Override
+            public void onItemClickListener(View view, int position) {
+                Toast.makeText(ManageClothes.this,"If you are happy - "+ position,Toast.LENGTH_SHORT).show();
+                //设置选中的项
+                adapt.setSelectItem(position);
+            }
+        });
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,6 +93,24 @@ public class ManageClothes extends AppCompatActivity
             super.onBackPressed();
         }
     }
+//    public void onClick(View view){
+//        switch (view.getId()) {
+//            case R.id.moveClothesButton:
+//                String content = "";
+//                selectedIdList.clear();
+//
+//                Toast.makeText(ManageClothes.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
+//                // Log.e("TAG", mGetData.getText().toString());
+//
+//                Map<Integer, Boolean> map = adapt.getMap();
+//                for (int i = 0; i < selectedIdList.size(); i++) {
+//                    if (map.get(i)) {
+//                        selectedIdList.add(clothesList.clothes[i].id);
+//                    }
+//                }
+//        }
+//    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,14 +134,51 @@ public class ManageClothes extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean moveClothes_moveClothesButton_Click(View view){
+    public boolean ManageClothes_Button_Click(View view){
 
+        selectedIdList.clear();
+
+        //Toast.makeText(ManageClothes.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
+        // Log.e("TAG", mGetData.getText().toString());
+        //String a="";
+        Map<Integer, Boolean> map = adapt.getMap();
+        for (int i = 0; i < map.size(); i++) {
+            if (map.get(i)) {
+                selectedIdList.add(clothesList.clothes[i].id);
+                //a+=String.valueOf(clothesList.clothes[i].id);
+
+            }
+        }
+
+        //Toast.makeText(ManageClothes.this,a,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ManageClothes.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
+
+        switch (view.getId()) {
+
+               case R.id.moveClothesButton:
+                   //Toast.makeText(ManageClothes.this,a,Toast.LENGTH_SHORT).show();
+
+                   final ArrayList<String> list = new ArrayList<>();
+                   list.add("标为已读");
+                   list.add("置顶聊天");
+                   list.add("删除该聊天");
+                   final OptionCenterDialog optionCenterDialog = new OptionCenterDialog();
+                   optionCenterDialog.show(ManageClothes.this, list);
+                   optionCenterDialog.setItemClickListener(new AdapterView.OnItemClickListener() {
+                       @Override
+                       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                           optionCenterDialog.dismiss();
+                       }
+                   });
+
+                   break;
+            case R.id.deleteClothesButton:
+
+                break;
+        }
         return true;
     }
 
-    public boolean deleteClothes_deleteClothesButton_Click(View view){
-        return true;
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
