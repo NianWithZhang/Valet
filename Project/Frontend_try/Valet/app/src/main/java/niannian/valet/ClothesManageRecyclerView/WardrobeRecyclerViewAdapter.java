@@ -7,25 +7,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import niannian.valet.R;
 import niannian.valet.ResponseModel.ClothesResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyHolder> {
+public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyHolder> {
     ClothesResponseList Clothes;
-
     private HashMap<Integer,Boolean> Maps=new HashMap<Integer,Boolean>();
     private HashMap<Integer,Boolean>AllMaps=new HashMap<Integer,Boolean>();
-    public RecyclerViewOnItemClickListener onItemClickListener;
+    public RecyclerViewAdapter.RecyclerViewOnItemClickListener onItemClickListener;
 
-    public RecyclerViewAdapter(ClothesResponseList ClothesList){
+    public WardrobeRecyclerViewAdapter(ClothesResponseList ClothesList){
 
         this.Clothes=ClothesList;
         for (int i = 0; i < Clothes.clothes.length; i++) {
@@ -37,11 +34,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public Map<Integer,Boolean> getMap(){
         return Maps;
     }
-
-    //后续扩展 - 获取最终的map存储数据
-//   public Map<Integer,Boolean>getAllMap(){
-//        return AllMaps;
-//    }
 
     //点击item选中CheckBox
     public void setSelectItem(int position) {
@@ -58,16 +50,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.clothes_item,parent,false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.wardrobe_item,parent,false);
         //将之前写好的list_view封装到一个View中
         MyHolder holder=new MyHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(final MyHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerViewAdapter.MyHolder holder, final int position) {
         ClothesResponse currentClothes=Clothes.clothes[position];
-        
+
         //holder.imageView.setImageResource(currentClothes.image);
         holder.textView.setText(currentClothes.name);
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -81,6 +73,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
         holder.checkBox.setChecked(Maps.get(position));
+
+
+        //之后扩展使用
+        AllMaps.put(position,true);
 
         holder.itemView.findViewById(R.id.clothesCard).setOnClickListener(new View.OnClickListener(){
             @Override
@@ -105,7 +101,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //ImageView imageView;
         TextView textView;
         CheckBox checkBox;
-        private RecyclerViewOnItemClickListener listener;
+        private RecyclerViewAdapter.RecyclerViewOnItemClickListener listener;
         public MyHolder(View itemView) {
             super(itemView);
             this.listener = onItemClickListener;
@@ -113,11 +109,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             //imageView=(ImageView) itemView.findViewById(R.id.clothesImage);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkboxChooseClothes);
         }
-
-
+        
 
     }
-    public void setItemClickListener(RecyclerViewOnItemClickListener onItemClickListener) {
+    public void setItemClickListener(RecyclerViewAdapter.RecyclerViewOnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 

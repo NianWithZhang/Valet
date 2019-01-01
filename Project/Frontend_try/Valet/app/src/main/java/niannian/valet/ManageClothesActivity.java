@@ -38,10 +38,9 @@ public class ManageClothesActivity extends AppCompatActivity
 
     RecyclerView recyclerView;
     ClothesResponseList clothesList=new ClothesResponseList();
-    public ArrayList<Integer> selectedIdList=new ArrayList<>();
+    public static ArrayList<Integer> selectedIdList=new ArrayList<>();
     RecyclerViewAdapter adapt=new RecyclerViewAdapter(clothesList);
 
-    public static List<Integer> selectedClothes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
