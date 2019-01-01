@@ -7,10 +7,10 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_select_suit"
-            android:title="  今日穿搭" />
-        <item
-            android:id="@+id/nav_suit"
-            android:title="  我的穿搭" />
+            android:title="  今日穿搭"/>
+        <!--<item-->
+            <!--android:id="@+id/nav_suit"-->
+            <!--android:title="  我的穿搭" />-->
         <item
             android:id="@+id/nav_clothes"
             android:title="  我的衣物" />
@@ -24,9 +24,9 @@
             <item
                 android:id="@+id/nav_log_out"
                 android:title="    注销" />
-            <item
-                android:id="@+id/nav_exit"
-                android:title="    退出" />
+            <!--<item-->
+                <!--android:id="@+id/nav_exit"-->
+                <!--android:title="    退出" />-->
         </menu>
     </item>
 
