@@ -7,16 +7,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import niannian.valet.HttpService.RetrofitClient;
+import niannian.valet.HttpService.UserService;
 import niannian.valet.ResponseModel.BooleanResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -33,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         userIDText = (EditText)findViewById(R.id.userIdText);
-        passwordText = (EditText)findViewById(R.id.passwordText);
+        passwordText = (EditText)findViewById(R.id.confirmPasswordText);
 
         rememberUserSwitch = (Switch)findViewById(R.id.rememberUserSwitch);
 
@@ -46,21 +45,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginButton_Click(View view)
     {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.server_url))//基础URL 建议以 / 结尾
-                .addConverterFactory(GsonConverterFactory.create())//设置 Json 转换器
-                .build();
-
-        UserService checkUserService = retrofit.create(UserService.class);
+        UserService checkUserService = RetrofitClient.newService(this,UserService.class);
         Call<BooleanResponse> call = checkUserService.checkUserPassword(userIDText.getText().toString(),passwordText.getText().toString());
         call.enqueue(new Callback<BooleanResponse>() {
             @Override
             public void onResponse(Call<BooleanResponse> call, Response<BooleanResponse> response) {
-                //测试数据返回
                 BooleanResponse userCheckAns = response.body();
-
-                Toast.makeText(getApplicationContext(),String.valueOf(userCheckAns.getAns()),Toast.LENGTH_SHORT).show();
-                System.out.println(userCheckAns.getAns());
 
                 login(userCheckAns.getAns());
             }
@@ -99,6 +89,11 @@ public class LoginActivity extends AppCompatActivity {
                 editor.commit();
             }
         }
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+//        LoginActivity.this.finish();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
     }
 
     public void tryChangeActivityButton_Click(View view){
@@ -139,15 +134,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void registerButton_Click(View view){
-
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+//        LoginActivity.this.finish();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
     }
 
     public void passwordVisibleButton_Click(View view){
-//        ImageButton button = (ImageButton) view;
-
-
-        Toast.makeText(this,String.valueOf(userIDText.getInputType()),Toast.LENGTH_SHORT).show();
-//        if(passwordText.getInputType())
+        //text = 1
+        //textPassword = 129
+        if(passwordText.getInputType()==129)
+            passwordText.setInputType(1);
+        else
+            passwordText.setInputType(129);
     }
 
 }

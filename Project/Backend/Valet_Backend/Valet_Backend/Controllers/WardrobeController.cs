@@ -17,10 +17,10 @@ namespace Valet_Backend.Controllers
 	public class WardrobeResponse
 	{
 		//衣橱ID
-		int id;
+		public int id;
 		
 		//衣橱名称
-		string name;
+		public string name;
 
 		/// <summary>
 		/// 初始化成员变量

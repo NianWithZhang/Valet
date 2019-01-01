@@ -11,8 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="116dp"
         android:gravity="center_horizontal"
         android:letterSpacing="-0.02"
         android:text="Valet"
@@ -21,8 +21,34 @@
         app:layout_constraintStart_toEndOf="@+id/welcomeTextView"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/welcomeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="128dp"
+        android:gravity="center_horizontal"
+        android:letterSpacing="-0.02"
+        android:text="欢迎加入"
+        android:textColor="#a27169"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/goBackLoginButton"
+        android:layout_width="33dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="52dp"
+        android:background="@android:color/transparent"
+        android:onClick="backLoginButton_Click"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcomeTextView"
+        app:srcCompat="@drawable/left_array" />
+
     <EditText
-        android:id="@+id/userIdText"
+        android:id="@+id/userIdText_register"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -33,10 +59,9 @@
         app:layout_constraintTop_toBottomOf="@+id/userIdTextView" />
 
     <EditText
-        android:id="@+id/passwordText"
+        android:id="@+id/passwordText_register"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
         android:ems="10"
         android:inputType="text"
         android:visibility="visible"
@@ -44,21 +69,20 @@
         app:layout_constraintTop_toBottomOf="@+id/PasswordTextView" />
 
     <EditText
-        android:id="@+id/passwordText2"
+        android:id="@+id/confirmPasswordText_register"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="text"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/PasswordTextView"
-        app:layout_constraintTop_toBottomOf="@+id/PasswordTextView" />
+        app:layout_constraintStart_toStartOf="@+id/passwordTextView"
+        app:layout_constraintTop_toBottomOf="@+id/passwordTextView" />
 
     <Button
         android:id="@+id/registerPageButton"
         android:layout_width="250dp"
         android:layout_height="48dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="28dp"
         android:background="#ffdbcf"
         android:letterSpacing="0.09"
         android:lineSpacingExtra="1.8sp"
@@ -66,92 +90,68 @@
         android:text="注册"
         android:textColor="@color/colorText"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/passwordText"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
+        app:layout_constraintStart_toStartOf="@+id/confirmPasswordText_register"
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordText_register" />
 
     <TextView
         android:id="@+id/userIdTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="212dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="40dp"
         android:letterSpacing="-0.02"
         android:text="用户名"
         android:textColor="@color/colorText"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/goBackLoginButton"
+        app:layout_constraintTop_toBottomOf="@+id/goBackLoginButton" />
 
     <TextView
         android:id="@+id/PasswordTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
         android:letterSpacing="-0.02"
         android:text="密   码"
         android:textColor="@color/colorText"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/userIdText"
-        app:layout_constraintTop_toBottomOf="@+id/userIdText" />
+        app:layout_constraintStart_toStartOf="@+id/userIdText_register"
+        app:layout_constraintTop_toBottomOf="@+id/userIdText_register" />
 
     <TextView
         android:id="@+id/passwordTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
         android:letterSpacing="-0.02"
         android:text="确认密码"
         android:textColor="@color/colorText"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/userIdText"
-        app:layout_constraintTop_toBottomOf="@+id/userIdText" />
-
-    <TextView
-        android:id="@+id/welcomeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="88dp"
-        android:gravity="center_horizontal"
-        android:letterSpacing="-0.02"
-        android:text="欢迎加入"
-        android:textColor="#a27169"
-        android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/goBackImageButton"
-        android:layout_width="33dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="40dp"
-        android:onClick="goLoginPage"
-        android:background="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeTextView"
-        app:srcCompat="@drawable/left_array" />
+        app:layout_constraintStart_toStartOf="@+id/userIdText_register"
+        app:layout_constraintTop_toBottomOf="@+id/passwordText_register" />
 
     <ImageButton
         android:id="@+id/passwordVisibleButton"
         android:layout_width="41dp"
         android:layout_height="39dp"
-        android:layout_marginStart="204dp"
+        android:layout_marginStart="208dp"
         android:background="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="@+id/passwordText"
-        app:layout_constraintTop_toTopOf="@+id/passwordText"
+        android:onClick="passwordVisibleButton_Click"
+        app:layout_constraintStart_toStartOf="@+id/passwordText_register"
+        app:layout_constraintTop_toTopOf="@+id/passwordText_register"
         app:srcCompat="@drawable/eye_icon" />
 
     <ImageButton
-        android:id="@+id/password2VisibleButton"
+        android:id="@+id/confirmPasswordVisibleButton"
         android:layout_width="41dp"
         android:layout_height="39dp"
-        android:layout_marginStart="204dp"
+        android:layout_marginStart="208dp"
         android:background="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="@+id/passwordText2"
-        app:layout_constraintTop_toTopOf="@+id/passwordText2"
+        android:onClick="confirmPasswordVisibleButton_Click"
+        app:layout_constraintStart_toStartOf="@+id/confirmPasswordText_register"
+        app:layout_constraintTop_toTopOf="@+id/confirmPasswordText_register"
         app:srcCompat="@drawable/eye_icon" />
 
 </android.support.constraint.ConstraintLayout>

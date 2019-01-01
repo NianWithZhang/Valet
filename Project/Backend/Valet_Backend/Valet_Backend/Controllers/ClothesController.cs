@@ -104,13 +104,13 @@ namespace Valet_Backend.Controllers
 		/// <summary>
 		/// 通过衣橱编号获取衣物列表
 		/// </summary>
-		/// <param name="wardrobe_id">衣橱编号</param>
+		/// <param name="id">衣橱编号</param>
 		/// <returns>衣物列表</returns>
 		[Route("wardrobe")]
 		[HttpGet]
-		public ClothesResponseList getByWardrobe(int wardrobe_id)
+		public ClothesResponseList getByWardrobe(int id)
 		{
-			return ClothesManager.getByWardrobe(wardrobe_id);
+			return ClothesManager.getByWardrobe(id);
 		}
 
 		#endregion

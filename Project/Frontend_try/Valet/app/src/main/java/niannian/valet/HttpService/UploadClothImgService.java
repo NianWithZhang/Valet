@@ -1,4 +1,4 @@
-package niannian.valet;
+package niannian.valet.HttpService;
 
 import niannian.valet.ResponseModel.BooleanResponse;
 import okhttp3.MultipartBody;
