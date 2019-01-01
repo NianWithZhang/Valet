@@ -14,5 +14,10 @@ public class WardrobeResponse {
     public String getName(){
         return name;
     }
+    public WardrobeResponse(Integer id,String name){
+        this.id=id;
+        this.name=name;
+
+    }
 
 }

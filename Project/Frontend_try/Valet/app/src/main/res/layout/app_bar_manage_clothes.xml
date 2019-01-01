@@ -37,7 +37,7 @@
                 <ImageButton
                     android:id="@+id/moveClothesButton"
                     android:layout_width="48dp"
-                    android:layout_height="49dp"
+                    android:layout_height="51dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:background="@android:color/transparent"
@@ -46,6 +46,18 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/move_icon" />
+
+                <ImageButton
+                    android:id="@+id/jumpToAddClothesImageButton"
+                    android:layout_width="48dp"
+                    android:layout_height="51dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="jumpToAddClothes"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintEnd_toStartOf="@+id/deleteClothesButton"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@color/lite_blue" />
 
             </android.support.constraint.ConstraintLayout>
 
