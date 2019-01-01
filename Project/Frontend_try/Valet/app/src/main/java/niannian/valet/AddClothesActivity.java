@@ -72,6 +72,12 @@ public class AddClothesActivity extends AppCompatActivity {
                 Toast.makeText(AddClothesActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
                 switch(position) {
                     case 0:
+                        //callcamere
+                        break;
+                    case 1:
+                        //callcamere
+                        break;
+
                 }
             }
         });
