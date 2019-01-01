@@ -1,6 +1,7 @@
 package niannian.valet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ import niannian.valet.ResponseModel.SuitResponseList;
 import niannian.valet.ResponseModel.WardrobeResponse;
 import niannian.valet.ResponseModel.WardrobeResponseList;
 import niannian.valet.ResponseModel.WeatherInfo;
+import niannian.valet.Utils.ActivityOperationUtl;
 import niannian.valet.Utils.GetLocationUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 //    public WeatherInfo weather;
+
+    public static MainActivity activity;
 
     private Menu mainDrawer;
     private Spinner selectWardrobeSnipper;
@@ -68,14 +72,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        activity = this;
 
         //设置左导航栏抽屉
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -95,12 +92,19 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
+//    @Override
+//    protected void onPostResume() {
+//        super.onPostResume();
+//
+////        freshSuits();
+////        initWardrobes();
+//    }
 
-        freshSuits();
-//        initWardrobes();
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+        activity = null;
     }
 
     private void initWardrobes(){
@@ -453,19 +457,16 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
+        if(id == R.id.nav_clothes){
+            Intent intent = new Intent(this,ManageClothesActivity.class);
+            startActivity(intent);
+            this.finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }else if(id == R.id.nav_wardrobe){
+            //TODO
+            Toast.makeText(this,"TODO",Toast.LENGTH_SHORT).show();
+        }else if(id == R.id.nav_log_out)
+            ActivityOperationUtl.logOut(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

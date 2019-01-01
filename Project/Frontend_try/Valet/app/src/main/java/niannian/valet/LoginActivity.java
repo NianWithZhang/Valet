@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
     }
     public void tryChangeActivityButton1_Click(View view){
-        Intent intent = new Intent(this, ManageClothes.class);
+        Intent intent = new Intent(this, ManageClothesActivity.class);
         startActivity(intent);
 //        LoginActivity.this.finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);

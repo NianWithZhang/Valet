@@ -6,26 +6,20 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_select_suit"
-            android:title="今日穿搭" />
-        <item
-            android:id="@+id/nav_suit"
-            android:title="我的穿搭" />
+            android:title="  今日穿搭"/>
         <item
             android:id="@+id/nav_clothes"
-            android:title="我的衣物" />
+            android:title="  我的衣物" />
         <item
             android:id="@+id/nav_wardrobe"
-            android:title="我的衣橱" />
+            android:title="  我的衣橱" />
     </group>
 
     <item android:title="账户">
         <menu>
             <item
                 android:id="@+id/nav_log_out"
-                android:title="注销" />
-            <item
-                android:id="@+id/nav_exit"
-                android:title="退出" />
+                android:title="    注销" />
         </menu>
     </item>
 
