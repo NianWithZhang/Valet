@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity
     public Integer currentWardrobeID;
 
     private SensorManager sensorManager;
+    private Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,7 @@ public class MainActivity extends AppCompatActivity
 
         //设置传感器
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
     }
 
@@ -125,7 +128,7 @@ public class MainActivity extends AppCompatActivity
             if(Math.abs(x) > medumValue || Math.abs(y) > medumValue || Math.abs(z) > medumValue){
 
                 Toast.makeText(MainActivity.this,String.valueOf(x)+" "+String.valueOf(y)+" "+String.valueOf(z),Toast.LENGTH_SHORT).show();
-
+                vibrator.vibrate(200);
 
             }
 
