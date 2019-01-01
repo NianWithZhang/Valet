@@ -68,6 +68,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(final MyHolder holder, final int position) {
         ClothesResponse currentClothes=Clothes.clothes[position];
+        
         //holder.imageView.setImageResource(currentClothes.image);
         holder.textView.setText(currentClothes.name);
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

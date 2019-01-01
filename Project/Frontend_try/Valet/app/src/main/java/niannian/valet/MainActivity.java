@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity
             float y = values[1]; // y轴方向的重力加速度，向前为正
             float z = values[2]; // z轴方向的重力加速度，向上为正
 
-            int medumValue = 19;
+            int medumValue = 36;
             if(Math.abs(x) > medumValue || Math.abs(y) > medumValue || Math.abs(z) > medumValue){
 
                 Toast.makeText(MainActivity.this,String.valueOf(x)+" "+String.valueOf(y)+" "+String.valueOf(z),Toast.LENGTH_SHORT).show();
