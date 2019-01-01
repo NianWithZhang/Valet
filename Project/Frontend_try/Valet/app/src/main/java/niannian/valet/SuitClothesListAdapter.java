@@ -50,6 +50,7 @@ public class SuitClothesListAdapter extends RecyclerView.Adapter<SuitClothesList
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ClothesResponse.setImage(holder.suitImage,ClothesResponse.url(context,clothes.get(position).id));
+        ((TextView)holder.itemView.findViewById(R.id.clothesNameText_wearSuit)).setText(clothes.get(position).name);
 //        ListData listData = mDataList.get(position);
 //        holder.imageAvatar.setImageResource(listData.getImageView());
 //        holder.nameText.setText(listData.getNameText());

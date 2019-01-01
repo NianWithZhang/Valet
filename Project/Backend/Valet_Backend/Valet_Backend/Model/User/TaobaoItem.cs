@@ -6,6 +6,33 @@ using System.Threading.Tasks;
 namespace Valet_Backend.Model.User
 {
 	/// <summary>
+	/// 设置推荐宝贝时用于多线程传递信息的结构体
+	/// </summary>
+	public class SetRecommendInfo
+	{
+		/// <summary>
+		/// 需要设置推荐的用户
+		/// </summary>
+		public IEnumerable<User> users;
+
+		/// <summary>
+		/// 推荐的宝贝信息
+		/// </summary>
+		public TaobaoItem item;
+
+		/// <summary>
+		/// 初始化成员变量
+		/// </summary>
+		/// <param name="_users"></param>
+		/// <param name="_item"></param>
+		public SetRecommendInfo(IEnumerable<User> _users,TaobaoItem _item)
+		{
+			users = _users;
+			item = _item;
+		}
+	}
+
+	/// <summary>
 	/// 推荐给用户的淘宝宝贝信息
 	/// </summary>
 	public class TaobaoItem

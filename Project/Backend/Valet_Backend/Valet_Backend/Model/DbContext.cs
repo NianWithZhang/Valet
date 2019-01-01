@@ -15,7 +15,8 @@ namespace Valet_Backend.Model
 		{
 			ConnectionString = Config.ConnectionString,
 			DbType = DbType.MySql,
-			InitKeyType = InitKeyType.SystemTable //初始化主键和自增列信息到ORM的方式
+			InitKeyType = InitKeyType.SystemTable, //初始化主键和自增列信息到ORM的方式
+			IsAutoCloseConnection = true
 		});
 
 		protected static SimpleClient<User.User> userDb => new SimpleClient<User.User>(db);

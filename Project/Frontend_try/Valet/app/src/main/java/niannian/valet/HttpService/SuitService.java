@@ -5,6 +5,7 @@ import niannian.valet.ResponseModel.ClothesResponseList;
 import niannian.valet.ResponseModel.SuitResponseList;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface SuitService {
@@ -19,6 +20,12 @@ public interface SuitService {
     //获取穿搭对用的所有衣物列表
     @GET("api/suit")
     Call<ClothesResponseList> getClothes(
+            @Query("id") Integer id
+    );
+
+    //选择今日穿着
+    @PUT("api/suit")
+    Call<BooleanResponse> wear(
             @Query("id") Integer id
     );
 }

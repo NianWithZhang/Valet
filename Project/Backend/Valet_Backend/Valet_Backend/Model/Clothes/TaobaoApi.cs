@@ -30,17 +30,31 @@ namespace Valet_Backend.Model.Clothes
 					fileContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
 					httpContent.Add(fileContent, "imgfile", "need_a_name_here");
 
+					httpContent.Headers.Add("Cookie", Config.taobaoPostImgSearchCookie);
+
 					//var result = client.PostAsync(Config.taobaoApiUrl, httpContent).Result;
 					//string json = result.Content.ReadAsStringAsync().Result;
 
 					JObject result = (JObject)JsonConvert.DeserializeObject(client.PostAsync(Config.taobaoPicApiUrl, httpContent).Result.Content.ReadAsStringAsync().Result);//post请求
 
-					if (result["status"].ToString() != "1")
+					try
+					{
+						if (result["status"].ToString() != "1")
 #if DEBUG
-						throw new Exception();
+							throw new Exception();
 #else
 					return "";
 #endif
+					}
+					catch(Exception e)
+					{
+#if DEBUG
+						throw e;
+#else
+					return "";
+#endif
+					}
+
 
 					return result["name"].ToString();
 				}
@@ -56,11 +70,17 @@ namespace Valet_Backend.Model.Clothes
 		{
 			string tfsid = uploadTaobaoApi(picPath);
 
+			if (tfsid == "")
+				return null;
+
 			Dictionary<string, string> parameters = new Dictionary<string, string>();
 			parameters.Add("app", "imgsearch");
 			parameters.Add("tfsid", tfsid);
-			
-			string docStr = HttpRequest.HttpGet(Config.taobaoSearchUrl, parameters);
+
+			Dictionary<string, string> headers = new Dictionary<string, string>();
+			headers.Add("Cookie",Config.taobaoGetSearchAnswerCookie);
+
+			string docStr = HttpRequest.HttpGet(Config.taobaoSearchUrl, parameters,headers:headers);
 
 			return new TaobaoItem(Config.taobaoItemUrl + "?id=" + Regex.Match(docStr, "(?<=nid\\\":\\\").*?(?=\\\",)").Value, Regex.Match(docStr, "(?<=pic_url\\\":\\\").*?(?=\\\",)").Value);
 		}
