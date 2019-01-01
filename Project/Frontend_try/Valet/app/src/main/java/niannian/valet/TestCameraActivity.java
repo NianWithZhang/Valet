@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import niannian.valet.HttpService.UploadClothImgService;
 import niannian.valet.ResponseModel.BooleanResponse;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;

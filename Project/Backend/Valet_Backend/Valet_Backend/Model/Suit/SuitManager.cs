@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -288,7 +289,7 @@ namespace Valet_Backend.Model.Suit
 			if (!WardrobeManager.exist(wardrobeID))
 				return new List<SuitResponse>();
 
-			return suitDb.GetList(x => x.wardrobeID == wardrobeID && Math.Abs(x.warmthDegree - temperature) < 10).OrderBy(x => Math.Abs(x.warmthDegree - temperature)).Take(3).Select(x => new SuitResponse(x.id, x.name, evaluate(x.warmthDegree, temperature))).ToList();
+			return suitDb.GetList(x => x.wardrobeID == wardrobeID && (x.warmthDegree - temperature) < 10&&(temperature-x.warmthDegree)<10).OrderBy(x => Math.Abs(x.warmthDegree - temperature)).Take(5).Select(x => new SuitResponse(x.id, x.name, evaluate(x.warmthDegree, temperature))).ToList();
 		}
 		#endregion
 		

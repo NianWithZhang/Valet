@@ -94,6 +94,9 @@ namespace Valet_Backend.Model.Suit
 		/// <returns>获取到的天气信息</returns>
 		public static WeatherInfo getLocationWeather(double latitude, double longitude)
 		{
+			if (latitude < 0 || longitude < 0)
+				return getCityWeather(Config.defaultWeatherCity);
+
 			return getCityWeather(getLocationCityName(latitude, longitude));
 		}
 	}

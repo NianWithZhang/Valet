@@ -32,8 +32,8 @@ namespace Valet_Backend.Controllers
 	/// </summary>
 	public class SuitResponseList
 	{
-		WeatherInfo weather;
-		SuitResponse[] suits;
+		public WeatherInfo weather;
+		public SuitResponse[] suits;
 
 		public SuitResponseList(WeatherInfo _weather,SuitResponse[] _suits)
 		{
@@ -108,15 +108,17 @@ namespace Valet_Backend.Controllers
 		/// <summary>
 		/// 根据指定衣橱以及位置 获取当前位置的天气信息以及穿搭推荐
 		/// </summary>
-		/// <param name="wardrobe_id">衣橱ID</param>
+		/// <param name="id">衣橱ID</param>
 		/// <param name="latitude">纬度</param>
 		/// <param name="longitude">经度</param>
 		/// <returns>根据指定的衣橱以及地理位置产生的天气信息以及推荐穿搭列表</returns>
 		[Route("advice")]
 		[HttpGet]
-		public SuitResponseList getAdvices(int wardrobe_id, double latitude, double longitude)
+		public SuitResponseList getAdvices(int id, double latitude, double longitude)
 		{
-			return SuitManager.advise(wardrobe_id, latitude, longitude);
+			SuitResponseList temp = SuitManager.advise(id, latitude, longitude);
+			//return SuitManager.advise(id, latitude, longitude);
+			return temp;
 		}
 
 		#endregion

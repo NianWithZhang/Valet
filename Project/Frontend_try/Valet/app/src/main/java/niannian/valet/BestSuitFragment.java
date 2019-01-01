@@ -1,6 +1,7 @@
 package niannian.valet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -17,6 +20,8 @@ import com.zhy.http.okhttp.callback.BitmapCallback;
 
 import java.io.InputStream;
 
+import niannian.valet.ResponseModel.SuitResponse;
+import niannian.valet.ResponseModel.UrlPic;
 import okhttp3.Call;
 
 
@@ -31,14 +36,12 @@ import okhttp3.Call;
 public class BestSuitFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-    private static final String URL = "https://i2.hdslb.com/bfs/archive/931203046d1dba2b69c472e9a6ff294e47491609.jpg@160w_100h.jpg";
 
 //    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
-    private String url;
+    public Integer id;
+    private String name;
+
+    private ImageView suitImage;
 
     private OnFragmentInteractionListener mListener;
 
@@ -46,21 +49,13 @@ public class BestSuitFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BestSuitFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BestSuitFragment newInstance(String _url) {
+    public static BestSuitFragment newInstance(Integer id,String name) {
         BestSuitFragment fragment = new BestSuitFragment();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
-        args.putString(URL,_url);
+        args.putInt("id",id);
+        args.putString("name",name);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,23 +64,51 @@ public class BestSuitFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            url = getArguments().getString(URL);
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
+            id = getArguments().getInt("id");
+            name = getArguments().getString("name");
         }
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_best_suit, container, false);
-        setImage((ImageView)view.findViewById(R.id.testImage));
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(getContext(),"id = "+((ImageView)v.findViewById(R.id.bestSuitImage)).getContentDescription().toString(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(),WearSuitActivity.class);
+                intent.putExtra("id",id);//((ImageView)v.findViewById(R.id.bestSuitImage)).getContentDescription().toString());
+                intent.putExtra("name",name);//((TextView)v.findViewById(R.id.bestSuitNameText)).getText());
+                startActivity(intent);
+    }
+});
+
+        suitImage = (ImageView)view.findViewById(R.id.bestSuitImage);
+//        suitImage.setContentDescription(id.toString());
+
+        //-1表示该BestSuit实际为空
+        if(id!=-1)
+            UrlPic.setImage((ImageView)view.findViewById(R.id.bestSuitImage),SuitResponse.url(getActivity(),id));
+        else{
+            suitImage.setVisibility(View.INVISIBLE);
+            TextView noSuitText = view.findViewById(R.id.remindNoFitSuitText);
+            noSuitText.setVisibility(View.VISIBLE);
+        }
+
+        suitImage.setContentDescription(id.toString());
+
+        TextView suitNameText = view.findViewById(R.id.bestSuitNameText);
+        suitNameText.setText(name);
+
+//        setImage((ImageView)view.findViewById(R.id.testImage));
         return view;
     }
 
-    private void setImage(ImageView image)
+    //改到UrlPic中
+    private void setImage(ImageView image,String url)
     {
         OkHttpUtils.get().url(url).tag(image)
                 .build()
@@ -103,6 +126,7 @@ public class BestSuitFragment extends Fragment {
                     }
                 });
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

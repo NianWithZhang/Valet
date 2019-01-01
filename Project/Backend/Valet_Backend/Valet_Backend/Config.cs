@@ -48,6 +48,11 @@ namespace Valet_Backend
 		/// 百度地图API KEY
 		/// </summary>
 		public const string baiduMapAk = "uNrkc1iislhkWLNcEHGS64ycQumvnvoX";
+
+		/// <summary>
+		/// 前端获取地理位置失败时的默认位置城市
+		/// </summary>
+		public const string defaultWeatherCity = "上海市";
 		#endregion
 
 		#region Taobao
