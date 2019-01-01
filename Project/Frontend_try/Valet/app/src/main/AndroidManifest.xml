@@ -58,6 +58,10 @@
         <activity
             android:name=".WearSuitActivity"
             android:label="@string/title_activity_wear_suit"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AddClothesActivity"
+            android:label="@string/title_activity_add_clothes"
             android:theme="@style/AppTheme"></activity>
     </application>
 

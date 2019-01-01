@@ -1,5 +1,7 @@
 package niannian.valet;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,12 +22,15 @@ import android.widget.Toast;
 
 
 import com.longsh.optionframelibrary.OptionCenterDialog;
+import com.longsh.optionframelibrary.OptionMaterialDialog;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 import niannian.valet.ClothesManageRecyclerView.RecyclerViewAdapter;
 import niannian.valet.ResponseModel.ClothesResponseList;
+import niannian.valet.ResponseModel.WardrobeResponse;
+import niannian.valet.ResponseModel.WardrobeResponseList;
 
 public class ManageClothes extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -140,43 +145,81 @@ public class ManageClothes extends AppCompatActivity
 
         //Toast.makeText(ManageClothes.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
         // Log.e("TAG", mGetData.getText().toString());
-        //String a="";
+        String a="";/////
         Map<Integer, Boolean> map = adapt.getMap();
         for (int i = 0; i < map.size(); i++) {
             if (map.get(i)) {
                 selectedIdList.add(clothesList.clothes[i].id);
-                //a+=String.valueOf(clothesList.clothes[i].id);
+                a+=String.valueOf(clothesList.clothes[i].id);/////
 
             }
         }
 
-        //Toast.makeText(ManageClothes.this,a,Toast.LENGTH_SHORT).show();
-        //Toast.makeText(ManageClothes.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
-
         switch (view.getId()) {
 
                case R.id.moveClothesButton:
-                   //Toast.makeText(ManageClothes.this,a,Toast.LENGTH_SHORT).show();
+                   Toast.makeText(ManageClothes.this,a,Toast.LENGTH_SHORT).show();/////
 
+                   WardrobeResponseList wardrobes=new WardrobeResponseList();
+                   wardrobes.wardrobes=new WardrobeResponse[10];
+                   for(Integer i=0;i<10;i++){
+                       String name="name";
+                       wardrobes.wardrobes[i]=new WardrobeResponse(i,name+String.valueOf(i));
+                   }
                    final ArrayList<String> list = new ArrayList<>();
-                   list.add("标为已读");
-                   list.add("置顶聊天");
-                   list.add("删除该聊天");
+                   for(Integer i=0;i<wardrobes.wardrobes.length-6;i++)
+                   {
+                       list.add(wardrobes.wardrobes[i].name);
+                   }
                    final OptionCenterDialog optionCenterDialog = new OptionCenterDialog();
                    optionCenterDialog.show(ManageClothes.this, list);
                    optionCenterDialog.setItemClickListener(new AdapterView.OnItemClickListener() {
                        @Override
                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                            optionCenterDialog.dismiss();
+                           Toast.makeText(ManageClothes.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
                        }
                    });
 
                    break;
             case R.id.deleteClothesButton:
-
+                Toast.makeText(ManageClothes.this,a,Toast.LENGTH_SHORT).show();/////
+                final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(ManageClothes.this);
+                mMaterialDialog.setMessage("确定删除当前选中衣物？删除后不可逆。")
+                        .setPositiveButton("确定", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mMaterialDialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("取消",
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mMaterialDialog.dismiss();
+                                    }
+                                })
+                        .setCanceledOnTouchOutside(true)
+                        .setOnDismissListener(
+                                new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        //对话框消失后回调
+                                    }
+                                })
+                        .show();
                 break;
         }
         return true;
+    }
+
+
+
+    public void jumpToAddClothes(View view){
+        Intent intent = new Intent(this, AddClothesActivity.class);
+        startActivity(intent);
+//        LoginActivity.this.finish();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
     }
 
 
