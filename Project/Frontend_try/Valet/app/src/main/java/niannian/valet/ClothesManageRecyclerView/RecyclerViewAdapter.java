@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import niannian.valet.R;
@@ -68,9 +67,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(final MyHolder holder, final int position) {
         ClothesResponse currentClothes=Clothes.clothes[position];
-        
+        currentClothes.setImage(holder.itemView.getContext(),holder.clothesImage);
         //holder.imageView.setImageResource(currentClothes.image);
-        holder.textView.setText(currentClothes.name);
+        holder.clothesNameText.setText(currentClothes.name);
+        holder.clothesTypeText.setText(currentClothes.type);
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -108,13 +108,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     class MyHolder extends RecyclerView.ViewHolder{
         //ImageView imageView;
-        TextView textView;
+        TextView clothesNameText,clothesTypeText;
+        ImageView clothesImage;
         CheckBox checkBox;
         private RecyclerViewOnItemClickListener listener;
         public MyHolder(View itemView) {
             super(itemView);
             this.listener = onItemClickListener;
-            textView=(TextView)itemView.findViewById(R.id.clothesNameText);
+            clothesNameText =(TextView)itemView.findViewById(R.id.clothesNameText);
+            clothesTypeText =(TextView)itemView.findViewById(R.id.clothesType);
+            clothesImage = (ImageView)itemView.findViewById(R.id.clothesImage);
             //imageView=(ImageView) itemView.findViewById(R.id.clothesImage);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkboxChooseClothes);
         }

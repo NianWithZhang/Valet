@@ -1,12 +1,16 @@
 package niannian.valet;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.location.Location;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ThemedSpinnerAdapter;
+import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,9 +18,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -28,20 +35,33 @@ import java.util.List;
 import java.util.Map;
 
 import niannian.valet.ClothesManageRecyclerView.RecyclerViewAdapter;
+import niannian.valet.HttpService.ClothesService;
+import niannian.valet.HttpService.RetrofitClient;
+import niannian.valet.HttpService.SuitService;
+import niannian.valet.HttpService.WardrobeService;
 import niannian.valet.ResponseModel.ClothesResponseList;
+import niannian.valet.ResponseModel.SuitResponse;
+import niannian.valet.ResponseModel.SuitResponseList;
 import niannian.valet.ResponseModel.WardrobeResponse;
 import niannian.valet.ResponseModel.WardrobeResponseList;
 import niannian.valet.Utils.ActivityOperationUtl;
+import niannian.valet.Utils.GetLocationUtil;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ManageClothesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    RecyclerView recyclerView;
-    ClothesResponseList clothesList=new ClothesResponseList();
+    private RecyclerView clothesRecyclerView;
+    private Spinner selectWardrobeSpinner;
+    public Integer currentWardrobeID;
+
     public ArrayList<Integer> selectedIdList=new ArrayList<>();
-    RecyclerViewAdapter adapt=new RecyclerViewAdapter(clothesList);
 
     public static List<Integer> selectedClothes;
+
+    public RecyclerViewAdapter adapt;
+    public ClothesResponseList clothesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,22 +71,11 @@ public class ManageClothesActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        selectWardrobeSpinner = (Spinner)findViewById(R.id.selectWardrobeSpinner_clothesManage);
 
-        recyclerView=(RecyclerView)findViewById(R.id.RecyclerView);
-        //设置LayoutManager
-        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapt);
+        clothesRecyclerView =(RecyclerView)findViewById(R.id.RecyclerView);
 
-        adapt.setItemClickListener(new RecyclerViewAdapter.RecyclerViewOnItemClickListener() {
-            @Override
-            public void onItemClickListener(View view, int position) {
-                Toast.makeText(ManageClothesActivity.this,"If you are happy - "+ position,Toast.LENGTH_SHORT).show();
-
-
-            }
-        });
+        initWardrobes();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +145,126 @@ public class ManageClothesActivity extends AppCompatActivity
 //
 //        return super.onOptionsItemSelected(item);
 //    }
+
+    private void initWardrobes(){
+        WardrobeService service = RetrofitClient.newService(this,WardrobeService.class);
+        retrofit2.Call<WardrobeResponseList> call = service.getUserWardrobes(User.getInstance().getId());
+        call.enqueue(new Callback<WardrobeResponseList>() {
+            @Override
+            public void onResponse(retrofit2.Call<WardrobeResponseList> call, Response<WardrobeResponseList> response) {
+                WardrobeResponseList wardrobeResponseList = response.body();
+
+                List<Integer> wardrobeIDs = new ArrayList<Integer>();
+                List<String> wardrobeNames = new ArrayList<String>();
+
+                for(WardrobeResponse wardrobe:wardrobeResponseList.wardrobes){
+                    wardrobeIDs.add(wardrobe.getId());
+                    wardrobeNames.add(wardrobe.getName());
+                }
+
+                Pair<List<Integer>,List<String>> wardrobes = new Pair<List<Integer>,List<String>>(wardrobeIDs,wardrobeNames);
+
+                initWardrobeSnipper(wardrobes);
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<WardrobeResponseList> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void initWardrobeSnipper(final Pair<List<Integer>,List<String>> wardrobes){
+        // Setup spinner
+        selectWardrobeSpinner = (Spinner) findViewById(R.id.selectWardrobeSpinner);
+        selectWardrobeSpinner.setAdapter(new WardrobeSpinnerAdapter(getBaseContext(),wardrobes.second));
+
+        selectWardrobeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // When the given dropdown item is selected, show its contents in the
+                // container view.
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.container, TestActivity.PlaceholderFragment.newInstance(position + 1))
+//                        .commit();
+
+//                Toast.makeText(view.getContext(),"snipperItemSelected",Toast.LENGTH_SHORT).show();
+
+                currentWardrobeID = wardrobes.first.get(position);
+
+//                freshClothes();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+    private class WardrobeSpinnerAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
+        private final ThemedSpinnerAdapter.Helper mDropDownHelper;
+
+        public WardrobeSpinnerAdapter(Context context, List<String> objects) {
+            super(context, android.R.layout.simple_list_item_1, objects);
+            mDropDownHelper = new ThemedSpinnerAdapter.Helper(context);
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            View view;
+
+            if (convertView == null) {
+                // Inflate the drop down using the helper's LayoutInflater
+                LayoutInflater inflater = mDropDownHelper.getDropDownViewInflater();
+                view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            } else {
+                view = convertView;
+            }
+
+            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            textView.setText(getItem(position));
+            textView.setTextColor(getResources().getColor(R.color.colorText));
+
+            return view;
+        }
+
+        @Override
+        public Resources.Theme getDropDownViewTheme() {
+            return mDropDownHelper.getDropDownViewTheme();
+        }
+
+        @Override
+        public void setDropDownViewTheme(Resources.Theme theme) {
+            mDropDownHelper.setDropDownViewTheme(theme);
+        }
+    }
+    public void freshClothes(){
+        ClothesService service = RetrofitClient.newService(this,ClothesService.class);
+        retrofit2.Call<ClothesResponseList> call = service.getByWardrobe(currentWardrobeID);
+        call.enqueue(new Callback<ClothesResponseList>() {
+            @Override
+            public void onResponse(retrofit2.Call<ClothesResponseList> call, Response<ClothesResponseList> response) {
+                clothesList = response.body();
+
+                //设置LayoutManager
+                LinearLayoutManager layoutManager=new LinearLayoutManager(getBaseContext());
+                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                clothesRecyclerView.setLayoutManager(layoutManager);
+                adapt = new RecyclerViewAdapter(clothesList);
+                clothesRecyclerView.setAdapter(adapt);
+
+                adapt.setItemClickListener(new RecyclerViewAdapter.RecyclerViewOnItemClickListener() {
+                    @Override
+                    public void onItemClickListener(View view, int position) {
+                        Toast.makeText(ManageClothesActivity.this,"If you are happy - "+ position,Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ClothesResponseList> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     public boolean ManageClothes_Button_Click(View view){
 
