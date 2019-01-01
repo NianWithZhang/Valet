@@ -2,6 +2,10 @@ package niannian.valet;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -60,6 +64,8 @@ public class MainActivity extends AppCompatActivity
 
     public Integer currentWardrobeID;
 
+    private SensorManager sensorManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +99,43 @@ public class MainActivity extends AppCompatActivity
         mainDrawer = ((NavigationView)findViewById(R.id.nav_view)).getMenu();
         mainDrawer.getItem(0).setChecked(true);
 
+        //设置传感器
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if (sensorManager != null){
+            sensorManager.registerListener(sensorEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        }
+
+    }
+
+
+    private SensorEventListener sensorEventListener = new SensorEventListener(){
+        public void onSensorChanged(SensorEvent event) {
+            float[] values = event.values;
+            float x = values[0]; // x轴方向的重力加速度，向右为正
+            float y = values[1]; // y轴方向的重力加速度，向前为正
+            float z = values[2]; // z轴方向的重力加速度，向上为正
+
+            int medumValue = 19;
+            if(Math.abs(x) > medumValue || Math.abs(y) > medumValue || Math.abs(z) > medumValue){
+
+                Toast.makeText(MainActivity.this,String.valueOf(x)+" "+String.valueOf(y)+" "+String.valueOf(z),Toast.LENGTH_SHORT).show();
+
+
+            }
+
+
+        }
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+        }
+
+    };
 
     @Override
     protected void onPostResume() {
