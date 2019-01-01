@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Valet_Backend.Controllers;
 using Valet_Backend.Model.Suit;
@@ -69,7 +70,7 @@ namespace Valet_Backend.Model.Clothes
 		public static bool add(IFormFile clothesPic, int wardrobeID, string name, ClothesType type,int thickness)
 		{
 			//确保衣橱存在
-			if (WardrobeManager.exist(wardrobeID))
+			if (!WardrobeManager.exist(wardrobeID))
 				return false;
 
 			Clothes clothes = new Clothes(wardrobeID, name, type, thickness);
@@ -77,13 +78,16 @@ namespace Valet_Backend.Model.Clothes
 			clothes.id = clothesDb.InsertReturnIdentity(clothes);
 
 			savePic(clothesPic, clothes);
-			
-			//处理购衣推荐
-			foreach(string userID in UserManager.similarUsers(WardrobeManager.user(wardrobeID)))
-			{
-				TaobaoItem taobaoItem = TaobaoApi.getTaobaoItem(clothes.picPath);
 
-				UserManager.setRecommend(userID,taobaoItem);
+			TaobaoItem taobaoItem = TaobaoApi.getTaobaoItem(clothes.picPath);
+
+			//处理购衣推荐
+			if (taobaoItem != null)
+			{
+					Thread setCommendThread = new Thread(new ParameterizedThreadStart(UserManager.setRecommend_thread));
+					setCommendThread.Start(new SetRecommendInfo(UserManager.similarUsers(WardrobeManager.user(wardrobeID)), taobaoItem));
+					//已改为多线程执行
+					//UserManager.setRecommend(userID,taobaoItem);
 			}
 
 			return true;

@@ -101,7 +101,7 @@ public class ManageClothes extends AppCompatActivity
     }
 
     public boolean deleteClothes_deleteClothesButton_Click(View view){
-
+        return true;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

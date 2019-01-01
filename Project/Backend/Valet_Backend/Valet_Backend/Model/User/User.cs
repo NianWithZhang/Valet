@@ -49,6 +49,12 @@ namespace Valet_Backend.Model.User
 
 				return item;
 			}
+
+			set
+			{
+				recommendItemUrl = value.itemUrl;
+				recommendItemPicUrl = value.picUrl;
+			}
 		}
 
 		/// <summary>
@@ -75,7 +81,7 @@ namespace Valet_Backend.Model.User
 			recommendItemUrl = "";
 			recommendItemPicUrl = "";
 		}
-
+		
 		//DELETE!!!!!!!!!!!!!!!
 		//public void resetRecomend()
 		//{

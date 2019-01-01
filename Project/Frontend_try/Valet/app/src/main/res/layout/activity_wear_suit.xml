@@ -20,9 +20,10 @@
 
             <Button
                 android:id="@+id/returnButton_wearSuit"
-                android:layout_width="12dp"
-                android:layout_height="25dp"
-                android:background="@drawable/left_array" />
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:background="@drawable/left_array"
+                android:onClick="returnButton_wearSuit_Click" />
 
             <TextView
                 android:id="@+id/suitNameText_wearSuit"
@@ -31,7 +32,7 @@
                 android:paddingLeft="20dp"
                 android:text="TextView"
                 android:textColor="@android:color/white"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
         </android.support.v7.widget.Toolbar>
 

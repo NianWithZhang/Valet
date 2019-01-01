@@ -66,27 +66,22 @@ namespace Valet_Backend.Model.User
 		#endregion
 
 		#region 衣物推荐
+
 		/// <summary>
-		/// 设置指定用户的推荐宝贝信息
+		/// 设置推荐内容 执行时另开单独线程操作
 		/// </summary>
-		/// <param name="userID">用户ID</param>
-		/// <param name="item">推荐宝贝信息</param>
-		/// <returns>操作结果 是否用户存在且操作成功</returns>
-		public static bool setRecommend(string userID,TaobaoItem item)
+		/// <param name="recommendInfo">推荐内容信息</param>
+		public static void setRecommend_thread(object recommendInfo)
 		{
-			User user = userDb.GetById(userID);
+			IEnumerable<User> users = (recommendInfo as SetRecommendInfo).users;
 
-			if (user == null)
-#if DEBUG
-				throw new Exception();
-#else
-			return false;
-#endif
+			if (!users.Any())
+				return;
 
-			user.recommendItemUrl = item.itemUrl;
-			user.recommendItemPicUrl = item.picUrl;
-
-			return userDb.Update(user);
+			foreach (User user in users)
+				user.recommednItem = (recommendInfo as SetRecommendInfo).item;
+			
+			userDb.UpdateRange((recommendInfo as SetRecommendInfo).users.ToArray());
 		}
 
 		/// <summary>
@@ -117,7 +112,7 @@ namespace Valet_Backend.Model.User
 		/// </summary>
 		/// <param name="id">源用户ID</param>
 		/// <returns>找到的所有相似用户ID列表</returns>
-		public static IEnumerable<string> similarUsers(string id)
+		public static IEnumerable<User> similarUsers(string id)
 		{
 			User user = userDb.GetById(id);
 
@@ -125,7 +120,7 @@ namespace Valet_Backend.Model.User
 				return null;
 
 			//TODO 现在返回的是所有用户
-			return userDb.GetList().Select(x=>x.id);
+			return userDb.GetList();
 		}
 
 		#endregion

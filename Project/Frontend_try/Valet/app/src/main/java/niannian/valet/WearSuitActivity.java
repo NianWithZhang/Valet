@@ -1,5 +1,6 @@
 package niannian.valet;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,7 +10,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,8 +21,11 @@ import java.util.List;
 
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.SuitService;
+import niannian.valet.ResponseModel.BooleanResponse;
 import niannian.valet.ResponseModel.ClothesResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
+import niannian.valet.ResponseModel.SuitResponse;
+import niannian.valet.ResponseModel.SuitResponseList;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -30,10 +36,13 @@ public class WearSuitActivity extends AppCompatActivity {
 
     private RecyclerView clothesRecyclerView;
 
+    public static WearSuitActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        activity = this;
 
         //获取该Suit的ID和名称
 //        savedInstanceState.getInt("id");
@@ -47,18 +56,52 @@ public class WearSuitActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        //设置穿搭名称title
+        ((TextView)findViewById(R.id.suitNameText_wearSuit)).setText(suitName);
+
+        //设置确认今日穿搭按钮
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.confirmWearFab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(final View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+
+                SuitService service = RetrofitClient.newService(view.getContext(),SuitService.class);
+                retrofit2.Call<BooleanResponse> call = service.wear(id);
+                call.enqueue(new Callback<BooleanResponse>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<BooleanResponse> call, Response<BooleanResponse> response) {
+                        BooleanResponse booleanResponse = response.body();
+
+                        if(booleanResponse.getAns()){
+                            Toast.makeText(getBaseContext(),"今天的衣服选好啦",Toast.LENGTH_SHORT).show();
+                            ((Activity)view.getContext()).finish();
+                        }else
+                            Toast.makeText(getBaseContext(),"出现异常 请退出后重试",Toast.LENGTH_SHORT).show();
+
+//                        ((Activity)view.getContext()).finish();
+                    }
+
+                    @Override
+                    public void onFailure(retrofit2.Call<BooleanResponse> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
             }
         });
 
         clothesRecyclerView = (RecyclerView)findViewById(R.id.clothesRecyclerView_wearSuit);
 
         setClothes();
+    }
+
+    @Override
+    protected void onStop(){
+        this.activity = null;
+        super.onStop();
     }
 
     private void setClothes(){
@@ -77,11 +120,11 @@ public class WearSuitActivity extends AppCompatActivity {
                 clothesRecyclerView.setLayoutManager(sgm);
                 clothesRecyclerView.setAdapter(myAdapter);
 
-                //分割线
-                DividerItemDecoration itemDecoration=
-                        new DividerItemDecoration(getApplicationContext(),
-                                DividerItemDecoration.VERTICAL);// .VERTICAL_LIST);
-                clothesRecyclerView.addItemDecoration(itemDecoration);
+//                //分割线
+//                DividerItemDecoration itemDecoration=
+//                        new DividerItemDecoration(getApplicationContext(),
+//                                DividerItemDecoration.VERTICAL);// .VERTICAL_LIST);
+//                clothesRecyclerView.addItemDecoration(itemDecoration);
             }
 
             @Override
@@ -89,6 +132,11 @@ public class WearSuitActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    //返回按钮被按下
+    public void returnButton_wearSuit_Click(View view){
+        this.finish();
     }
 
 }
