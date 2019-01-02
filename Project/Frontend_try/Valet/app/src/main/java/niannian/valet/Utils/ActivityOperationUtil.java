@@ -11,7 +11,7 @@ import niannian.valet.LoginActivity;
 import niannian.valet.ManageClothesActivity;
 import niannian.valet.User;
 
-public class ActivityOperationUtl {
+public class ActivityOperationUtil {
 
     @Nullable
     public static Activity findActivity(Context context) {

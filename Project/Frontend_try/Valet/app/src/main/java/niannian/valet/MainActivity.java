@@ -50,7 +50,7 @@ import niannian.valet.ResponseModel.SuitResponseList;
 import niannian.valet.ResponseModel.WardrobeResponse;
 import niannian.valet.ResponseModel.WardrobeResponseList;
 import niannian.valet.ResponseModel.WeatherInfo;
-import niannian.valet.Utils.ActivityOperationUtl;
+import niannian.valet.Utils.ActivityOperationUtil;
 import niannian.valet.Utils.GetLocationUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -529,11 +529,12 @@ public class MainActivity extends AppCompatActivity
             this.finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }else if(id == R.id.nav_wardrobe){
-            //TODO
-            jumpToManageWardrobe();
-            Toast.makeText(this,"TODO",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ManageWardrobeActivity.class);
+            startActivity(intent);
+            this.finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }else if(id == R.id.nav_log_out)
-            ActivityOperationUtl.logOut(this);
+            ActivityOperationUtil.logOut(this);
         else if(id == R.id.nav_exit)
             this.finish();
 
@@ -565,12 +566,6 @@ public class MainActivity extends AppCompatActivity
 //        }
 //    }
 
-    public void jumpToManageWardrobe(){
-        Intent intent = new Intent(this, ManageWardrobeActivity.class);
-        startActivity(intent);
-//        LoginActivity.this.finish();
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
-    }
 
 
 

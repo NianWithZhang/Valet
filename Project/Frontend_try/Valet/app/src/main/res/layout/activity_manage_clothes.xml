@@ -5,6 +5,7 @@
     android:id="@+id/drawer_layout_manage_clothes"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 

@@ -33,12 +33,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        Intent intent = getIntent();
-//        if(intent!=null)
-//            autoLogin = intent.getBooleanExtra("autoLogin",false);
+        Intent intent = getIntent();
+        if(intent!=null)
+            autoLogin = intent.getBooleanExtra("autoLogin",true);
 
-        if(savedInstanceState!=null)
-            autoLogin = savedInstanceState.getBoolean("autoLogin");
+//        if(savedInstanceState!=null)
+//            autoLogin = savedInstanceState.getBoolean("autoLogin");
 
         userIDText = (EditText)findViewById(R.id.userIdText);
         passwordText = (EditText)findViewById(R.id.confirmPasswordText);
@@ -143,6 +143,14 @@ public class LoginActivity extends AppCompatActivity {
 
             if(autoLogin)
                 loginButton_Click(null);
+            else{
+                //由别的界面注销而执行 则清空信息
+                editor.putString("userid",null);
+                editor.putString("password",null);
+                editor.commit();
+
+                rememberUserSwitch.setChecked(false);
+            }
         }
     }
 
