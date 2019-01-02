@@ -1,11 +1,9 @@
 package niannian.valet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -32,8 +31,6 @@ import android.widget.Toast;
 import com.longsh.optionframelibrary.OptionCenterDialog;
 import com.longsh.optionframelibrary.OptionMaterialDialog;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,16 +38,12 @@ import java.util.Map;
 import niannian.valet.ClothesManageRecyclerView.RecyclerViewAdapter;
 import niannian.valet.HttpService.ClothesService;
 import niannian.valet.HttpService.RetrofitClient;
-import niannian.valet.HttpService.SuitService;
 import niannian.valet.HttpService.WardrobeService;
 import niannian.valet.ResponseModel.BooleanResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
-import niannian.valet.ResponseModel.SuitResponse;
-import niannian.valet.ResponseModel.SuitResponseList;
 import niannian.valet.ResponseModel.WardrobeResponse;
 import niannian.valet.ResponseModel.WardrobeResponseList;
-import niannian.valet.Utils.ActivityOperationUtl;
-import niannian.valet.Utils.GetLocationUtil;
+import niannian.valet.Utils.ActivityOperationUtil;
 import niannian.valet.Utils.MessageBoxUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +56,7 @@ public class ManageClothesActivity extends AppCompatActivity
     private RecyclerView clothesRecyclerView;
     private Spinner selectWardrobeSpinner;
     public Integer currentWardrobeID;
+    public Integer previousWardrobeID;
 
     public static ArrayList<Integer> selectedIdList;
 
@@ -89,7 +83,14 @@ public class ManageClothesActivity extends AppCompatActivity
 
         selectedIdList = new ArrayList<>();
 
+        Intent intent = getIntent();
+        previousWardrobeID = -1;
+        if(intent!=null)
+            previousWardrobeID = intent.getIntExtra("wardrobeID",-1);
+
         initWardrobes();
+
+
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +109,10 @@ public class ManageClothesActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //设置导航栏默认选中值
+        Menu mainDrawer = ((NavigationView)findViewById(R.id.nav_view)).getMenu();
+        mainDrawer.getItem(1).setChecked(true);
     }
 
     @Override
@@ -255,6 +260,9 @@ public class ManageClothesActivity extends AppCompatActivity
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        if(previousWardrobeID>=0&&wardrobes.first.contains(previousWardrobeID))
+            selectWardrobeSpinner.setSelection(wardrobes.first.indexOf(previousWardrobeID));
     }
     private class WardrobeSpinnerAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
         private final ThemedSpinnerAdapter.Helper mDropDownHelper;
@@ -327,21 +335,6 @@ public class ManageClothesActivity extends AppCompatActivity
         });
     }
 
-    private void setSelectedIdList(){
-        selectedIdList.clear();
-
-        //Toast.makeText(ManageClothesActivity.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
-        // Log.e("TAG", mGetData.getText().toString());
-//        String a="";/////
-        Map<Integer, Boolean> map = adapt.getMap();
-        for (int i = 0; i < map.size(); i++) {
-            if (map.get(i)) {
-                selectedIdList.add(clothesList.clothes[i].id);
-//                a+=String.valueOf(clothesList.clothes[i].id);/////
-            }
-        }
-    }
-
     public void ManageClothes_Button_Click(View view){
 
         setSelectedIdList();
@@ -409,6 +402,23 @@ public class ManageClothesActivity extends AppCompatActivity
                 break;
         }
         return;
+    }
+    private void setSelectedIdList(){
+        if(selectedIdList==null)
+            selectedIdList = new ArrayList<>();
+
+        selectedIdList.clear();
+
+        //Toast.makeText(ManageClothesActivity.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
+        // Log.e("TAG", mGetData.getText().toString());
+//        String a="";/////
+        Map<Integer, Boolean> map = adapt.getMap();
+        for (int i = 0; i < map.size(); i++) {
+            if (map.get(i)) {
+                selectedIdList.add(clothesList.clothes[i].id);
+//                a+=String.valueOf(clothesList.clothes[i].id);/////
+            }
+        }
     }
 
     private void deleteClothes(){
@@ -490,10 +500,12 @@ public class ManageClothesActivity extends AppCompatActivity
             this.finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }else if(id == R.id.nav_wardrobe){
-            //TODO
-            Toast.makeText(this,"TODO",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ManageWardrobeActivity.class);
+            startActivity(intent);
+            this.finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }else if(id == R.id.nav_log_out)
-            ActivityOperationUtl.logOut(this);
+            ActivityOperationUtil.logOut(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_manage_clothes);
         drawer.closeDrawer(GravityCompat.START);

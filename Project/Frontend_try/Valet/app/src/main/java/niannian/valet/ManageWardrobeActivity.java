@@ -3,11 +3,8 @@ package niannian.valet;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,28 +14,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.longsh.optionframelibrary.OptionCenterDialog;
 import com.longsh.optionframelibrary.OptionMaterialDialog;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import niannian.valet.ClothesManageRecyclerView.RecyclerViewAdapter;
 import niannian.valet.ClothesManageRecyclerView.WardrobeRecyclerViewAdapter;
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.WardrobeService;
-import niannian.valet.ResponseModel.WardrobeResponse;
+import niannian.valet.ResponseModel.BooleanResponse;
 import niannian.valet.ResponseModel.WardrobeResponseList;
+import niannian.valet.Utils.ActivityOperationUtil;
+import niannian.valet.Utils.MessageBoxUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ManageWardrobeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    //衣橱名称长度最大值
+    public final static int WARDROBE_NAME_LIMIT = 5;
+
     private RecyclerView wardrobeRecyclerView;
 
     public ArrayList<Integer> selectedIdList;
@@ -52,6 +51,8 @@ public class ManageWardrobeActivity extends AppCompatActivity
         wardrobeRecyclerView =(RecyclerView)findViewById(R.id.manageWardrobeRecyclerView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.manageWardrobeToolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         selectedIdList=new ArrayList<>();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.manageWardrobeDrawer_layout);
@@ -60,9 +61,13 @@ public class ManageWardrobeActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.manageWardrobeNav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         initWardrobes();
+
+        //设置导航栏默认选中值
+        Menu mainDrawer = ((NavigationView)findViewById(R.id.nav_view)).getMenu();
+        mainDrawer.getItem(2).setChecked(true);
     }
 
     private void initWardrobes(){
@@ -74,7 +79,6 @@ public class ManageWardrobeActivity extends AppCompatActivity
                 wardrobeList = response.body();
 
                 initWardrobesManageWardrobe();
-
             }
 
             @Override
@@ -94,7 +98,11 @@ public class ManageWardrobeActivity extends AppCompatActivity
         adapt.setItemClickListener(new WardrobeRecyclerViewAdapter.wardrobeRecyclerViewOnItemClickListener() {
             @Override
             public void onItemClickListener(View view, int position) {
-                Toast.makeText(ManageWardrobeActivity.this,"If you are happy - "+ position,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getBaseContext(),ManageClothesActivity.class);
+                intent.putExtra("wardrobeID",wardrobeList.wardrobes[position].id);
+                startActivity(intent);
+                ActivityOperationUtil.findActivity(view.getContext()).finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
@@ -138,19 +146,18 @@ public class ManageWardrobeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
+        if(id == R.id.nav_select_suit){
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+            this.finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }else if(id == R.id.nav_clothes){
+            Intent intent = new Intent(this, ManageClothesActivity.class);
+            startActivity(intent);
+            this.finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }else if(id == R.id.nav_log_out)
+            ActivityOperationUtil.logOut(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.manageWardrobeDrawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -158,21 +165,8 @@ public class ManageWardrobeActivity extends AppCompatActivity
     }
 
 
-    public boolean ManageWardrobe_Button_Click(View view){
-
-        selectedIdList.clear();
-
-        //Toast.makeText(ManageClothesActivity.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
-        // Log.e("TAG", mGetData.getText().toString());
-        String a="";/////
-        Map<Integer, Boolean> map = adapt.getMap();
-        for (int i = 0; i < map.size(); i++) {
-            if (map.get(i)) {
-                selectedIdList.add(wardrobeList.wardrobes[i].id);
-                a+=String.valueOf(wardrobeList.wardrobes[i].id);/////
-
-            }
-        }
+    public void ManageWardrobe_Button_Click(View view){
+        setSelectedIdList();
 
         switch (view.getId()) {
 
@@ -208,13 +202,19 @@ public class ManageWardrobeActivity extends AppCompatActivity
 
                 break;
             case R.id.deleteWardrobeButton:
-                Toast.makeText(ManageWardrobeActivity.this,a,Toast.LENGTH_SHORT).show();/////
+                if(selectedIdList.isEmpty()) {
+                    MessageBoxUtil.showMessage(getApplicationContext(),"请选中要删除的衣橱");
+                    return;
+                }
+
+//                Toast.makeText(ManageWardrobeActivity.this,a,Toast.LENGTH_SHORT).show();/////
                 final OptionMaterialDialog mMaterialDialogDelete = new OptionMaterialDialog(ManageWardrobeActivity.this);
-                mMaterialDialogDelete.setMessage("确定删除当前选中衣橱？删除后不可逆。")
+                mMaterialDialogDelete.setTitle("确认删除").setMessage("删除操作不可逆哦")
                         .setPositiveButton("确定", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 mMaterialDialogDelete.dismiss();
+                                deleteWardrobe();
                             }
                         })
                         .setNegativeButton("取消",
@@ -235,10 +235,60 @@ public class ManageWardrobeActivity extends AppCompatActivity
                         .show();
                 break;
         }
-        return true;
+        return;
     }
-    private boolean addWardrobe(String name){
-        return true;
+    private void setSelectedIdList(){
+        if(selectedIdList==null)
+            selectedIdList = new ArrayList<>();
+
+        selectedIdList.clear();
+
+        //Toast.makeText(ManageClothesActivity.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
+        // Log.e("TAG", mGetData.getText().toString());
+//        String a="";/////
+        Map<Integer, Boolean> map = adapt.getMap();
+        for (int i = 0; i < map.size(); i++) {
+            if (map.get(i)) {
+                selectedIdList.add(wardrobeList.wardrobes[i].id);
+//                a+=String.valueOf(wardrobeList.wardrobes[i].id);/////
+            }
+        }
+    }
+    private void addWardrobe(String name){
+        if(name.isEmpty()){
+            MessageBoxUtil.showMessage(this,"名称不能为空","给你的新衣橱起个名字吧 :)");
+            return;
+        }else if(name.length()>WARDROBE_NAME_LIMIT){
+            MessageBoxUtil.showMessage(this,"名字太长啦","仅支持不超过"+String.valueOf(WARDROBE_NAME_LIMIT)+"个字");
+            return;
+        }
+
+        WardrobeService service = RetrofitClient.newService(this,WardrobeService.class);
+        retrofit2.Call<BooleanResponse> call = service.add(User.getInstance().getId(),name);
+        call.enqueue(new Callback<BooleanResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<BooleanResponse> call, Response<BooleanResponse> response) {
+                BooleanResponse ans = response.body();
+
+                if(ans.getAns())
+                    MessageBoxUtil.showMessage(getBaseContext(),"创建成功");
+//                    Toast.makeText(getBaseContext(),"删除成功",Toast.LENGTH_SHORT).show();
+                else
+                    MessageBoxUtil.showMessage(getBaseContext(),"出错啦 退出后重新试试吧");
+//                    Toast.makeText(getBaseContext(),"删除失败",Toast.LENGTH_SHORT).show();
+
+                initWardrobes();
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<BooleanResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void deleteWardrobe(){
+        return;
     }
 
 

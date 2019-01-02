@@ -82,6 +82,8 @@ public class AddClothesActivity extends AppCompatActivity {
 //            }
 //        });
 
+//        setTheme(R.style.AppTheme_AddClothesActivity);
+
         //加载传入的wardrobeID
         Intent intent = getIntent();
 
@@ -109,6 +111,7 @@ public class AddClothesActivity extends AppCompatActivity {
         //获取相机权限
         PermissionUtil.requestCameraStoragePermission(this);
     }
+
 
     public void addClothesImageButton_Click(View view){
         if(!PermissionUtil.checkCameraStoragePermission(this))

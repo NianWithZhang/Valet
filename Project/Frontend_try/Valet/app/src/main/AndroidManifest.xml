@@ -44,7 +44,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ManageClothesActivity"
             android:label="@string/title_activity_manage_clothes"
@@ -63,12 +63,15 @@
         <activity
             android:name=".AddClothesActivity"
             android:label="@string/title_activity_add_clothes"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".AddNewSuitActivity" />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddNewSuitActivity"
+            android:label="AddNewSuitActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ManageWardrobeActivity"
             android:label="@string/title_activity_manage_wardrobe"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
