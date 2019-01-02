@@ -3,9 +3,12 @@ package niannian.valet.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import niannian.valet.LoginActivity;
+import niannian.valet.ManageClothesActivity;
 import niannian.valet.User;
 
 public class ActivityOperationUtl {
@@ -25,6 +28,9 @@ public class ActivityOperationUtl {
 
     //注销操作
     public static void logOut(Activity activity){
+        Intent intent = new Intent(activity,LoginActivity.class);
+        intent.putExtra("autoLogin",new Boolean(false));
+        activity.startActivity(intent);
         activity.finish();
         User.getInstance().resetUser();
         Toast.makeText(activity,"注销成功",Toast.LENGTH_SHORT).show();

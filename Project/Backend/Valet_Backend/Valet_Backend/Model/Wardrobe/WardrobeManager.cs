@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Valet_Backend.Controllers;
+using Valet_Backend.Model.Clothes;
 using Valet_Backend.Model.Suit;
 using Valet_Backend.Model.User;
 
@@ -98,6 +99,8 @@ namespace Valet_Backend.Model.Wardrobe
 		/// <returns>删除结果 是否成功删除</returns>
 		public static bool delete(int wardrobeID)
 		{
+			ClothesManager.deleteByWardrobe(wardrobeID);
+
 			return wardrobeDb.DeleteById(wardrobeID);
 		}
 

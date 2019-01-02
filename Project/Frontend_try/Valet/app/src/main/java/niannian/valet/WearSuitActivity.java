@@ -95,6 +95,7 @@ public class WearSuitActivity extends AppCompatActivity {
         });
 
         clothesRecyclerView = (RecyclerView)findViewById(R.id.clothesRecyclerView_wearSuit);
+        clothesRecyclerView.setItemViewCacheSize(20);
 
         setClothes();
     }

@@ -26,10 +26,19 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
+    private Boolean autoLogin = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+//        Intent intent = getIntent();
+//        if(intent!=null)
+//            autoLogin = intent.getBooleanExtra("autoLogin",false);
+
+        if(savedInstanceState!=null)
+            autoLogin = savedInstanceState.getBoolean("autoLogin");
 
         userIDText = (EditText)findViewById(R.id.userIdText);
         passwordText = (EditText)findViewById(R.id.confirmPasswordText);
@@ -92,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-//        LoginActivity.this.finish();
+        LoginActivity.this.finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
     }
 
@@ -124,13 +133,17 @@ public class LoginActivity extends AppCompatActivity {
 
         String userid = preferences.getString("userid",null);
         String password = preferences.getString("password",null);
+
         if(userid == null||password == null) {
             userid = "";
             password = "";
-        }
+        }else{
+            userIDText.setText(userid);
+            passwordText.setText(password);
 
-        userIDText.setText(userid);
-        passwordText.setText(password);
+            if(autoLogin)
+                loginButton_Click(null);
+        }
     }
 
     public void registerButton_Click(View view){

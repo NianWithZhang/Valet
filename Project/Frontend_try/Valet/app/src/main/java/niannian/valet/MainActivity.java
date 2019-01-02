@@ -40,6 +40,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.SuitService;
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity
 //    public WeatherInfo weather;
 
     public static MainActivity activity;
+
+    private Integer bestSuitNum;
 
     private Menu mainDrawer;
     private Spinner selectWardrobeSpinner;
@@ -102,6 +105,11 @@ public class MainActivity extends AppCompatActivity
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
+        //设置界面缓冲池大小
+        allSuitsRecyclerView = findViewById(R.id.allSuitsRecyclerView_main);
+        allSuitsRecyclerView.setItemViewCacheSize(10);
+        bestSuitsViewPager = findViewById(R.id.bestSuitsViewPager);
+        bestSuitsViewPager.setOffscreenPageLimit(5);
     }
 
     @Override
@@ -131,7 +139,9 @@ public class MainActivity extends AppCompatActivity
             int medumValue = 36;
             if(Math.abs(x) > medumValue || Math.abs(y) > medumValue || Math.abs(z) > medumValue){
 
-                Toast.makeText(MainActivity.this,String.valueOf(x)+" "+String.valueOf(y)+" "+String.valueOf(z),Toast.LENGTH_SHORT).show();
+                setRandomBestSuit();
+
+//                Toast.makeText(MainActivity.this,String.valueOf(x)+" "+String.valueOf(y)+" "+String.valueOf(z),Toast.LENGTH_SHORT).show();
                 vibrator.vibrate(200);
 
             }
@@ -215,7 +225,14 @@ public class MainActivity extends AppCompatActivity
 
         //刷新最合适的几件穿搭
         SuitService service = RetrofitClient.newService(this,SuitService.class);
-        retrofit2.Call<SuitResponseList> call = service.getAdvices(currentWardrobeID,location.getLatitude(),location.getLongitude());
+
+        retrofit2.Call<SuitResponseList> call;
+
+        if(location!=null)
+            call = service.getAdvices(currentWardrobeID,location.getLatitude(),location.getLongitude());
+        else
+            call = service.getAdvices(currentWardrobeID,-1D,-1D);
+
         call.enqueue(new Callback<SuitResponseList>() {
             @Override
             public void onResponse(retrofit2.Call<SuitResponseList> call, Response<SuitResponseList> response) {
@@ -245,12 +262,17 @@ public class MainActivity extends AppCompatActivity
         });
     }
     private void setBestSuitsViewPager(){
-        bestSuitsViewPager = (ViewPager) findViewById(R.id.bestSuitsViewPager);
+        if(bestSuitsViewPager == null)
+            return;
+
         bestSuitsViewPager.setAdapter(new BestSuitsPagerAdapter(getSupportFragmentManager()));
-        bestSuitsViewPager.setOffscreenPageLimit(2);
     }
     private void updateBestSuits(List<Pair<Integer,String>> suits){
+
+        bestSuitNum = suits.size();
+
         ((BestSuitsPagerAdapter)bestSuitsViewPager.getAdapter()).updateDatas(suits);
+
     }
 
     public class BestSuitsPagerAdapter extends FragmentPagerAdapter {
@@ -512,10 +534,21 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this,"TODO",Toast.LENGTH_SHORT).show();
         }else if(id == R.id.nav_log_out)
             ActivityOperationUtl.logOut(this);
+        else if(id == R.id.nav_exit)
+            this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void setRandomBestSuit(){
+        if(bestSuitNum==null)
+            return;
+
+        Random ra =new Random();
+
+        bestSuitsViewPager.setCurrentItem(ra.nextInt(bestSuitNum));
     }
 
 //    public class BestSuitSelectListener implements View.OnClickListener{

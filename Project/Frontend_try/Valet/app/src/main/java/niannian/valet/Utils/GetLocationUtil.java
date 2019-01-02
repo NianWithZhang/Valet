@@ -38,6 +38,7 @@ public class GetLocationUtil {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                         != PERMISSION_GRANTED&&ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)!=PERMISSION_GRANTED) {// 没有权限，申请权限。
                     ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},1);
+                    return getLocation(locationManager,context);
                 } else {
                     return getLocation(locationManager,context);//getLocation为定位方法
                 }

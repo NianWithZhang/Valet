@@ -1,5 +1,6 @@
 package niannian.valet;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +31,8 @@ import android.widget.Toast;
 import com.longsh.optionframelibrary.OptionCenterDialog;
 import com.longsh.optionframelibrary.OptionMaterialDialog;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +42,7 @@ import niannian.valet.HttpService.ClothesService;
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.SuitService;
 import niannian.valet.HttpService.WardrobeService;
+import niannian.valet.ResponseModel.BooleanResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
 import niannian.valet.ResponseModel.SuitResponse;
 import niannian.valet.ResponseModel.SuitResponseList;
@@ -46,11 +50,14 @@ import niannian.valet.ResponseModel.WardrobeResponse;
 import niannian.valet.ResponseModel.WardrobeResponseList;
 import niannian.valet.Utils.ActivityOperationUtl;
 import niannian.valet.Utils.GetLocationUtil;
+import niannian.valet.Utils.MessageBoxUtil;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ManageClothesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static ManageClothesActivity activity;
 
     private RecyclerView clothesRecyclerView;
     private Spinner selectWardrobeSpinner;
@@ -58,6 +65,7 @@ public class ManageClothesActivity extends AppCompatActivity
 
     public static ArrayList<Integer> selectedIdList;
 
+    public Pair<ArrayList<Integer>,ArrayList<String>> wardrobes;
 
     public RecyclerViewAdapter adapt;
     public ClothesResponseList clothesList;
@@ -67,12 +75,15 @@ public class ManageClothesActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_clothes);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.manageClothesToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_manageClothes);
         setSupportActionBar(toolbar);
+
+        activity = this;
 
         selectWardrobeSpinner = (Spinner)findViewById(R.id.selectWardrobeSpinner_clothesManage);
 
-        clothesRecyclerView =(RecyclerView)findViewById(R.id.manageWardrobeRecyclerView);
+        clothesRecyclerView =(RecyclerView)findViewById(R.id.RecyclerView);
+        clothesRecyclerView.setItemViewCacheSize(20);
 
         selectedIdList = new ArrayList<>();
 
@@ -95,6 +106,13 @@ public class ManageClothesActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+        activity = null;
     }
 
     @Override
@@ -155,15 +173,15 @@ public class ManageClothesActivity extends AppCompatActivity
             public void onResponse(retrofit2.Call<WardrobeResponseList> call, Response<WardrobeResponseList> response) {
                 WardrobeResponseList wardrobeResponseList = response.body();
 
-                List<Integer> wardrobeIDs = new ArrayList<Integer>();
-                List<String> wardrobeNames = new ArrayList<String>();
+                ArrayList<Integer> wardrobeIDs = new ArrayList<Integer>();
+                ArrayList<String> wardrobeNames = new ArrayList<String>();
 
                 for(WardrobeResponse wardrobe:wardrobeResponseList.wardrobes){
                     wardrobeIDs.add(wardrobe.getId());
                     wardrobeNames.add(wardrobe.getName());
                 }
 
-                Pair<List<Integer>,List<String>> wardrobes = new Pair<List<Integer>,List<String>>(wardrobeIDs,wardrobeNames);
+                wardrobes = new Pair<ArrayList<Integer>,ArrayList<String>>(wardrobeIDs,wardrobeNames);
 
                 initWardrobeSnipper(wardrobes);
             }
@@ -174,9 +192,9 @@ public class ManageClothesActivity extends AppCompatActivity
             }
         });
     }
-    private void initWardrobeSnipper(final Pair<List<Integer>,List<String>> wardrobes){
+    private void initWardrobeSnipper(final Pair<ArrayList<Integer>,ArrayList<String>> wardrobes){
         // Setup spinner
-        selectWardrobeSpinner = (Spinner) findViewById(R.id.selectWardrobeSpinner);
+        selectWardrobeSpinner = (Spinner) findViewById(R.id.selectWardrobeSpinner_clothesManage);
         selectWardrobeSpinner.setAdapter(new WardrobeSpinnerAdapter(getBaseContext(),wardrobes.second));
 
         selectWardrobeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -190,9 +208,11 @@ public class ManageClothesActivity extends AppCompatActivity
 
 //                Toast.makeText(view.getContext(),"snipperItemSelected",Toast.LENGTH_SHORT).show();
 
-//                currentWardrobeID = wardrobes.first.get(position);
+                ((TextView)view).setTextColor(getResources().getColor(R.color.colorWhite));//(R.color.colorWhite);
 
-//                freshClothes();
+                currentWardrobeID = wardrobes.first.get(position);
+
+                freshClothes();
             }
 
             @Override
@@ -238,6 +258,9 @@ public class ManageClothesActivity extends AppCompatActivity
         }
     }
     public void freshClothes(){
+        if(currentWardrobeID == null)
+            return;
+
         ClothesService service = RetrofitClient.newService(this,ClothesService.class);
         retrofit2.Call<ClothesResponseList> call = service.getByWardrobe(currentWardrobeID);
         call.enqueue(new Callback<ClothesResponseList>() {
@@ -255,69 +278,80 @@ public class ManageClothesActivity extends AppCompatActivity
                 adapt.setItemClickListener(new RecyclerViewAdapter.RecyclerViewOnItemClickListener() {
                     @Override
                     public void onItemClickListener(View view, int position) {
-                        Toast.makeText(ManageClothesActivity.this,"If you are happy - "+ position,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(),"If you are happy - "+ position,Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(this,Modi);
                     }
                 });
             }
 
             @Override
             public void onFailure(retrofit2.Call<ClothesResponseList> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public boolean ManageClothes_Button_Click(View view){
-
+    private void setSelectedIdList(){
         selectedIdList.clear();
 
         //Toast.makeText(ManageClothesActivity.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
         // Log.e("TAG", mGetData.getText().toString());
-        String a="";/////
+//        String a="";/////
         Map<Integer, Boolean> map = adapt.getMap();
         for (int i = 0; i < map.size(); i++) {
             if (map.get(i)) {
                 selectedIdList.add(clothesList.clothes[i].id);
-                a+=String.valueOf(clothesList.clothes[i].id);/////
-
+//                a+=String.valueOf(clothesList.clothes[i].id);/////
             }
         }
+    }
+
+    public void ManageClothes_Button_Click(View view){
+
+        setSelectedIdList();
 
         switch (view.getId()) {
 
                case R.id.moveClothesButton:
-                   Toast.makeText(ManageClothesActivity.this,a,Toast.LENGTH_SHORT).show();/////
+//                   Toast.makeText(ManageClothesActivity.this,a,Toast.LENGTH_SHORT).show();/////
 
-                   WardrobeResponseList wardrobes=new WardrobeResponseList();
-                   wardrobes.wardrobes=new WardrobeResponse[10];
-                   for(Integer i=0;i<10;i++){
-                       String name="name";
-                       wardrobes.wardrobes[i]=new WardrobeResponse(i,name+String.valueOf(i));
-                   }
-                   final ArrayList<String> list = new ArrayList<>();
-                   for(Integer i=0;i<wardrobes.wardrobes.length-6;i++)
-                   {
-                       list.add(wardrobes.wardrobes[i].name);
-                   }
+//                   WardrobeResponseList wardrobes=new WardrobeResponseList();
+//                   wardrobes.wardrobes=new WardrobeResponse[10];
+//                   for(Integer i=0;i<10;i++){
+//                       String name="name";
+//                       wardrobes.wardrobes[i]=new WardrobeResponse(i,name+String.valueOf(i));
+//                   }
+//                   final ArrayList<String> list = new ArrayList<>();
+//                   for(Integer i=0;i<wardrobes.wardrobes.length-6;i++)
+//                   {
+//                       list.add(wardrobes.wardrobes[i].name);
+//                   }
                    final OptionCenterDialog optionCenterDialog = new OptionCenterDialog();
-                   optionCenterDialog.show(ManageClothesActivity.this, list);
+                   optionCenterDialog.show(ManageClothesActivity.this, wardrobes.second);
                    optionCenterDialog.setItemClickListener(new AdapterView.OnItemClickListener() {
                        @Override
                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                            optionCenterDialog.dismiss();
-                           Toast.makeText(ManageClothesActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
+//                           Toast.makeText(ManageClothesActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
+                           moveClothes(wardrobes.first.get(position));
                        }
                    });
 
                    break;
             case R.id.deleteClothesButton:
-                Toast.makeText(ManageClothesActivity.this,a,Toast.LENGTH_SHORT).show();/////
+                if(selectedIdList.isEmpty()){
+                    MessageBoxUtil.showMessage(this,"删除不成功","请选择要删除的衣物");
+                    return;
+                }
+
                 final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(ManageClothesActivity.this);
                 mMaterialDialog.setMessage("确定删除当前选中衣物？删除后不可逆。")
                         .setPositiveButton("确定", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 mMaterialDialog.dismiss();
+
+                                deleteClothes();
                             }
                         })
                         .setNegativeButton("取消",
@@ -338,13 +372,70 @@ public class ManageClothesActivity extends AppCompatActivity
                         .show();
                 break;
         }
-        return true;
+        return;
     }
 
+    private void deleteClothes(){
+        ClothesService service = RetrofitClient.newService(this,ClothesService.class);
+        Integer[] list = new Integer[selectedIdList.size()];
+        selectedIdList.toArray(list);
+        retrofit2.Call<BooleanResponse> call = service.delete(list);
+        call.enqueue(new Callback<BooleanResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<BooleanResponse> call, Response<BooleanResponse> response) {
+                BooleanResponse ans = response.body();
 
+                if(ans.getAns())
+                    MessageBoxUtil.showMessage(getBaseContext(),"删除成功");
+//                    Toast.makeText(getBaseContext(),"删除成功",Toast.LENGTH_SHORT).show();
+                else
+                    MessageBoxUtil.showMessage(getBaseContext(),"删除失败");
+//                    Toast.makeText(getBaseContext(),"删除失败",Toast.LENGTH_SHORT).show();
+
+                freshClothes();
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<BooleanResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void moveClothes(Integer targetWardrobeID){
+        if(currentWardrobeID!=null&&currentWardrobeID.equals(targetWardrobeID))
+            return;
+
+        ClothesService service = RetrofitClient.newService(this,ClothesService.class);
+        Integer[] list = new Integer[selectedIdList.size()];
+        selectedIdList.toArray(list);
+        retrofit2.Call<BooleanResponse> call = service.changeWardrobe(list,targetWardrobeID);
+        call.enqueue(new Callback<BooleanResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<BooleanResponse> call, Response<BooleanResponse> response) {
+                BooleanResponse ans = response.body();
+
+                if(ans.getAns())
+                    callMessageBox("衣物挪动成功");
+//                    MessageBoxUtil.showMessage(getApplicationContext(),"衣物挪动成功");
+//                    Toast.makeText(getBaseContext(),"衣物挪动成功",Toast.LENGTH_SHORT).show();
+                else
+                    callMessageBox("衣物挪动失败");
+//                    MessageBoxUtil.showMessage(getBaseContext(),"衣物挪动失败");
+//                    Toast.makeText(getBaseContext(),"衣物挪动失败",Toast.LENGTH_SHORT).show();
+
+                freshClothes();
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<BooleanResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     public void jumpToAddClothes(View view){
         Intent intent = new Intent(this, AddClothesActivity.class);
+        intent.putExtra("wardrobeID",currentWardrobeID);
         startActivity(intent);
 //        LoginActivity.this.finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
@@ -373,7 +464,20 @@ public class ManageClothesActivity extends AppCompatActivity
         return true;
     }
 
-    public void testClick(View view){
-//        Toast.makeText(getBaseContext(),"hello1!!!!",Toast.LENGTH_SHORT).show();
+    public void newSuitButton_Click(View view){
+        setSelectedIdList();
+
+        if(selectedIdList.isEmpty()) {
+            MessageBoxUtil.showMessage(this,"请选中穿搭包含的衣物");
+            return;
+        }
+
+        Intent intent = new Intent(this,AddNewSuitActivity.class);
+        intent.putExtra("wardrobeID",currentWardrobeID);
+        startActivity(intent);
+    }
+
+    public void callMessageBox(String text){
+        MessageBoxUtil.showMessage(this,text);
     }
 }
