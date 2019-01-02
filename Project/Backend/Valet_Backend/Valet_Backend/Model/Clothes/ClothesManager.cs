@@ -116,8 +116,9 @@ namespace Valet_Backend.Model.Clothes
 				}
 
 				string picPath = clothes.picPath;
+				string tempPath = Config.PicSaveDir + "temp.jpg";
 
-				FileStream fs = System.IO.File.Create(picPath);
+				FileStream fs = System.IO.File.Create(tempPath);
 
 				//保存照片
 				clothesPicFile.CopyTo(fs);
@@ -125,11 +126,12 @@ namespace Valet_Backend.Model.Clothes
 				fs.Close();
 
 				//根据保存的照片获取衣物主题色
-				double color = getPicMainColor(picPath);
+				double color = getPicMainColor(tempPath);
 				clothes.color = color;
 				clothesDb.Update(clothes);
 
-				return true;
+				//图片压缩
+				return Utils.ImageUtil.compressImage(picPath);
 			}
 			else
 				return false;
@@ -219,7 +221,7 @@ namespace Valet_Backend.Model.Clothes
 			bool allChanged = true;
 
 			foreach (var clothesID in clothesIDs)
-				allChanged &= changeWardrobe(clothesIDs, targetWardrobeID);
+				allChanged &= changeWardrobe(clothesID, targetWardrobeID);
 
 			return allChanged;
 		}
@@ -231,6 +233,20 @@ namespace Valet_Backend.Model.Clothes
 		/// <summary>
 		/// 删除单件衣物
 		/// </summary>
+		/// <param name="clothes">需要删除的衣物</param>
+		/// <returns>删除结果 是否成功删除</returns>
+		public static bool delete(Clothes clothes)
+		{
+			if (clothes == null)
+				return false;
+
+			deleteClothesPic(clothes);
+			
+			return SuitManager.deleteByClothes(clothes.id)&clothesDb.Delete(clothes);
+		}
+		/// <summary>
+		/// 根据ID删除单件衣物
+		/// </summary>
 		/// <param name="clothesID">需要删除的衣物ID</param>
 		/// <returns>删除结果 是否成功删除</returns>
 		public static bool delete(int clothesID)
@@ -241,10 +257,8 @@ namespace Valet_Backend.Model.Clothes
 				return false;
 
 			deleteClothesPic(clothes);
-
-			SuitManager.deleteByClothes(clothesID);
-
-			return clothesDb.Delete(clothes);
+			
+			return SuitManager.deleteByClothes(clothesID)&clothesDb.Delete(clothes);
 		}
 		/// <summary>
 		/// 批量删除衣物
@@ -281,6 +295,21 @@ namespace Valet_Backend.Model.Clothes
 				Console.WriteLine(e);
 				return false;
 			}
+		}
+
+		/// <summary>
+		/// 删除对应衣橱内的所有衣物
+		/// </summary>
+		/// <param name="wardrobeID">需要删除的衣物所在衣橱ID</param>
+		/// <returns>操作结果 删除是否成功</returns>
+		public static bool deleteByWardrobe(int wardrobeID)
+		{
+			List<Clothes> clothesList = clothesDb.GetList(x => x.wardrobeID == wardrobeID);
+
+			foreach (Clothes clothes in clothesList)
+				delete(clothes);
+
+			return clothesDb.DeleteByIds(clothesList.ToArray());
 		}
 
 		#endregion

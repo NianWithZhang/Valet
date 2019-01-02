@@ -4,6 +4,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -246,7 +248,6 @@ namespace Valet_Backend.Model
 				return response.Content.ReadAsStringAsync().Result;
 			}
 		}
-
 
 
 		//Httppost 尝试

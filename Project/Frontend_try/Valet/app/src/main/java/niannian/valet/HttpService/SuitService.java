@@ -3,10 +3,14 @@ package niannian.valet.HttpService;
 import niannian.valet.ResponseModel.BooleanResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
 import niannian.valet.ResponseModel.SuitResponseList;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface SuitService {
@@ -29,6 +33,16 @@ public interface SuitService {
     @GET("api/suit")
     Call<ClothesResponseList> getClothes(
             @Query("id") Integer id
+    );
+
+    //新建穿搭
+    @Multipart
+    @POST("api/suit")
+    Call<BooleanResponse> add(
+            @Query("name") String name,
+            @Query("wardrobe_id") Integer wardrobe_id,
+            @Query("clothes") Integer[] clothes,
+            @Part MultipartBody.Part pic
     );
 
     //选择今日穿着

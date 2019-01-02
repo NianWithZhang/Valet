@@ -17,10 +17,19 @@ namespace Valet_Backend
 		/// </summary>
 		public const string ConnectionString = "server=localhost;uid=root;pwd=1234;database=ValetDB;charset=utf8";
 
+		#region 路径
+
 		/// <summary>
 		/// 图片存储路径
 		/// </summary>
 		public static string PicSaveDir => Directory.GetCurrentDirectory() + "\\wwwroot\\";
+
+		/// <summary>
+		/// 图片缓存路径
+		/// </summary>
+		public static string tempDir => PicSaveDir + "temp.jpg";
+
+		#endregion
 
 		/// <summary>
 		/// 衣物评价描述列表
@@ -35,6 +44,11 @@ namespace Valet_Backend
 			{ suitEvaluation.Thick,"穿这么多会热的"},
 			{ suitEvaluation.TooThick,"穿这么多会热出毛病的"}
 		};
+
+		/// <summary>
+		/// 图片存储时的压缩质量 数字越小压缩率越高 1-100
+		/// </summary>
+		public const int picCompressQuality = 25;
 
 		#region API url&key
 

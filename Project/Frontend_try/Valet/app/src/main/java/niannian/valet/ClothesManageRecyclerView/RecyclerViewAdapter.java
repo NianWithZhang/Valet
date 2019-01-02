@@ -69,7 +69,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         currentClothes.setImage(holder.itemView.getContext(),holder.clothesImage);
         //holder.imageView.setImageResource(currentClothes.image);
         holder.clothesNameText.setText(currentClothes.name);
-        holder.clothesTypeText.setText(currentClothes.type);
+        holder.clothesTypeText.setText(currentClothes.getTypeName());
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
