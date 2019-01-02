@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.longsh.optionframelibrary.OptionCenterDialog;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddNewSuitActivity extends AppCompatActivity {
 

@@ -43,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="14dp"
-                    android:text="TextView"
+                    android:text="还没有衣橱欸"
                     android:textColor="@color/colorAccentLight"
                     android:textSize="30sp" />
 
@@ -52,7 +52,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="8dp"
-                    android:text="TextView"
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -64,7 +63,7 @@
                 android:paddingLeft="25dp"
                 android:paddingBottom="3dp"
                 android:singleLine="true"
-                android:text="TextView"
+                android:text="快去添加一些衣服吧"
                 android:textAllCaps="false"
                 android:textColor="@color/colorAccentLight"
                 android:textSize="12sp"

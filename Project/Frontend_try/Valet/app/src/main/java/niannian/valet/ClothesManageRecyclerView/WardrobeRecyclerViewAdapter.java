@@ -16,7 +16,7 @@ import niannian.valet.R;
 import niannian.valet.ResponseModel.ClothesResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
 
-public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyHolder> {
+public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<WardrobeRecyclerViewAdapter.MyHolder> {
     ClothesResponseList Clothes;
     private HashMap<Integer,Boolean> Maps=new HashMap<Integer,Boolean>();
     private HashMap<Integer,Boolean>AllMaps=new HashMap<Integer,Boolean>();
@@ -57,7 +57,7 @@ public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerViewAdapter.MyHolder holder, final int position) {
+    public void onBindViewHolder(final MyHolder holder, final int position) {
         ClothesResponse currentClothes=Clothes.clothes[position];
 
         //holder.imageView.setImageResource(currentClothes.image);
@@ -109,7 +109,7 @@ public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             //imageView=(ImageView) itemView.findViewById(R.id.clothesImage);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkboxChooseClothes);
         }
-        
+
 
     }
     public void setItemClickListener(RecyclerViewAdapter.RecyclerViewOnItemClickListener onItemClickListener) {

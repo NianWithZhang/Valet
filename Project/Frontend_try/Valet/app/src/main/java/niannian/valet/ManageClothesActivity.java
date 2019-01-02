@@ -56,7 +56,7 @@ public class ManageClothesActivity extends AppCompatActivity
     private Spinner selectWardrobeSpinner;
     public Integer currentWardrobeID;
 
-    public ArrayList<Integer> selectedIdList=new ArrayList<>();
+    public static ArrayList<Integer> selectedIdList;
 
 
     public RecyclerViewAdapter adapt;
@@ -73,6 +73,8 @@ public class ManageClothesActivity extends AppCompatActivity
         selectWardrobeSpinner = (Spinner)findViewById(R.id.selectWardrobeSpinner_clothesManage);
 
         clothesRecyclerView =(RecyclerView)findViewById(R.id.RecyclerView);
+
+        selectedIdList = new ArrayList<>();
 
         initWardrobes();
 
@@ -188,7 +190,7 @@ public class ManageClothesActivity extends AppCompatActivity
 
 //                Toast.makeText(view.getContext(),"snipperItemSelected",Toast.LENGTH_SHORT).show();
 
-                currentWardrobeID = wardrobes.first.get(position);
+//                currentWardrobeID = wardrobes.first.get(position);
 
 //                freshClothes();
             }
