@@ -73,7 +73,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@android:color/transparent"
-                    android:onClick="jumpToAddClothes"
+                    android:onClick="addClothesButton_Click"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/deleteClothesButton"
                     app:layout_constraintTop_toTopOf="parent"

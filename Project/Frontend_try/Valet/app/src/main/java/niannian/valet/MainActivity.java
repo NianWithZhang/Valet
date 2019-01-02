@@ -169,6 +169,15 @@ public class MainActivity extends AppCompatActivity
             public void onResponse(retrofit2.Call<WardrobeResponseList> call, Response<WardrobeResponseList> response) {
                 WardrobeResponseList wardrobeResponseList = response.body();
 
+                if(wardrobeResponseList.wardrobes.length == 0)
+                {
+                    Intent intent = new Intent(getApplicationContext(),ManageWardrobeActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    ActivityOperationUtil.findActivity(getBaseContext()).finish();
+                    return;
+                }
+
                 List<Integer> wardrobeIDs = new ArrayList<Integer>();
                 List<String> wardrobeNames = new ArrayList<String>();
 
@@ -482,7 +491,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void wearNewSuitButton_Click(View view){
-        Toast.makeText(this,"选择新穿搭",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,ManageClothesActivity.class);
+        if(currentWardrobeID!=null)
+        intent.putExtra("wardrobeID",currentWardrobeID);
+        startActivity(intent);
+        this.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override

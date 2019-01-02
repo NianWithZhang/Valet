@@ -104,6 +104,21 @@ namespace Valet_Backend.Model.Wardrobe
 			return wardrobeDb.DeleteById(wardrobeID);
 		}
 
+		/// <summary>
+		/// 批量删除衣橱
+		/// </summary>
+		/// <param name="wardrobeIDs">需要删除的衣橱ID列表</param>
+		/// <returns>删除结果 是否成功删除衣橱</returns>
+		public static bool delete(int[] wardrobeIDs)
+		{
+			bool ans = true;
+
+			foreach (int wardrobeID in wardrobeIDs)
+				ans &= delete(wardrobeID);
+
+			return ans;
+		}
+
 		#endregion
 		
 		#region 穿着衣物

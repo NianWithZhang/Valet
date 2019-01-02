@@ -198,7 +198,7 @@ public class AddNewSuitActivity extends AppCompatActivity {
 
                 if(response.body().getAns()){
                     Toast.makeText(getApplicationContext(), "穿搭添加成功", Toast.LENGTH_SHORT).show();
-                    goBackPageButtonClick(null);
+                    goBackPageButton_addSuit_Click(null);
                 }
                 else
                     Toast.makeText(getApplicationContext(), "上传失败 请退出后重试", Toast.LENGTH_SHORT).show();
@@ -210,7 +210,8 @@ public class AddNewSuitActivity extends AppCompatActivity {
             }
         });
     }
-    public void goBackPageButtonClick(View view){
+    public void goBackPageButton_addSuit_Click(View view){
         this.finish();
     }
+
 }

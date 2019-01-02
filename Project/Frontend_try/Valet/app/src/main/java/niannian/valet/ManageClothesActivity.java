@@ -55,7 +55,7 @@ public class ManageClothesActivity extends AppCompatActivity
 
     private RecyclerView clothesRecyclerView;
     private Spinner selectWardrobeSpinner;
-    public Integer currentWardrobeID;
+    public Integer currentWardrobeID = -1;
     public Integer previousWardrobeID;
 
     public static ArrayList<Integer> selectedIdList;
@@ -72,7 +72,7 @@ public class ManageClothesActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_manageClothes);
         setSupportActionBar(toolbar);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.manageClothesToolbar);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.clothesTypeTabs);
 
         activity = this;
 
@@ -342,6 +342,10 @@ public class ManageClothesActivity extends AppCompatActivity
         switch (view.getId()) {
 
                case R.id.moveClothesButton:
+                   if(selectedIdList.isEmpty()){
+                       MessageBoxUtil.showMessage(this,"挪动不成功","请选择要挪动的衣物");
+                       return;
+                   }
 //                   Toast.makeText(ManageClothesActivity.this,a,Toast.LENGTH_SHORT).show();/////
 
 //                   WardrobeResponseList wardrobes=new WardrobeResponseList();
@@ -406,6 +410,9 @@ public class ManageClothesActivity extends AppCompatActivity
     private void setSelectedIdList(){
         if(selectedIdList==null)
             selectedIdList = new ArrayList<>();
+
+        if(clothesList == null)
+            return;
 
         selectedIdList.clear();
 
@@ -479,7 +486,13 @@ public class ManageClothesActivity extends AppCompatActivity
         });
     }
 
-    public void jumpToAddClothes(View view){
+    public void addClothesButton_Click(View view){
+        if(currentWardrobeID == null||currentWardrobeID==-1)
+        {
+            MessageBoxUtil.showMessage(this,"先去添加你的衣橱吧 :)");
+            return;
+        }
+
         Intent intent = new Intent(this, AddClothesActivity.class);
         intent.putExtra("wardrobeID",currentWardrobeID);
         startActivity(intent);
@@ -513,6 +526,11 @@ public class ManageClothesActivity extends AppCompatActivity
     }
 
     public void newSuitButton_Click(View view){
+        if(currentWardrobeID == null||currentWardrobeID < 0) {
+            MessageBoxUtil.showMessage(this,"先去添加你的衣橱吧 :)");
+            return;
+        }
+
         setSelectedIdList();
 
         if(selectedIdList.isEmpty()) {

@@ -115,9 +115,21 @@ namespace Valet_Backend.Controllers
 		/// <param name="id">需要删除的衣橱ID</param>
 		/// <returns>删除结果 是否成功删除衣橱</returns>
 		[HttpDelete]
-		public object deleteWardrobe(int id)
+		public BooleanResponse deleteWardrobe(int id)
 		{
-			return new { ans = WardrobeManager.delete(id) };
+			return new BooleanResponse(WardrobeManager.delete(id));
+		}
+
+		/// <summary>
+		/// 批量删除衣橱
+		/// </summary>
+		/// <param name="ids">需要删除的衣橱ID列表</param>
+		/// <returns>删除结果 是否成功删除衣橱</returns>
+		[Route("many")]
+		[HttpDelete]
+		public BooleanResponse deleteWardrobes(int[] ids)
+		{
+			return new BooleanResponse(WardrobeManager.delete(ids));
 		}
 
 		#endregion
