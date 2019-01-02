@@ -15,17 +15,19 @@ import java.util.Map;
 import niannian.valet.R;
 import niannian.valet.ResponseModel.ClothesResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
+import niannian.valet.ResponseModel.WardrobeResponse;
+import niannian.valet.ResponseModel.WardrobeResponseList;
 
-public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyHolder> {
-    ClothesResponseList Clothes;
+public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<WardrobeRecyclerViewAdapter.MyHolder> {
+    WardrobeResponseList Wardrobes;
     private HashMap<Integer,Boolean> Maps=new HashMap<Integer,Boolean>();
     private HashMap<Integer,Boolean>AllMaps=new HashMap<Integer,Boolean>();
     public RecyclerViewAdapter.RecyclerViewOnItemClickListener onItemClickListener;
 
-    public WardrobeRecyclerViewAdapter(ClothesResponseList ClothesList){
+    public WardrobeRecyclerViewAdapter(WardrobeResponseList WardrobeList){
 
-        this.Clothes=ClothesList;
-        for (int i = 0; i < Clothes.clothes.length; i++) {
+        this.Wardrobes=WardrobeList;
+        for (int i = 0; i < Wardrobes.wardrobes.length; i++) {
             Maps.put(i, false);
         }
     }
@@ -57,11 +59,11 @@ public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerViewAdapter.MyHolder holder, final int position) {
-        ClothesResponse currentClothes=Clothes.clothes[position];
+    public void onBindViewHolder(final MyHolder holder, final int position) {
+        WardrobeResponse currentWardrobes=Wardrobes.wardrobes[position];
 
         //holder.imageView.setImageResource(currentClothes.image);
-        holder.textView.setText(currentClothes.name);
+        holder.textView.setText(currentWardrobes.name);
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -92,7 +94,7 @@ public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public int getItemCount() {
 
-        return Clothes.clothes.length;
+        return Wardrobes.wardrobes.length;
     }
 
 
@@ -105,9 +107,8 @@ public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         public MyHolder(View itemView) {
             super(itemView);
             this.listener = onItemClickListener;
-            textView=(TextView)itemView.findViewById(R.id.clothesNameText);
-            //imageView=(ImageView) itemView.findViewById(R.id.clothesImage);
-            checkBox = (CheckBox) itemView.findViewById(R.id.checkboxChooseClothes);
+            textView=(TextView)itemView.findViewById(R.id.wardrobeNameText);
+            checkBox = (CheckBox) itemView.findViewById(R.id.checkboxChooseWardrobe);
         }
         
 
