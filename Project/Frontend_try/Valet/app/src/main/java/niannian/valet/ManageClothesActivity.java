@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ThemedSpinnerAdapter;
@@ -77,6 +78,7 @@ public class ManageClothesActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_manageClothes);
         setSupportActionBar(toolbar);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.manageClothesToolbar);
 
         activity = this;
 
@@ -124,6 +126,40 @@ public class ManageClothesActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
+    public void chooseClothesTypeTabClick(View view){
+        int clothesType=-1;//初始预设获取全部类型的衣物
+
+        switch (view.getId()) {
+
+            case R.id.allTypeTab:
+                clothesType = -1;
+                break;
+            case R.id.hatTab:
+                clothesType = 0;
+                break;
+            case R.id.coatTab:
+                clothesType = 1;
+                break;
+            case R.id.shirtTab:
+                clothesType = 2;
+                break;
+            case R.id.bottomTab:
+                clothesType = 3;
+                break;
+            case R.id.sockTab:
+                clothesType = 4;
+                break;
+            case R.id.shoeTab:
+                clothesType = 5;
+                break;
+
+        }
+
+
+    }
+
+
 //    public void onClick(View view){
 //        switch (view.getId()) {
 //            case R.id.moveClothesButton:
@@ -279,7 +315,7 @@ public class ManageClothesActivity extends AppCompatActivity
                     @Override
                     public void onItemClickListener(View view, int position) {
                         Toast.makeText(getBaseContext(),"If you are happy - "+ position,Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(this,Modi);
+//                        Intent intent = new Intent(this,Modi);
                     }
                 });
             }
