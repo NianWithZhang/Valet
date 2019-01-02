@@ -40,6 +40,7 @@ import niannian.valet.HttpService.ClothesService;
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.WardrobeService;
 import niannian.valet.ResponseModel.BooleanResponse;
+import niannian.valet.ResponseModel.ClothesResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
 import niannian.valet.ResponseModel.WardrobeResponse;
 import niannian.valet.ResponseModel.WardrobeResponseList;
@@ -55,6 +56,8 @@ public class ManageClothesActivity extends AppCompatActivity
 
     private RecyclerView clothesRecyclerView;
     private Spinner selectWardrobeSpinner;
+    private TabLayout tabLayout;
+
     public Integer currentWardrobeID;
     public Integer previousWardrobeID;
 
@@ -72,7 +75,7 @@ public class ManageClothesActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_manageClothes);
         setSupportActionBar(toolbar);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.manageClothesToolbar);
+        tabLayout = (TabLayout) findViewById(R.id.clothesTypeTabs);
 
         activity = this;
 
@@ -90,6 +93,27 @@ public class ManageClothesActivity extends AppCompatActivity
 
         initWardrobes();
 
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            /**
+             * Tab 进入选中状态时被调用
+             */
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                chooseClothesTypeTabClick(tab.getPosition());
+            }
+            /**
+             * Tab 离开选中状态时回调
+             */
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+            /**
+             * Tab 已经被选中又被选中时回调
+             */
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
 
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -132,34 +156,63 @@ public class ManageClothesActivity extends AppCompatActivity
         }
     }
 
-    public void chooseClothesTypeTabClick(View view){
-        int clothesType=-1;//初始预设获取全部类型的衣物
-
-        switch (view.getId()) {
-
-            case R.id.allTypeTab:
-                clothesType = -1;
-                break;
-            case R.id.hatTab:
-                clothesType = 0;
-                break;
-            case R.id.coatTab:
-                clothesType = 1;
-                break;
-            case R.id.shirtTab:
-                clothesType = 2;
-                break;
-            case R.id.bottomTab:
-                clothesType = 3;
-                break;
-            case R.id.sockTab:
-                clothesType = 4;
-                break;
-            case R.id.shoeTab:
-                clothesType = 5;
-                break;
-
+    public void chooseClothesTypeTabClick(int position){
+        int clothesType=position-1;
+        ArrayList<ClothesResponse> typeClothesList=new ArrayList<>();
+//        switch (.getId()) {
+//
+//            case R.id.allTypeTab:
+//                clothesType = -1;
+//                break;
+//            case R.id.hatTab:
+//                clothesType = 0;
+//                break;
+//            case R.id.coatTab:
+//                clothesType = 1;
+//                break;
+//            case R.id.shirtTab:
+//                clothesType = 2;
+//                break;
+//            case R.id.bottomTab:
+//                clothesType = 3;
+//                break;
+//            case R.id.sockTab:
+//                clothesType = 4;
+//                break;
+//            case R.id.shoeTab:
+//                clothesType = 5;
+//                break;
+//
+//        }
+        if(clothesType == -1){
+            for(int i=0;i<clothesList.clothes.length;i++)
+            typeClothesList.add(clothesList.clothes[i]);
         }
+            else{
+            for(int i=0;i<clothesList.clothes.length;i++)
+            {
+                if(clothesList.clothes[i].type==clothesType) {
+                    typeClothesList.add(clothesList.clothes[i]);
+                }
+            }
+        }
+
+        ClothesResponse[] list = new ClothesResponse[typeClothesList.size()];
+        typeClothesList.toArray(list);
+
+        LinearLayoutManager layoutManager=new LinearLayoutManager(getBaseContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        clothesRecyclerView.setLayoutManager(layoutManager);
+        adapt = new RecyclerViewAdapter(new ClothesResponseList(list));
+        clothesRecyclerView.setAdapter(adapt);
+
+        adapt.setItemClickListener(new RecyclerViewAdapter.RecyclerViewOnItemClickListener() {
+            @Override
+            public void onItemClickListener(View view, int position) {
+                Toast.makeText(getBaseContext(),"If you are happy - "+ position,Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(this,Modi);
+            }
+        });
 
 
     }
@@ -304,6 +357,8 @@ public class ManageClothesActivity extends AppCompatActivity
     public void freshClothes(){
         if(currentWardrobeID == null)
             return;
+
+        tabLayout.getTabAt(0).select();
 
         ClothesService service = RetrofitClient.newService(this,ClothesService.class);
         retrofit2.Call<ClothesResponseList> call = service.getByWardrobe(currentWardrobeID);

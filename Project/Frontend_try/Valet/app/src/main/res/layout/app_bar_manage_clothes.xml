@@ -95,49 +95,49 @@
                 android:id="@+id/allTypeTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="帽子"
-                android:onClick="chooseClothesTypeTabClick"/>
+                android:text="全部"
+                />
             <android.support.design.widget.TabItem
                 android:id="@+id/hatTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="帽子"
-                android:onClick="chooseClothesTypeTabClick"/>
+                />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/coatTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="外套"
-                android:onClick="chooseClothesTypeTabClick"/>
+               />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/shirtTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="内衫"
-                android:onClick="chooseClothesTypeTabClick"/>
+                />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/bottomTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="裤裙"
-                android:onClick="chooseClothesTypeTabClick"/>
+                />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/sockTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="袜子"
-                android:onClick="chooseClothesTypeTabClick"/>
+               />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/shoeTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="鞋子"
-                android:onClick="chooseClothesTypeTabClick"/>
+                />
 
         </android.support.design.widget.TabLayout>
 

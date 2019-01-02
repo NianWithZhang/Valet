@@ -6,4 +6,7 @@ import java.util.ArrayList;
 public class ClothesResponseList {
     public ClothesResponse[] clothes;
 
+    public ClothesResponseList(ClothesResponse[] clothes){
+        this.clothes = clothes;
+    }
 }
