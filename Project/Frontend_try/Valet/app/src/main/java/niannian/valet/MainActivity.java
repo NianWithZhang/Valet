@@ -508,6 +508,7 @@ public class MainActivity extends AppCompatActivity
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }else if(id == R.id.nav_wardrobe){
             //TODO
+            jumpToManageWardrobe();
             Toast.makeText(this,"TODO",Toast.LENGTH_SHORT).show();
         }else if(id == R.id.nav_log_out)
             ActivityOperationUtl.logOut(this);
@@ -530,4 +531,15 @@ public class MainActivity extends AppCompatActivity
 //            Toast.makeText(getBaseContext(),"id = "+id.toString(),Toast.LENGTH_SHORT);
 //        }
 //    }
+
+    public void jumpToManageWardrobe(){
+        Intent intent = new Intent(this, ManageWardrobeActivity.class);
+        startActivity(intent);
+//        LoginActivity.this.finish();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+    }
+
+
+
+
 }

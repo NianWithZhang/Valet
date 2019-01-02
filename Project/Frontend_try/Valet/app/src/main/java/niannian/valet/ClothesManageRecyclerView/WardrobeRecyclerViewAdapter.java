@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import niannian.valet.R;
-import niannian.valet.ResponseModel.ClothesResponse;
-import niannian.valet.ResponseModel.ClothesResponseList;
 import niannian.valet.ResponseModel.WardrobeResponse;
 import niannian.valet.ResponseModel.WardrobeResponseList;
 
@@ -22,7 +20,7 @@ public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<WardrobeRe
     WardrobeResponseList Wardrobes;
     private HashMap<Integer,Boolean> Maps=new HashMap<Integer,Boolean>();
     private HashMap<Integer,Boolean>AllMaps=new HashMap<Integer,Boolean>();
-    public RecyclerViewAdapter.RecyclerViewOnItemClickListener onItemClickListener;
+    public wardrobeRecyclerViewOnItemClickListener onItemClickListener;
 
     public WardrobeRecyclerViewAdapter(WardrobeResponseList WardrobeList){
 
@@ -80,7 +78,7 @@ public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<WardrobeRe
         //之后扩展使用
         AllMaps.put(position,true);
 
-        holder.itemView.findViewById(R.id.clothesCard).setOnClickListener(new View.OnClickListener(){
+        holder.itemView.findViewById(R.id.wardrobeCard).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 int pos = holder.getLayoutPosition();
@@ -103,7 +101,7 @@ public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<WardrobeRe
         //ImageView imageView;
         TextView textView;
         CheckBox checkBox;
-        private RecyclerViewAdapter.RecyclerViewOnItemClickListener listener;
+        private wardrobeRecyclerViewOnItemClickListener listener;
         public MyHolder(View itemView) {
             super(itemView);
             this.listener = onItemClickListener;
@@ -113,12 +111,12 @@ public class WardrobeRecyclerViewAdapter extends RecyclerView.Adapter<WardrobeRe
 
 
     }
-    public void setItemClickListener(RecyclerViewAdapter.RecyclerViewOnItemClickListener onItemClickListener) {
+    public void setItemClickListener(wardrobeRecyclerViewOnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
 
-    public interface RecyclerViewOnItemClickListener {
+    public interface wardrobeRecyclerViewOnItemClickListener {
         //点击事件
         void onItemClickListener(View view, int position);
     }

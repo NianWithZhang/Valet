@@ -8,4 +8,12 @@
     tools:context=".ManageWardrobeActivity"
     tools:showIn="@layout/app_bar_manage_wardrobe">
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="395dp"
+        android:layout_height="587dp"
+        android:id="@+id/manageWardrobeRecyclerView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

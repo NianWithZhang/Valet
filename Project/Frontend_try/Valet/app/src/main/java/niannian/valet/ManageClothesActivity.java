@@ -67,12 +67,12 @@ public class ManageClothesActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_clothes);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.manageClothesToolbar);
         setSupportActionBar(toolbar);
 
         selectWardrobeSpinner = (Spinner)findViewById(R.id.selectWardrobeSpinner_clothesManage);
 
-        clothesRecyclerView =(RecyclerView)findViewById(R.id.RecyclerView);
+        clothesRecyclerView =(RecyclerView)findViewById(R.id.manageWardrobeRecyclerView);
 
         selectedIdList = new ArrayList<>();
 
