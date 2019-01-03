@@ -86,6 +86,6 @@
         android:focusable="true"
         app:elevation="9dp"
         app:fabSize="normal"
-        app:srcCompat="@android:drawable/checkbox_on_background" />
+        app:srcCompat="@drawable/check" />
 
 </android.support.design.widget.CoordinatorLayout>
