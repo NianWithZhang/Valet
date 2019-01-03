@@ -23,9 +23,7 @@ import com.longsh.optionframelibrary.OptionCenterDialog;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
 
-import niannian.valet.HttpService.ClothesService;
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.SuitService;
 import niannian.valet.ResponseModel.BooleanResponse;
@@ -173,7 +171,7 @@ public class AddNewSuitActivity extends AppCompatActivity {
             return;
         }
 
-        addSuit(name,ManageClothesActivity.selectedIdList);
+        addSuit(name,ManageClothesActivity.selectedIDList);
     }
 
     private void addSuit(String name,ArrayList<Integer> clothesId){
@@ -182,10 +180,10 @@ public class AddNewSuitActivity extends AppCompatActivity {
             return;
         }
 
-        if(ManageClothesActivity.selectedIdList==null)
+        if(ManageClothesActivity.selectedIDList ==null)
             return;
-        Integer[] list = new Integer[ManageClothesActivity.selectedIdList.size()];
-        ManageClothesActivity.selectedIdList.toArray(list);
+        Integer[] list = new Integer[ManageClothesActivity.selectedIDList.size()];
+        ManageClothesActivity.selectedIDList.toArray(list);
 
         SuitService service = RetrofitClient.newService(this,SuitService.class);
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"), imgFile);

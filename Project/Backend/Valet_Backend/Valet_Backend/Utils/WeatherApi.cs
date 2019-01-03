@@ -46,7 +46,7 @@ namespace Valet_Backend.Model.Suit
 #if DEBUG
 				throw new Exception();
 #else
-			ans = "上海市"
+			ans = "上海市";
 #endif
 
 			Console.WriteLine("查询城市结果 - " + ans);
