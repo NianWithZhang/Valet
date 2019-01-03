@@ -48,8 +48,8 @@ public class AddNewSuitActivity extends AppCompatActivity {
 
     private Integer wardrobeID;
 
-    public static Uri imgUri;
-    public static File imgFile;
+    public Uri imgUri;
+    public File imgFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -62,7 +62,7 @@ public class ManageClothesActivity extends AppCompatActivity
     public Integer previousWardrobeID;
 
     public static ArrayList<Integer> selectedIDList;
-    public ArrayList<Integer> selectedIDListCache;
+//    public ArrayList<Integer> selectedIDListCache;
 
     public Pair<ArrayList<Integer>,ArrayList<String>> wardrobes;
 
@@ -86,7 +86,7 @@ public class ManageClothesActivity extends AppCompatActivity
         clothesRecyclerView.setItemViewCacheSize(1000);
 
         selectedIDList = new ArrayList<>();
-        selectedIDListCache = new ArrayList<>();
+//        selectedIDListCache = new ArrayList<>();
 
         Intent intent = getIntent();
         previousWardrobeID = -1;
@@ -159,7 +159,7 @@ public class ManageClothesActivity extends AppCompatActivity
     }
 
     public void chooseClothesTypeTabClick(int position){
-        addSelectedIDListCache();
+//        addSelectedIDListCache();
 
         int clothesType=position-1;
         ArrayList<ClothesResponse> typeClothesList=new ArrayList<>();
@@ -201,20 +201,20 @@ public class ManageClothesActivity extends AppCompatActivity
             }
         }
 
-        ClothesResponse[] list = new ClothesResponse[typeClothesList.size()];
+        final ClothesResponse[] list = new ClothesResponse[typeClothesList.size()];
         typeClothesList.toArray(list);
 
         LinearLayoutManager layoutManager=new LinearLayoutManager(getBaseContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         clothesRecyclerView.setLayoutManager(layoutManager);
-        adapt = new RecyclerViewAdapter(new ClothesResponseList(list),setSelectedIDList());
+        adapt = new RecyclerViewAdapter(new ClothesResponseList(list),selectedIDList);
         clothesRecyclerView.setAdapter(adapt);
 
         adapt.setItemClickListener(new RecyclerViewAdapter.RecyclerViewOnItemClickListener() {
             @Override
             public void onItemClickListener(View view, int position) {
-                Toast.makeText(getBaseContext(),"If you are happy - "+ position,Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(this,Modi);
+//                Toast.makeText(getBaseContext(),"If you are happy - "+ position,Toast.LENGTH_SHORT).show();
+                editClothes(list[position].id);
             }
         });
 
@@ -365,7 +365,7 @@ public class ManageClothesActivity extends AppCompatActivity
         clothesList = new ClothesResponseList(new ClothesResponse[0]);
         tabLayout.getTabAt(0).select();
 
-        selectedIDListCache.clear();
+//        selectedIDListCache.clear();
 
         ClothesService service = RetrofitClient.newService(this,ClothesService.class);
         retrofit2.Call<ClothesResponseList> call = service.getByWardrobe(currentWardrobeID);
@@ -378,14 +378,14 @@ public class ManageClothesActivity extends AppCompatActivity
                 LinearLayoutManager layoutManager=new LinearLayoutManager(getBaseContext());
                 layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 clothesRecyclerView.setLayoutManager(layoutManager);
-                adapt = new RecyclerViewAdapter(clothesList,selectedIDListCache);
+                adapt = new RecyclerViewAdapter(clothesList,selectedIDList);
                 clothesRecyclerView.setAdapter(adapt);
 
                 adapt.setItemClickListener(new RecyclerViewAdapter.RecyclerViewOnItemClickListener() {
                     @Override
                     public void onItemClickListener(View view, int position) {
-                        Toast.makeText(getBaseContext(),"If you are happy - "+ position,Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(this,Modi);
+//                        Toast.makeText(getBaseContext(),"If you are happy - "+ position,Toast.LENGTH_SHORT).show();
+                        editClothes(clothesList.clothes[position].id);
                     }
                 });
             }
@@ -399,7 +399,7 @@ public class ManageClothesActivity extends AppCompatActivity
 
     public void ManageClothes_Button_Click(View view){
 
-        setSelectedIDList();
+//        setSelectedIDList();
 
         switch (view.getId()) {
 
@@ -469,47 +469,47 @@ public class ManageClothesActivity extends AppCompatActivity
         }
         return;
     }
-    private void addSelectedIDListCache(){
-        if(clothesList == null)
-            return;
-
-        Map<Integer, Boolean> map = adapt.getMap();
-        for (int i = 0; i < map.size(); i++) {
-            if (map.get(i)){
-                if(!selectedIDListCache.contains(clothesList.clothes[i].id))
-                    selectedIDListCache.add(clothesList.clothes[i].id);
-            }else if(selectedIDListCache.contains(clothesList.clothes[i].id))
-                selectedIDListCache.remove(clothesList.clothes[i].id);
-        }
-    }
-    private ArrayList<Integer> setSelectedIDList(){
-//        if(selectedIDList ==null)
+//    private void addSelectedIDListCache(){
+//        if(clothesList == null)
+//            return;
+//
+//        Map<Integer, Boolean> map = adapt.getMap();
+//        for (int i = 0; i < map.size(); i++) {
+//            if (map.get(i)){
+//                if(!selectedIDListCache.contains(clothesList.clothes[i].id))
+//                    selectedIDListCache.add(clothesList.clothes[i].id);
+//            }else if(selectedIDListCache.contains(clothesList.clothes[i].id))
+//                selectedIDListCache.remove(clothesList.clothes[i].id);
+//        }
+//    }
+//    private ArrayList<Integer> setSelectedIDList(){
+////        if(selectedIDList ==null)
+////            selectedIDList = new ArrayList<>();
+//
+//        if(clothesList == null){
 //            selectedIDList = new ArrayList<>();
-
-        if(clothesList == null){
-            selectedIDList = new ArrayList<>();
-            return null;
-        }
-
-//        selectedIDList.clear();
-
-        selectedIDList = new ArrayList<>(selectedIDListCache);
-
-        //Toast.makeText(ManageClothesActivity.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
-        // Log.e("TAG", mGetData.getText().toString());
-//        String a="";/////
-        Map<Integer, Boolean> map = adapt.getMap();
-        for (int i = 0; i < map.size(); i++) {
-            if (map.get(i)) {
-                //TRY
-                if(!selectedIDList.contains(clothesList.clothes[i].id))
-                    selectedIDList.add(clothesList.clothes[i].id);
-//                a+=String.valueOf(clothesList.clothes[i].id);/////
-            }
-        }
-
-        return selectedIDList;
-    }
+//            return null;
+//        }
+//
+////        selectedIDList.clear();
+//
+//        selectedIDList = new ArrayList<>(selectedIDListCache);
+//
+//        //Toast.makeText(ManageClothesActivity.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
+//        // Log.e("TAG", mGetData.getText().toString());
+////        String a="";/////
+//        Map<Integer, Boolean> map = adapt.getMap();
+//        for (int i = 0; i < map.size(); i++) {
+//            if (map.get(i)) {
+//                //TRY
+//                if(!selectedIDList.contains(clothesList.clothes[i].id))
+//                    selectedIDList.add(clothesList.clothes[i].id);
+////                a+=String.valueOf(clothesList.clothes[i].id);/////
+//            }
+//        }
+//
+//        return selectedIDList;
+//    }
 
     private void deleteClothes(){
         ClothesService service = RetrofitClient.newService(this,ClothesService.class);
@@ -569,6 +569,12 @@ public class ManageClothesActivity extends AppCompatActivity
         });
     }
 
+    private void editClothes(Integer id){
+        Intent intent = new Intent(this,EditClothesActivity.class);
+        intent.putExtra("clothesID",id);
+        startActivity(intent);
+    }
+
     public void addClothesButton_Click(View view){
         if(currentWardrobeID == null||currentWardrobeID==-1)
         {
@@ -614,7 +620,7 @@ public class ManageClothesActivity extends AppCompatActivity
             return;
         }
 
-        setSelectedIDList();
+//        setSelectedIDList();
 
         if(selectedIDList.isEmpty()) {
             MessageBoxUtil.showMessage(this,"请选中穿搭包含的衣物");

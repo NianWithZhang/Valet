@@ -1,6 +1,5 @@
 package niannian.valet.ClothesManageRecyclerView;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,52 +9,51 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import niannian.valet.R;
 import niannian.valet.ResponseModel.ClothesResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyHolder> {
-    public ClothesResponseList Clothes;
+    public ClothesResponseList clothes;
 
     private HashMap<Integer,Boolean> Maps=new HashMap<Integer,Boolean>();
     private HashMap<Integer,Boolean> AllMaps=new HashMap<Integer,Boolean>();
     public RecyclerViewOnItemClickListener onItemClickListener;
 
-    private List<Integer> selectedIDList;
+    private ArrayList<Integer> selectedIDList;
 
-    public RecyclerViewAdapter(ClothesResponseList ClothesList, List<Integer> selectedIDList){
+    public RecyclerViewAdapter(ClothesResponseList ClothesList, ArrayList<Integer> selectedIDList){
 
         this.selectedIDList = selectedIDList;
-        this.Clothes=ClothesList;
-        for (int i = 0; i < Clothes.clothes.length; i++) {
-            Maps.put(i, false);
-        }
+        this.clothes =ClothesList;
+//        for (int i = 0; i < clothes.clothes.length; i++) {
+//            Maps.put(i, false);
+//        }
     }
 
-    //获取最终的map存储数据
-    public Map<Integer,Boolean> getMap(){
-        return Maps;
-    }
+//    //获取最终的map存储数据
+//    public Map<Integer,Boolean> getMap(){
+//        return Maps;
+//    }
 
     //后续扩展 - 获取最终的map存储数据
 //   public Map<Integer,Boolean>getAllMap(){
 //        return AllMaps;
 //    }
 
-    //点击item选中CheckBox
-    public void setSelectItem(int position) {
-        //对当前状态取反
-        if (Maps.get(position)) {
-            Maps.put(position, false);
-        } else {
-            Maps.put(position, true);
-        }
-        notifyItemChanged(position);
-    }
+//    //点击item选中CheckBox
+//    public void setSelectItem(int position) {
+//        //对当前状态取反
+//        if (Maps.get(position)) {
+//            Maps.put(position, false);
+//        } else {
+//            Maps.put(position, true);
+//        }
+//        notifyItemChanged(position);
+//    }
 
 
 
@@ -69,12 +67,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(final MyHolder holder, final int position) {
-        if(selectedIDList.contains(Clothes.clothes[position].id)){
+        if(selectedIDList.contains(clothes.clothes[position].id)){
             ((CheckBox)holder.itemView.findViewById(R.id.checkboxChooseClothes)).setChecked(true);
-            Maps.put(position,true);
+//            Maps.put(position,true);
         }
 
-        ClothesResponse currentClothes=Clothes.clothes[position];
+        ClothesResponse currentClothes= clothes.clothes[position];
         currentClothes.setImage(holder.itemView.getContext(),holder.clothesImage);
         //holder.imageView.setImageResource(currentClothes.image);
         holder.clothesNameText.setText(currentClothes.name);
@@ -82,12 +80,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Maps.put(position,isChecked);
+//                Maps.put(position,isChecked);
+                Integer temp = clothes.clothes[position].id;
+                if(selectedIDList.contains(temp))
+                    selectedIDList.remove(temp);
+                else
+                    selectedIDList.add(temp);
             }
         });
-        if(Maps.get(position)==null){
-            Maps.put(position,false);
-        }
+//        if(Maps.get(position)==null){
+//            Maps.put(position,false);
+//        }
 
 //        holder.checkBox.setChecked(Maps.get(position));
 
@@ -98,6 +101,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 onItemClickListener.onItemClickListener(holder.itemView,pos);
             }
         });
+
     }
 
 
@@ -105,7 +109,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
 
-        return Clothes.clothes.length;
+        return clothes.clothes.length;
     }
 
 

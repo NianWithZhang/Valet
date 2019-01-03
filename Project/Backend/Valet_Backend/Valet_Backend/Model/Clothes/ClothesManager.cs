@@ -21,6 +21,22 @@ namespace Valet_Backend.Model.Clothes
 		#region 查询
 
 		/// <summary>
+		/// 获取指定编号的衣物信息
+		/// </summary>
+		/// <param name="clothesID">衣物ID</param>
+		/// <returns>编号对应的衣物 未找到的返回null</returns>
+		public static ClothesInfoResponse getInfo(int clothesID)
+		{
+			Clothes clothes = clothesDb.GetById(clothesID);
+
+			//确保衣物存在
+			if (clothes == null)
+				return null;
+
+			return new ClothesInfoResponse(clothes);
+		}
+
+		/// <summary>
 		/// 获取指定编号的衣物
 		/// </summary>
 		/// <param name="clothesID">衣物ID</param>

@@ -15,6 +15,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.util.Log;
+import android.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +32,16 @@ import com.longsh.optionframelibrary.OptionCenterDialog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import niannian.valet.HttpService.ClothesService;
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.ResponseModel.BooleanResponse;
+import niannian.valet.ResponseModel.ClothesInfoResponse;
+import niannian.valet.ResponseModel.ClothesResponse;
 import niannian.valet.Utils.MessageBoxUtil;
 import niannian.valet.Utils.PermissionUtil;
 import okhttp3.MediaType;
@@ -45,6 +50,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Multipart;
 
 
 public class EditClothesActivity extends AppCompatActivity {
@@ -60,15 +66,15 @@ public class EditClothesActivity extends AppCompatActivity {
     private Spinner selectWardrobeSnipper;
     private List<String> clothesType;
 
-    private Integer wardrobeID = -1;
+    private Integer clothesID = -1;
 
-    public static Uri imgUri;
-    public static File imgFile;
+    public Uri imgUri;
+    public File imgFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_clothes);
+        setContentView(R.layout.activity_edit_clothes);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -87,14 +93,15 @@ public class EditClothesActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         if(intent!=null){
-            wardrobeID = intent.getIntExtra("wardrobeID",-1);
+            clothesID = intent.getIntExtra("clothesID",-1);
         }
 
-        if(wardrobeID == -1)
+        if(clothesID < 0)
         {
             Toast.makeText(this,"信息获取失败 请退出后重试",Toast.LENGTH_SHORT).show();
             this.finish();
         }
+
 
         //初始化ClothesType列表
         clothesType=new ArrayList<>();
@@ -105,7 +112,11 @@ public class EditClothesActivity extends AppCompatActivity {
         clothesType.add( 4,"袜子");
         clothesType.add( 5,"鞋子");
 
-        initAddClothesTypeSnipper(clothesType);
+
+        initEditClothesTypeSnipper(clothesType);
+
+        //初始化衣物信息
+        initClothes();
 
         //获取相机权限
         PermissionUtil.requestCameraStoragePermission(this);
@@ -125,7 +136,6 @@ public class EditClothesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 optionCenterDialog.dismiss();
-                Toast.makeText(EditClothesActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
                 switch(position) {
                     case 0:
                         cameraSetImage();
@@ -208,7 +218,7 @@ public class EditClothesActivity extends AppCompatActivity {
     }
 
 
-    private void initAddClothesTypeSnipper(final List<String> clothesType){
+    private void initEditClothesTypeSnipper(final List<String> clothesType){
 
         // Setup spinner
         selectWardrobeSnipper = (Spinner) findViewById(R.id.editClothesTypeSpinner);
@@ -273,7 +283,7 @@ public class EditClothesActivity extends AppCompatActivity {
 
     //用户添加完成衣物信息
     public void editClothesCompleteButtonClick(View view){
-        if(wardrobeID==null){
+        if(clothesID==null){
             Toast.makeText(this,"信息获取失败 请退出后重试",Toast.LENGTH_SHORT).show();
             return;
         }
@@ -297,26 +307,35 @@ public class EditClothesActivity extends AppCompatActivity {
         SeekBar thicknessBar=findViewById(R.id.editClothesThicknessSeekBar);
         Integer thickness=thicknessBar.getProgress();
 
-        editClothes(wardrobeID,name,type,thickness);
-        Toast.makeText(EditClothesActivity.this,String.valueOf(type)+" "+name+" "+String.valueOf(thickness),Toast.LENGTH_SHORT).show();
+        editClothes(clothesID,name,type,thickness);
     }
     //执行添加衣物操作
-    private void editClothes(Integer wardrobeID,String name,Integer type,Integer thickness){
-        if(imgFile == null){
-            MessageBoxUtil.showMessage(this,"请上传衣物照片","给你的衣服拍张照吧 :)");
-            return;
-        }
+    private void editClothes(Integer clothesID,String name,Integer type,Integer thickness){
+//        if(imgFile == null){
+//            MessageBoxUtil.showMessage(this,"请上传衣物照片","给你的衣服拍张照吧 :)");
+//            return;
+//        }
 
         ClothesService service = RetrofitClient.newService(this,ClothesService.class);
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"), imgFile);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("pic", imgFile.getName(), requestFile);
-        Call<BooleanResponse> call = service.add(wardrobeID,name,type,thickness,body);
+
+
+
+        Call<BooleanResponse> call;
+
+        if(imgFile == null){
+            call = service.modifyWithoutPic(clothesID,name,type,thickness);
+        }else{
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"), imgFile);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("pic", imgFile.getName(), requestFile);
+            call = service.modify(clothesID,name,type,thickness,body);
+        }
+        
         call.enqueue(new Callback<BooleanResponse>() {
             @Override
             public void onResponse(Call<BooleanResponse> call, Response<BooleanResponse> response) {
 
                 if(response.body().getAns()){
-                    Toast.makeText(getApplicationContext(), "衣物添加成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "衣物修改成功", Toast.LENGTH_SHORT).show();
                     ManageClothesActivity.activity.freshClothes();
                     editGoBackPageButtonClick(null);
                 }
@@ -326,6 +345,42 @@ public class EditClothesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<BooleanResponse> call, Throwable t) {
+                Toast.makeText(getBaseContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void initClothes(){
+        if(clothesID<0)
+            return;
+
+        ClothesResponse.setImage((ImageView)findViewById(R.id.editClothesImageButton),ClothesResponse.url(this,clothesID));
+
+        ClothesService service = RetrofitClient.newService(this,ClothesService.class);
+        Call<ClothesInfoResponse> call = service.get(clothesID);
+        call.enqueue(new Callback<ClothesInfoResponse>() {
+            @Override
+            public void onResponse(Call<ClothesInfoResponse> call, Response<ClothesInfoResponse> response) {
+                ClothesInfoResponse clothesInfo = response.body();
+
+                ((TextView)findViewById(R.id.editClothesNameEditText)).setText(clothesInfo.name);
+
+                selectWardrobeSnipper.setSelection(clothesInfo.type);
+
+                SeekBar thicknessBar=findViewById(R.id.editClothesThicknessSeekBar);
+                thicknessBar.setProgress(clothesInfo.thickness);
+
+                TextView lastWearingTimeText = (TextView)findViewById(R.id.lastWearingTimeText);
+                TextView wearingFrequenctText = (TextView)findViewById(R.id.wearingFrequencyText);
+
+//                Date date = new Date();
+//                lastWearingTimeText.setText(String.valueOf(date.compareTo(clothesInfo.lastWearingTime)));
+                lastWearingTimeText.setText(clothesInfo.lastWearingTime.toString());
+                wearingFrequenctText.setText(clothesInfo.wearingFrequency.toString());
+            }
+
+            @Override
+            public void onFailure(Call<ClothesInfoResponse> call, Throwable t) {
                 Toast.makeText(getBaseContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
             }
         });

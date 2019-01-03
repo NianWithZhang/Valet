@@ -80,6 +80,52 @@ namespace Valet_Backend.Controllers
 			clothes = _clothes;
 		}
 	}
+
+	/// <summary>
+	/// 返回衣物详细信息的格式
+	/// </summary>
+	public class ClothesInfoResponse
+	{
+		/// <summary>
+		/// 衣物ID
+		/// </summary>
+		public int id;
+
+		/// <summary>
+		/// 衣物名称
+		/// </summary>
+		public string name;
+
+		/// <summary>
+		/// 衣物类型
+		/// </summary>
+		public ClothesType type;
+		
+		/// <summary>
+		/// 衣物厚度
+		/// </summary>
+		public int thickness;
+
+		/// <summary>
+		/// 衣物距今的未穿着天数
+		/// </summary>
+		public int lastWearingTime;
+
+		/// <summary>
+		/// 衣物的穿着次数
+		/// </summary>
+		public int wearingFrequency;
+
+		public ClothesInfoResponse(Clothes clothes)
+		{
+			id = clothes.id;
+			name = clothes.name;
+			type = clothes.type;
+			thickness = clothes.thickness;
+			lastWearingTime = (int)(DateTime.Now - clothes.lastWearingTime).TotalDays;
+			wearingFrequency = clothes.wearingFrequency;
+		}
+	}
 	
 	/// <summary>
 	/// 衣物相关Http服务接口
@@ -96,9 +142,9 @@ namespace Valet_Backend.Controllers
 		/// <param name="id">衣物编号</param>
 		/// <returns>衣物信息</returns>
 		[HttpGet]
-		public Clothes getClothesInfo(int id)
+		public ClothesInfoResponse getClothesInfo(int id)
 		{
-			return ClothesManager.get(id);
+			return ClothesManager.getInfo(id);
 		}
 
 		/// <summary>

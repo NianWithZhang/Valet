@@ -7,6 +7,8 @@ import android.view.View;
 import com.longsh.optionframelibrary.OptionMaterialDialog;
 
 public class MessageBoxUtil {
+    public static OptionMaterialDialog dialog;
+
     public static void showMessage(Context context, String title, String text){
         final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(context);
         mMaterialDialog.setTitle(title)

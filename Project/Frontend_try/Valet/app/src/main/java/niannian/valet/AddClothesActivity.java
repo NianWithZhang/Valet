@@ -61,8 +61,8 @@ public class AddClothesActivity extends AppCompatActivity {
 
     private Integer wardrobeID = -1;
 
-    public static Uri imgUri;
-    public static File imgFile;
+    public Uri imgUri;
+    public File imgFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

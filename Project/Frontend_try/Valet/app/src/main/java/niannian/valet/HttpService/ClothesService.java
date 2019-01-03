@@ -1,6 +1,7 @@
 package niannian.valet.HttpService;
 
 import niannian.valet.ResponseModel.BooleanResponse;
+import niannian.valet.ResponseModel.ClothesInfoResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
 import niannian.valet.ResponseModel.SuitResponseList;
 import okhttp3.MultipartBody;
@@ -20,6 +21,12 @@ public interface ClothesService {
             @Query("id") Integer id
     );
 
+    //获取指定衣物详细信息
+    @GET("api/clothes")
+    Call<ClothesInfoResponse> get(
+            @Query("id") Integer id
+    );
+
     //添加衣物
     @Multipart
     @POST("api/clothes")
@@ -29,6 +36,26 @@ public interface ClothesService {
             @Query("type") Integer type,
             @Query("thickness") Integer thickness,
             @Part MultipartBody.Part pic
+    );
+
+    //修改衣物
+    @Multipart
+    @PUT("api/clothes/modify")
+    Call<BooleanResponse> modify(
+            @Query("id") Integer id,
+            @Query("name") String name,
+            @Query("type") Integer type,
+            @Query("thickness") Integer thickness,
+            @Part MultipartBody.Part pic
+    );
+
+    //修改衣物 不修改图片
+    @PUT("api/clothes/modify")
+    Call<BooleanResponse> modifyWithoutPic(
+            @Query("id") Integer id,
+            @Query("name") String name,
+            @Query("type") Integer type,
+            @Query("thickness") Integer thickness
     );
 
     //删除衣物

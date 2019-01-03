@@ -62,6 +62,10 @@
             android:label="@string/title_activity_add_clothes"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".EditClothesActivity"
+            android:label="EditClothesActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".AddNewSuitActivity"
             android:label="AddNewSuitActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
