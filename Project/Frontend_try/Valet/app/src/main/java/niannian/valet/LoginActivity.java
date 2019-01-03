@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void tryChangeActivityButton_Click(View view){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), EditClothesActivity.class);
         startActivity(intent);
 //        LoginActivity.this.finish();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);

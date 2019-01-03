@@ -46,7 +46,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddClothesActivity extends AppCompatActivity {
+
+public class EditClothesActivity extends AppCompatActivity {
 
     //相机请求码
     public final int CAMERA_REQUEST_CODE = 1;
@@ -67,7 +68,7 @@ public class AddClothesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_clothes);
+        setContentView(R.layout.edit_clothes);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -111,7 +112,7 @@ public class AddClothesActivity extends AppCompatActivity {
     }
 
 
-    public void addClothesImageButton_Click(View view){
+    public void editClothesImageButton_Click(View view){
         if(!PermissionUtil.checkCameraStoragePermission(this))
             return;
 
@@ -119,12 +120,12 @@ public class AddClothesActivity extends AppCompatActivity {
         list.add("相机拍照添加图片");
         list.add("从相册添加图片");
         final OptionCenterDialog optionCenterDialog = new OptionCenterDialog();
-        optionCenterDialog.show(AddClothesActivity.this, list);
+        optionCenterDialog.show(EditClothesActivity.this, list);
         optionCenterDialog.setItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 optionCenterDialog.dismiss();
-                Toast.makeText(AddClothesActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditClothesActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
                 switch(position) {
                     case 0:
                         cameraSetImage();
@@ -177,7 +178,7 @@ public class AddClothesActivity extends AppCompatActivity {
 
                 try {
                     Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(imgUri));
-                    ImageView imageView = (ImageView) findViewById(R.id.addClothesImageButton);
+                    ImageView imageView = (ImageView) findViewById(R.id.editClothesImageButton);
                     /* 将Bitmap设定到ImageView */
                     imageView.setImageBitmap(bitmap);
                 } catch (FileNotFoundException e) {
@@ -192,7 +193,7 @@ public class AddClothesActivity extends AppCompatActivity {
 
                 try {
                     Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(imgUri));
-                    ImageView imageView = (ImageView) findViewById(R.id.addClothesImageButton);
+                    ImageView imageView = (ImageView) findViewById(R.id.editClothesImageButton);
                     /* 将Bitmap设定到ImageView */
                     imageView.setImageBitmap(bitmap);
                 } catch (FileNotFoundException e) {
@@ -210,8 +211,8 @@ public class AddClothesActivity extends AppCompatActivity {
     private void initAddClothesTypeSnipper(final List<String> clothesType){
 
         // Setup spinner
-        selectWardrobeSnipper = (Spinner) findViewById(R.id.chooseClothesTypeSpinner);
-        selectWardrobeSnipper.setAdapter(new AddClothesActivity.addClothesTypeSpinnerAdapter(this,clothesType));
+        selectWardrobeSnipper = (Spinner) findViewById(R.id.editClothesTypeSpinner);
+        selectWardrobeSnipper.setAdapter(new EditClothesActivity.editClothesTypeSpinnerAdapter(this,clothesType));
 
         selectWardrobeSnipper.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -232,10 +233,10 @@ public class AddClothesActivity extends AppCompatActivity {
             }
         });
     }
-    private class addClothesTypeSpinnerAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
+    private class editClothesTypeSpinnerAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
         private final ThemedSpinnerAdapter.Helper mDropDownHelper;
 
-        public addClothesTypeSpinnerAdapter(Context context, List<String> objects) {
+        public editClothesTypeSpinnerAdapter(Context context, List<String> objects) {
             super(context, android.R.layout.simple_list_item_1, objects);
             mDropDownHelper = new ThemedSpinnerAdapter.Helper(context);
         }
@@ -271,13 +272,13 @@ public class AddClothesActivity extends AppCompatActivity {
     }
 
     //用户添加完成衣物信息
-    public void addClothesCompleteButtonClick(View view){
+    public void editClothesCompleteButtonClick(View view){
         if(wardrobeID==null){
             Toast.makeText(this,"信息获取失败 请退出后重试",Toast.LENGTH_SHORT).show();
             return;
         }
 
-        EditText clothesName=findViewById(R.id.addClothesNameEditText);
+        EditText clothesName=findViewById(R.id.editClothesNameEditText);
         String name=clothesName.getText().toString();
 
         if(name.length()> CLOTHES_NAME_LENGTH_LIMIT)
@@ -293,14 +294,14 @@ public class AddClothesActivity extends AppCompatActivity {
 
         Integer type=selectWardrobeSnipper.getSelectedItemPosition();
 
-        SeekBar thicknessBar=findViewById(R.id.addClothesThicknessSeekBar);
+        SeekBar thicknessBar=findViewById(R.id.editClothesThicknessSeekBar);
         Integer thickness=thicknessBar.getProgress();
 
-        addClothes(wardrobeID,name,type,thickness);
-        Toast.makeText(AddClothesActivity.this,String.valueOf(type)+" "+name+" "+String.valueOf(thickness),Toast.LENGTH_SHORT).show();
+        editClothes(wardrobeID,name,type,thickness);
+        Toast.makeText(EditClothesActivity.this,String.valueOf(type)+" "+name+" "+String.valueOf(thickness),Toast.LENGTH_SHORT).show();
     }
     //执行添加衣物操作
-    private void addClothes(Integer wardrobeID,String name,Integer type,Integer thickness){
+    private void editClothes(Integer wardrobeID,String name,Integer type,Integer thickness){
         if(imgFile == null){
             MessageBoxUtil.showMessage(this,"请上传衣物照片","给你的衣服拍张照吧 :)");
             return;
@@ -317,7 +318,7 @@ public class AddClothesActivity extends AppCompatActivity {
                 if(response.body().getAns()){
                     Toast.makeText(getApplicationContext(), "衣物添加成功", Toast.LENGTH_SHORT).show();
                     ManageClothesActivity.activity.freshClothes();
-                    goBackPageButtonClick(null);
+                    editGoBackPageButtonClick(null);
                 }
                 else
                     Toast.makeText(getApplicationContext(), "上传失败 请退出后重试", Toast.LENGTH_SHORT).show();
@@ -330,7 +331,7 @@ public class AddClothesActivity extends AppCompatActivity {
         });
     }
 
-    public void goBackPageButtonClick(View view){
+    public void editGoBackPageButtonClick(View view){
         this.finish();
     }
 
