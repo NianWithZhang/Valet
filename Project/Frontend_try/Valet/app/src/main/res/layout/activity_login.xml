@@ -83,28 +83,6 @@
         app:layout_constraintStart_toStartOf="@+id/confirmPasswordText"
         app:layout_constraintTop_toBottomOf="@+id/confirmPasswordText" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="188dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="60dp"
-        android:onClick="tryChangeActivityButton_Click"
-        android:text="try_Change_Activity"
-        app:layout_constraintStart_toStartOf="@+id/confirmPasswordText"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="188dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="116dp"
-        android:onClick="tryChangeActivityButton1_Click"
-        android:text="try_Change_Activity"
-        app:layout_constraintStart_toStartOf="@+id/confirmPasswordText"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
-
     <TextView
         android:id="@+id/userIdTextView"
         android:layout_width="wrap_content"
