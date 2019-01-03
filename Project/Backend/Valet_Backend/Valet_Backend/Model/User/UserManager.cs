@@ -35,6 +35,9 @@ namespace Valet_Backend.Model.User
 		/// <returns>查询结果</returns>
 		public static bool exist(string id)
 		{
+			if (id == null)
+				return false;
+
 			return userDb.GetById(id) != null;
 		}
 

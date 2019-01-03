@@ -29,7 +29,6 @@
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".TestCameraActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -48,10 +47,6 @@
         <activity
             android:name=".ManageClothesActivity"
             android:label="@string/title_activity_manage_clothes"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".TestActivity"
-            android:label="@string/title_activity_test"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".WearSuitActivity"

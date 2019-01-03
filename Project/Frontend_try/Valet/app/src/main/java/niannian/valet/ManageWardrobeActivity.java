@@ -22,7 +22,7 @@ import com.longsh.optionframelibrary.OptionMaterialDialog;
 import java.util.ArrayList;
 import java.util.Map;
 
-import niannian.valet.ClothesManageRecyclerView.WardrobeRecyclerViewAdapter;
+import niannian.valet.RecyclerViewAdapter.WardrobeRecyclerViewAdapter;
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.WardrobeService;
 import niannian.valet.ResponseModel.BooleanResponse;
@@ -48,6 +48,7 @@ public class ManageWardrobeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_wardrobe);
+
         wardrobeRecyclerView =(RecyclerView)findViewById(R.id.manageWardrobeRecyclerView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.manageWardrobeToolbar);
         setSupportActionBar(toolbar);
@@ -151,6 +152,8 @@ public class ManageWardrobeActivity extends AppCompatActivity
     public void ManageWardrobe_Button_Click(View view){
         setSelectedIdList();
 
+//        Toast.makeText(getApplicationContext(),User.getInstance().getId(),Toast.LENGTH_SHORT).show();
+
         switch (view.getId()) {
 
             case R.id.addWardrobeImageButton:
@@ -162,8 +165,16 @@ public class ManageWardrobeActivity extends AppCompatActivity
                         .setPositiveButton("确定", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                mMaterialDialog.dismiss();
+
+//                                Toast.makeText(v.getContext(),"hello1",Toast.LENGTH_SHORT).show();
+
+//                                EditText nameText = findViewById(R.id.)
+
                                 addWardrobe(name.getText().toString());
+
+//                                Toast.makeText(v.getContext(),"hello2",Toast.LENGTH_SHORT).show();
+
+                                mMaterialDialog.dismiss();
                             }
                         })
                         .setNegativeButton("取消",
@@ -195,8 +206,8 @@ public class ManageWardrobeActivity extends AppCompatActivity
                         .setPositiveButton("确定", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                mMaterialDialogDelete.dismiss();
                                 deleteWardrobe();
+                                mMaterialDialogDelete.dismiss();
                             }
                         })
                         .setNegativeButton("取消",
@@ -225,6 +236,9 @@ public class ManageWardrobeActivity extends AppCompatActivity
 
         selectedIdList.clear();
 
+        if(adapt==null)
+            return;
+
         Map<Integer, Boolean> map = adapt.getMap();
         for (int i = 0; i < map.size(); i++) {
             if (map.get(i)) {
@@ -249,9 +263,11 @@ public class ManageWardrobeActivity extends AppCompatActivity
                 BooleanResponse ans = response.body();
 
                 if(ans.getAns())
-                    MessageBoxUtil.showMessage(getBaseContext(),"创建成功");
+                    Toast.makeText(getApplicationContext(),"创建成功",Toast.LENGTH_SHORT).show();
+//                    MessageBoxUtil.showMessage(getBaseContext(),"创建成功");
                 else
-                    MessageBoxUtil.showMessage(getBaseContext(),"出错啦 退出后重新试试吧");
+                    Toast.makeText(getApplicationContext(),"出错啦 退出后重新试试吧",Toast.LENGTH_SHORT).show();
+//                    MessageBoxUtil.showMessage(getBaseContext(),"出错啦 退出后重新试试吧");
 
                 initWardrobes();
             }
@@ -274,9 +290,11 @@ public class ManageWardrobeActivity extends AppCompatActivity
                 BooleanResponse ans = response.body();
 
                 if(ans.getAns())
-                    MessageBoxUtil.showMessage(getBaseContext(),"删除成功");
+                    Toast.makeText(getApplicationContext(),"删除成功",Toast.LENGTH_SHORT).show();
+//                    MessageBoxUtil.showMessage(getBaseContext(),"删除成功");
                 else
-                    MessageBoxUtil.showMessage(getBaseContext(),"出错啦 退出后重新试试吧");
+                    Toast.makeText(getApplicationContext(),"出错啦 退出后重新试试吧",Toast.LENGTH_SHORT).show();
+//                    MessageBoxUtil.showMessage(getBaseContext(),"出错啦 退出后重新试试吧");
 
                 initWardrobes();
             }

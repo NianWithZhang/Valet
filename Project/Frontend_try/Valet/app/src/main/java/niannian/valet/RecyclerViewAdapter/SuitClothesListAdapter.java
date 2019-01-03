@@ -1,19 +1,17 @@
-package niannian.valet;
+package niannian.valet.RecyclerViewAdapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.List;
 
+import niannian.valet.R;
 import niannian.valet.ResponseModel.ClothesResponse;
-import niannian.valet.ResponseModel.UrlPic;
 
 public class SuitClothesListAdapter extends RecyclerView.Adapter<SuitClothesListAdapter.ViewHolder> {
 

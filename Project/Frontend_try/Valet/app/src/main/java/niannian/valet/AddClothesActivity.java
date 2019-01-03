@@ -37,6 +37,7 @@ import java.util.List;
 import niannian.valet.HttpService.ClothesService;
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.ResponseModel.BooleanResponse;
+import niannian.valet.Utils.GetRealPathFromUri;
 import niannian.valet.Utils.MessageBoxUtil;
 import niannian.valet.Utils.PermissionUtil;
 import okhttp3.MediaType;
@@ -124,7 +125,7 @@ public class AddClothesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 optionCenterDialog.dismiss();
-                Toast.makeText(AddClothesActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AddClothesActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
                 switch(position) {
                     case 0:
                         cameraSetImage();
@@ -297,7 +298,7 @@ public class AddClothesActivity extends AppCompatActivity {
         Integer thickness=thicknessBar.getProgress();
 
         addClothes(wardrobeID,name,type,thickness);
-        Toast.makeText(AddClothesActivity.this,String.valueOf(type)+" "+name+" "+String.valueOf(thickness),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(AddClothesActivity.this,String.valueOf(type)+" "+name+" "+String.valueOf(thickness),Toast.LENGTH_SHORT).show();
     }
     //执行添加衣物操作
     private void addClothes(Integer wardrobeID,String name,Integer type,Integer thickness){

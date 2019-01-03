@@ -171,10 +171,11 @@ public class MainActivity extends AppCompatActivity
 
                 if(wardrobeResponseList.wardrobes.length == 0)
                 {
+
                     Intent intent = new Intent(getApplicationContext(),ManageWardrobeActivity.class);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    ActivityOperationUtil.findActivity(getBaseContext()).finish();
+//                    ActivityOperationUtil.findActivity(getBaseContext()).finish();
                     return;
                 }
 

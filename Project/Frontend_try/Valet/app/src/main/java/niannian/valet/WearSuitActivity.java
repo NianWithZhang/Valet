@@ -2,31 +2,23 @@ package niannian.valet;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.SuitService;
+import niannian.valet.RecyclerViewAdapter.SuitClothesListAdapter;
 import niannian.valet.ResponseModel.BooleanResponse;
-import niannian.valet.ResponseModel.ClothesResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
-import niannian.valet.ResponseModel.SuitResponse;
-import niannian.valet.ResponseModel.SuitResponseList;
 import retrofit2.Callback;
 import retrofit2.Response;
 

@@ -15,7 +15,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.util.Log;
-import android.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,9 +31,7 @@ import com.longsh.optionframelibrary.OptionCenterDialog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import niannian.valet.HttpService.ClothesService;
@@ -42,6 +39,7 @@ import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.ResponseModel.BooleanResponse;
 import niannian.valet.ResponseModel.ClothesInfoResponse;
 import niannian.valet.ResponseModel.ClothesResponse;
+import niannian.valet.Utils.GetRealPathFromUri;
 import niannian.valet.Utils.MessageBoxUtil;
 import niannian.valet.Utils.PermissionUtil;
 import okhttp3.MediaType;
@@ -50,7 +48,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Multipart;
 
 
 public class EditClothesActivity extends AppCompatActivity {

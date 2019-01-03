@@ -33,9 +33,8 @@ import com.longsh.optionframelibrary.OptionMaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import niannian.valet.ClothesManageRecyclerView.RecyclerViewAdapter;
+import niannian.valet.RecyclerViewAdapter.RecyclerViewAdapter;
 import niannian.valet.HttpService.ClothesService;
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.WardrobeService;
@@ -267,6 +266,8 @@ public class ManageClothesActivity extends AppCompatActivity
 //    }
 
     private void initWardrobes(){
+        selectedIDList = new ArrayList<>();
+
         WardrobeService service = RetrofitClient.newService(this,WardrobeService.class);
         retrofit2.Call<WardrobeResponseList> call = service.getUserWardrobes(User.getInstance().getId());
         call.enqueue(new Callback<WardrobeResponseList>() {
@@ -295,7 +296,6 @@ public class ManageClothesActivity extends AppCompatActivity
     }
     private void initWardrobeSnipper(final Pair<ArrayList<Integer>,ArrayList<String>> wardrobes){
         // Setup spinner
-        selectWardrobeSpinner = (Spinner) findViewById(R.id.selectWardrobeSpinner_clothesManage);
         selectWardrobeSpinner.setAdapter(new WardrobeSpinnerAdapter(getBaseContext(),wardrobes.second));
 
         selectWardrobeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

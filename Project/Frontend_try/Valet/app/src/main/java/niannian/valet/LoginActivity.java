@@ -84,6 +84,8 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+//        Toast.makeText(getApplicationContext(),userIDText.getText().toString(),Toast.LENGTH_SHORT).show();
+
         User.getInstance().setUserInfo(userIDText.getText().toString(),passwordText.getText().toString());
 
         if(editor!=null){

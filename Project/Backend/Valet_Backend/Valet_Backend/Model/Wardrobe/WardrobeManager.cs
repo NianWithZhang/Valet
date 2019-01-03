@@ -24,7 +24,7 @@ namespace Valet_Backend.Model.Wardrobe
 		/// <returns>添加结果 是否成功添加</returns>
 		public static bool add(string userID, string wardrobeName)
 		{
-			if (UserManager.exist(userID) || wardrobeDb.IsAny(x => x.userID == userID && x.name == wardrobeName))
+			if (!UserManager.exist(userID) || wardrobeDb.IsAny(x => x.userID == userID && x.name == wardrobeName))
 				return false;
 
 			return wardrobeDb.Insert(new Wardrobe(userID, wardrobeName));
