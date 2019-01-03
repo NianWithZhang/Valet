@@ -152,6 +152,7 @@
         android:layout_height="26dp"
         android:layout_marginTop="20dp"
         android:checked="true"
+        android:focusable="false"
         android:splitTrack="false"
         android:text="记住密码"
         android:textColor="#9f655b"

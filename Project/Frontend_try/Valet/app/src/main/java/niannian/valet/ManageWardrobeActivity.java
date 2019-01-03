@@ -78,6 +78,9 @@ public class ManageWardrobeActivity extends AppCompatActivity
             public void onResponse(retrofit2.Call<WardrobeResponseList> call, Response<WardrobeResponseList> response) {
                 wardrobeList = response.body();
 
+                if(wardrobeList.wardrobes.length==0)
+                    remindAddFirstWardrobe();
+
                 initWardrobesManageWardrobe();
             }
 
@@ -118,28 +121,6 @@ public class ManageWardrobeActivity extends AppCompatActivity
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.manage_wardrobe, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.manageWardrobeAction_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -158,6 +139,8 @@ public class ManageWardrobeActivity extends AppCompatActivity
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }else if(id == R.id.nav_log_out)
             ActivityOperationUtil.logOut(this);
+        else if(id == R.id.nav_exit)
+            this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.manageWardrobeDrawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -207,7 +190,6 @@ public class ManageWardrobeActivity extends AppCompatActivity
                     return;
                 }
 
-//                Toast.makeText(ManageWardrobeActivity.this,a,Toast.LENGTH_SHORT).show();/////
                 final OptionMaterialDialog mMaterialDialogDelete = new OptionMaterialDialog(ManageWardrobeActivity.this);
                 mMaterialDialogDelete.setTitle("确认删除").setMessage("删除操作不可逆哦")
                         .setPositiveButton("确定", new View.OnClickListener() {
@@ -243,14 +225,10 @@ public class ManageWardrobeActivity extends AppCompatActivity
 
         selectedIdList.clear();
 
-        //Toast.makeText(ManageClothesActivity.this, "获取我们选取的数据", Toast.LENGTH_SHORT).show();
-        // Log.e("TAG", mGetData.getText().toString());
-//        String a="";/////
         Map<Integer, Boolean> map = adapt.getMap();
         for (int i = 0; i < map.size(); i++) {
             if (map.get(i)) {
                 selectedIdList.add(wardrobeList.wardrobes[i].id);
-//                a+=String.valueOf(wardrobeList.wardrobes[i].id);/////
             }
         }
     }
@@ -272,10 +250,8 @@ public class ManageWardrobeActivity extends AppCompatActivity
 
                 if(ans.getAns())
                     MessageBoxUtil.showMessage(getBaseContext(),"创建成功");
-//                    Toast.makeText(getBaseContext(),"删除成功",Toast.LENGTH_SHORT).show();
                 else
                     MessageBoxUtil.showMessage(getBaseContext(),"出错啦 退出后重新试试吧");
-//                    Toast.makeText(getBaseContext(),"删除失败",Toast.LENGTH_SHORT).show();
 
                 initWardrobes();
             }
@@ -299,10 +275,8 @@ public class ManageWardrobeActivity extends AppCompatActivity
 
                 if(ans.getAns())
                     MessageBoxUtil.showMessage(getBaseContext(),"删除成功");
-//                    Toast.makeText(getBaseContext(),"删除成功",Toast.LENGTH_SHORT).show();
                 else
                     MessageBoxUtil.showMessage(getBaseContext(),"出错啦 退出后重新试试吧");
-//                    Toast.makeText(getBaseContext(),"删除失败",Toast.LENGTH_SHORT).show();
 
                 initWardrobes();
             }
@@ -314,5 +288,8 @@ public class ManageWardrobeActivity extends AppCompatActivity
         });
     }
 
+    private void remindAddFirstWardrobe(){
+        MessageBoxUtil.showMessage(this,"快去添加你的第一个衣橱吧 :)");
+    }
 
 }

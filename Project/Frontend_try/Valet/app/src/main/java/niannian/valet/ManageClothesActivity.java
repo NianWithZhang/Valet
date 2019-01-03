@@ -161,6 +161,9 @@ public class ManageClothesActivity extends AppCompatActivity
     public void chooseClothesTypeTabClick(int position){
 //        addSelectedIDListCache();
 
+        if(clothesList.clothes.length == 0)
+            return;
+
         int clothesType=position-1;
         ArrayList<ClothesResponse> typeClothesList=new ArrayList<>();
 //        switch (.getId()) {
@@ -608,6 +611,8 @@ public class ManageClothesActivity extends AppCompatActivity
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }else if(id == R.id.nav_log_out)
             ActivityOperationUtil.logOut(this);
+        else if(id == R.id.nav_exit)
+            this.finish();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_manage_clothes);
         drawer.closeDrawer(GravityCompat.START);

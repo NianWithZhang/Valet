@@ -329,7 +329,7 @@ public class EditClothesActivity extends AppCompatActivity {
             MultipartBody.Part body = MultipartBody.Part.createFormData("pic", imgFile.getName(), requestFile);
             call = service.modify(clothesID,name,type,thickness,body);
         }
-        
+
         call.enqueue(new Callback<BooleanResponse>() {
             @Override
             public void onResponse(Call<BooleanResponse> call, Response<BooleanResponse> response) {
