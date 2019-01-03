@@ -83,7 +83,7 @@ public class ManageClothesActivity extends AppCompatActivity
         selectWardrobeSpinner = (Spinner)findViewById(R.id.selectWardrobeSpinner_clothesManage);
 
         clothesRecyclerView =(RecyclerView)findViewById(R.id.RecyclerView);
-        clothesRecyclerView.setItemViewCacheSize(5);
+        clothesRecyclerView.setItemViewCacheSize(1000);
 
         selectedIDList = new ArrayList<>();
         selectedIDListCache = new ArrayList<>();
@@ -475,9 +475,11 @@ public class ManageClothesActivity extends AppCompatActivity
 
         Map<Integer, Boolean> map = adapt.getMap();
         for (int i = 0; i < map.size(); i++) {
-            if (map.get(i)&&!selectedIDListCache.contains(clothesList.clothes[i].id)) {
+            if (map.get(i)){
+                if(!selectedIDListCache.contains(clothesList.clothes[i].id))
                     selectedIDListCache.add(clothesList.clothes[i].id);
-            }
+            }else if(selectedIDListCache.contains(clothesList.clothes[i].id))
+                selectedIDListCache.remove(clothesList.clothes[i].id);
         }
     }
     private ArrayList<Integer> setSelectedIDList(){

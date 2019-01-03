@@ -107,16 +107,17 @@ namespace Valet_Backend.Model.Clothes
 			//确认衣物照片不为空
 			if (clothesPicFile != null)
 			{
-				string fileDir = Config.PicSaveDir;
+				string fileDir = Config.ClothesPicSaveDir;
+				string tempDir = Config.TempDir;
 
 				//确认保存路径存在
 				if (!Directory.Exists(fileDir))
-				{
 					Directory.CreateDirectory(fileDir);
-				}
+				if (!Directory.Exists(tempDir))
+					Directory.CreateDirectory(tempDir);
 
 				string picPath = clothes.picPath;
-				string tempPath = Config.PicSaveDir + "temp.jpg";
+				string tempPath = clothes.tempPicPath;
 
 				FileStream fs = System.IO.File.Create(tempPath);
 
@@ -131,7 +132,7 @@ namespace Valet_Backend.Model.Clothes
 				clothesDb.Update(clothes);
 
 				//图片压缩
-				return Utils.ImageUtil.compressImage(picPath);
+				return Utils.ImageUtil.compressImage(tempPath,picPath);
 			}
 			else
 				return false;

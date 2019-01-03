@@ -137,7 +137,7 @@ namespace Valet_Backend.Model.Wardrobe
 #if DEBUG
 				throw new Exception();
 #else
-			return;
+			return false;
 #endif
 
 			wardrobe.wear();

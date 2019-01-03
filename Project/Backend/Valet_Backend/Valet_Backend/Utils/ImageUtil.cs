@@ -14,15 +14,28 @@ namespace Valet_Backend.Utils
 		#region 压缩图片
 
 		/// <summary>
+		/// <summary>
 		/// 压缩图片 由外部调用的方法
 		/// </summary>
-		/// <param name="picPath"></param>
-		public static bool compressImage(string picPath)
+		/// <param name="inputPath">输入路径</param>
+		/// <param name="outputPath">输出路径</param>
+		/// <param name="multiThread">是否另开线程处理</param>
+		/// <param name="deleteInputFile">是否删除输入源图片</param>
+		/// <returns></returns>
+		public static bool compressImage(string inputPath, string outputPath, bool multiThread = false,bool deleteInputFile = true)
 		{
 			try
 			{
-				Thread thread = new Thread(new ParameterizedThreadStart(compressImage_thread));
-				thread.Start(picPath);
+				if (multiThread)
+				{
+					Thread thread = new Thread(new ParameterizedThreadStart(compressImage_thread));
+					thread.Start(new KeyValuePair<KeyValuePair<string,string>,bool>(new KeyValuePair<string,string>(inputPath,outputPath),deleteInputFile));
+				}
+				else
+				{
+					compressImage_thread(new KeyValuePair<KeyValuePair<string, string>, bool>(new KeyValuePair<string, string>(inputPath, outputPath), deleteInputFile));
+				}
+
 				return true;
 			}
 			catch
@@ -33,27 +46,30 @@ namespace Valet_Backend.Utils
 		/// <summary>
 		/// 压缩图片线程函数
 		/// </summary>
-		/// <param name="picPath"></param>
-		private static void compressImage_thread(object picPath)
+		/// <param name="paths">Pair<string,string>形式输入input和output路径 以及最后是否删除输入源图片</param>
+		private static void compressImage_thread(object paths)
 		{
-			compressImage(Config.tempDir, picPath as string);
+			compressImage_inner((paths as KeyValuePair<KeyValuePair<string, string>, bool>?).Value.Key.Key, (paths as KeyValuePair<KeyValuePair<string, string>, bool>?).Value.Key.Value);
+
+			if ((paths as KeyValuePair<KeyValuePair<string, string>, bool>?).Value.Value)
+				File.Delete((paths as KeyValuePair<KeyValuePair<string, string>, bool>?).Value.Key.Key);
 		}
 		/// <summary>
 		/// 压缩图片的内部递归调用函数
 		/// </summary>
 		/// <param name="sourcePath">原图片地址</param>
-		/// <param name="dFile">压缩后保存图片地址</param>
+		/// <param name="destPath">压缩后保存图片地址</param>
 		/// <param name="isFirstTime">是否是第一次调用</param>
 		/// <returns></returns>
-		private static void compressImage(string sourcePath, string dFile, bool isFirstTime = true)
+		private static void compressImage_inner(string sourcePath, string destPath, bool isFirstTime = true)
 		{
-			int flag = Config.picCompressQuality,size = 300;
+			int flag = Config.picCompressQuality, size = 300;
 
 			//如果是第一次调用，原始图像的大小小于要压缩的大小，则直接复制文件，并且返回true
 			FileInfo firstFileInfo = new FileInfo(sourcePath);
 			if (isFirstTime == true && firstFileInfo.Length < size * 1024)
 			{
-				firstFileInfo.CopyTo(dFile);
+				firstFileInfo.CopyTo(destPath);
 				return;
 			}
 			Image iSource = Image.FromFile(sourcePath);
@@ -115,17 +131,17 @@ namespace Valet_Backend.Utils
 				}
 				if (jpegICIinfo != null)
 				{
-					ob.Save(dFile, jpegICIinfo, ep);//dFile是压缩后的新路径
-					FileInfo fi = new FileInfo(dFile);
+					ob.Save(destPath, jpegICIinfo, ep);//dFile是压缩后的新路径
+					FileInfo fi = new FileInfo(destPath);
 					if (fi.Length > 1024 * size)
 					{
 						flag = flag - 10;
-						compressImage(sourcePath, dFile, false);
+						compressImage_inner(sourcePath, destPath, false);
 					}
 				}
 				else
 				{
-					ob.Save(dFile, tFormat);
+					ob.Save(destPath, tFormat);
 				}
 				return;
 			}

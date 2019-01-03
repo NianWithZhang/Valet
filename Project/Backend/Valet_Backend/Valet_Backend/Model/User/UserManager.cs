@@ -97,7 +97,7 @@ namespace Valet_Backend.Model.User
 #if DEBUG
 				throw new Exception();
 #else
-			return new KeyValuePair<string, string>(null,null);
+			return new TaobaoItem();
 #endif
 			TaobaoItem item = user.recommednItem;
 			

@@ -22,7 +22,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public ClothesResponseList Clothes;
 
     private HashMap<Integer,Boolean> Maps=new HashMap<Integer,Boolean>();
-    private HashMap<Integer,Boolean>AllMaps=new HashMap<Integer,Boolean>();
+    private HashMap<Integer,Boolean> AllMaps=new HashMap<Integer,Boolean>();
     public RecyclerViewOnItemClickListener onItemClickListener;
 
     private List<Integer> selectedIDList;
@@ -69,8 +69,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(final MyHolder holder, final int position) {
-        if(selectedIDList.contains(Clothes.clothes[position].id))
+        if(selectedIDList.contains(Clothes.clothes[position].id)){
             ((CheckBox)holder.itemView.findViewById(R.id.checkboxChooseClothes)).setChecked(true);
+            Maps.put(position,true);
+        }
 
         ClothesResponse currentClothes=Clothes.clothes[position];
         currentClothes.setImage(holder.itemView.getContext(),holder.clothesImage);

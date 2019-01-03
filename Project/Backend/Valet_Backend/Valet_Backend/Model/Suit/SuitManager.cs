@@ -113,14 +113,17 @@ namespace Valet_Backend.Model.Suit
 			if (suitPicFile != null)
 			{
 				//获取设置的图片存储路径
-				string fileDir = Config.PicSaveDir;
+				string fileDir = Config.SuitPicSaveDir;
+				string tempDir = Config.TempDir;
 
 				//保证存储路径存在
 				if (!Directory.Exists(fileDir))
 					Directory.CreateDirectory(fileDir);
+				if (!Directory.Exists(tempDir))
+					Directory.CreateDirectory(tempDir);
 
 				//获取穿搭图片存储路径
-				string tempPath = Config.tempDir;
+				string tempPath = suit.tempPicPath;
 				string picPath = suit.picPath;
 
 				FileStream fs = System.IO.File.Create(tempPath);
@@ -131,7 +134,7 @@ namespace Valet_Backend.Model.Suit
 				fs.Close();
 
 				//图片压缩
-				return Utils.ImageUtil.compressImage(picPath);
+				return Utils.ImageUtil.compressImage(tempPath,picPath);
 			}
 			else
 				return false;

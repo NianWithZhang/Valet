@@ -20,14 +20,19 @@ namespace Valet_Backend
 		#region 路径
 
 		/// <summary>
-		/// 图片存储路径
+		/// 衣物图片存储路径
 		/// </summary>
-		public static string PicSaveDir => Directory.GetCurrentDirectory() + "\\wwwroot\\";
+		public static string ClothesPicSaveDir => Directory.GetCurrentDirectory() + "\\wwwroot\\clothespics\\";
+
+		/// <summary>
+		/// 穿搭图片存储路径
+		/// </summary>
+		public static string SuitPicSaveDir => Directory.GetCurrentDirectory() + "\\wwwroot\\suitpics\\";
 
 		/// <summary>
 		/// 图片缓存路径
 		/// </summary>
-		public static string tempDir => PicSaveDir + "temp.jpg";
+		public static string TempDir => Directory.GetCurrentDirectory() + "\\wwwroot\\temp\\";
 
 		#endregion
 
