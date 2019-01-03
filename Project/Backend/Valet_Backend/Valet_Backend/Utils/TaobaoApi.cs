@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Valet_Backend.Model.User;
 
@@ -22,6 +23,9 @@ namespace Valet_Backend.Model.Clothes
 		/// <returns></returns>
 		public static string uploadTaobaoApi(string picPath)
 		{
+			for (int i = 20; !File.Exists(picPath) && i > 0; i--)
+				Thread.Sleep(100);
+
 			using (HttpClient client = new HttpClient())
 			{
 				using (var httpContent = new MultipartFormDataContent())
@@ -46,7 +50,7 @@ namespace Valet_Backend.Model.Clothes
 					return "";
 #endif
 					}
-					catch(Exception e)
+					catch (Exception e)
 					{
 #if DEBUG
 						throw e;
@@ -78,9 +82,9 @@ namespace Valet_Backend.Model.Clothes
 			parameters.Add("tfsid", tfsid);
 
 			Dictionary<string, string> headers = new Dictionary<string, string>();
-			headers.Add("Cookie",Config.taobaoGetSearchAnswerCookie);
+			headers.Add("Cookie", Config.taobaoGetSearchAnswerCookie);
 
-			string docStr = HttpRequest.HttpGet(Config.taobaoSearchUrl, parameters,headers:headers);
+			string docStr = HttpRequest.HttpGet(Config.taobaoSearchUrl, parameters, headers: headers);
 
 			return new TaobaoItem(Config.taobaoItemUrl + "?id=" + Regex.Match(docStr, "(?<=nid\\\":\\\").*?(?=\\\",)").Value, Regex.Match(docStr, "(?<=pic_url\\\":\\\").*?(?=\\\",)").Value);
 		}

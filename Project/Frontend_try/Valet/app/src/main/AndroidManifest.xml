@@ -49,9 +49,6 @@
             android:name=".ManageClothesActivity"
             android:label="@string/title_activity_manage_clothes"
             android:theme="@style/AppTheme" />
-        android:name=".TestActivity"
-        android:label="@string/title_activity_test"
-        android:theme="@style/AppTheme" />
         <activity
             android:name=".TestActivity"
             android:label="@string/title_activity_test"

@@ -38,13 +38,13 @@ namespace Valet_Backend.Model
 
 			JObject result = (JObject)JsonConvert.DeserializeObject(HttpGet(Config.iGeoCodeUrl, parameters));
 
-			//如果查找失败则默认为北京
+			//如果查找失败则默认为上海
 			int tempInt = 0;
 			if (!int.TryParse(result["status"].ToString(), out tempInt) || tempInt != 0)
 #if DEBUG
 				throw new Exception();
 #else
-			return "北京市";
+			return "上海市";
 #endif
 
 			string ans = result["result"]["addressComponent"]["city"].ToString();
@@ -54,7 +54,7 @@ namespace Valet_Backend.Model
 #if DEBUG
 				throw new Exception();
 #else
-			ans = "北京市"
+			ans = "上海市";
 #endif
 
 			Console.WriteLine("查询城市结果 - " + ans);

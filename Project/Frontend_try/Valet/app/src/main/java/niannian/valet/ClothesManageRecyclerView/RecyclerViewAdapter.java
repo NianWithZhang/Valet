@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import niannian.valet.R;
@@ -18,14 +19,17 @@ import niannian.valet.ResponseModel.ClothesResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyHolder> {
-    ClothesResponseList Clothes;
+    public ClothesResponseList Clothes;
 
     private HashMap<Integer,Boolean> Maps=new HashMap<Integer,Boolean>();
     private HashMap<Integer,Boolean>AllMaps=new HashMap<Integer,Boolean>();
     public RecyclerViewOnItemClickListener onItemClickListener;
 
-    public RecyclerViewAdapter(ClothesResponseList ClothesList){
+    private List<Integer> selectedIDList;
 
+    public RecyclerViewAdapter(ClothesResponseList ClothesList, List<Integer> selectedIDList){
+
+        this.selectedIDList = selectedIDList;
         this.Clothes=ClothesList;
         for (int i = 0; i < Clothes.clothes.length; i++) {
             Maps.put(i, false);
@@ -65,6 +69,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(final MyHolder holder, final int position) {
+        if(selectedIDList.contains(Clothes.clothes[position].id))
+            ((CheckBox)holder.itemView.findViewById(R.id.checkboxChooseClothes)).setChecked(true);
+
         ClothesResponse currentClothes=Clothes.clothes[position];
         currentClothes.setImage(holder.itemView.getContext(),holder.clothesImage);
         //holder.imageView.setImageResource(currentClothes.image);
@@ -80,7 +87,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Maps.put(position,false);
         }
 
-        holder.checkBox.setChecked(Maps.get(position));
+//        holder.checkBox.setChecked(Maps.get(position));
 
         holder.itemView.findViewById(R.id.clothesCard).setOnClickListener(new View.OnClickListener(){
             @Override

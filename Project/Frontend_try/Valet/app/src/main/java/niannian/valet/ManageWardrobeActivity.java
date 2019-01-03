@@ -203,7 +203,7 @@ public class ManageWardrobeActivity extends AppCompatActivity
                 break;
             case R.id.deleteWardrobeButton:
                 if(selectedIdList.isEmpty()) {
-                    MessageBoxUtil.showMessage(getApplicationContext(),"请选中要删除的衣橱");
+                    MessageBoxUtil.showMessage(view.getContext(),"请选中要删除的衣橱");
                     return;
                 }
 
@@ -288,7 +288,30 @@ public class ManageWardrobeActivity extends AppCompatActivity
     }
 
     private void deleteWardrobe(){
-        return;
+        WardrobeService service = RetrofitClient.newService(this,WardrobeService.class);
+        Integer[] list = new Integer[selectedIdList.size()];
+        selectedIdList.toArray(list);
+        retrofit2.Call<BooleanResponse> call = service.delete(list);
+        call.enqueue(new Callback<BooleanResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<BooleanResponse> call, Response<BooleanResponse> response) {
+                BooleanResponse ans = response.body();
+
+                if(ans.getAns())
+                    MessageBoxUtil.showMessage(getBaseContext(),"删除成功");
+//                    Toast.makeText(getBaseContext(),"删除成功",Toast.LENGTH_SHORT).show();
+                else
+                    MessageBoxUtil.showMessage(getBaseContext(),"出错啦 退出后重新试试吧");
+//                    Toast.makeText(getBaseContext(),"删除失败",Toast.LENGTH_SHORT).show();
+
+                initWardrobes();
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<BooleanResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
