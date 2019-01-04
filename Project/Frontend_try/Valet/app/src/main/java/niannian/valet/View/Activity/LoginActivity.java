@@ -1,4 +1,4 @@
-package niannian.valet;
+package niannian.valet.View.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.UserService;
+import niannian.valet.R;
 import niannian.valet.ResponseModel.BooleanResponse;
+import niannian.valet.UserInfo.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

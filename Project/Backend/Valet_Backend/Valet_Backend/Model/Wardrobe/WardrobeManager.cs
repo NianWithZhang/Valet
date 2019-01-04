@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Valet_Backend.Controllers;
+using Valet_Backend.Controllers.HttpResponse;
 using Valet_Backend.Model.Clothes;
 using Valet_Backend.Model.Suit;
 using Valet_Backend.Model.User;
@@ -62,6 +63,16 @@ namespace Valet_Backend.Model.Wardrobe
 #endif
 
 			return wardrobe.userID;
+		}
+
+		/// <summary>
+		/// 获取指定用户的所有衣橱列表
+		/// </summary>
+		/// <param name="userID">用户ID</param>
+		/// <returns>用户的衣橱列表</returns>
+		public static WardrobeResponseList getByUser(string userID)
+		{
+			return new WardrobeResponseList(wardrobeDb.GetList(x => x.userID == userID).OrderByDescending(x => x.lastUsedTime).Select(x => new WardrobeResponse(x.id, x.name)).ToArray());
 		}
 
 		#endregion

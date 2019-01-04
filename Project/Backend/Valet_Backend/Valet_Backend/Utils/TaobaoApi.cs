@@ -84,7 +84,7 @@ namespace Valet_Backend.Model.Clothes
 			Dictionary<string, string> headers = new Dictionary<string, string>();
 			headers.Add("Cookie", Config.taobaoGetSearchAnswerCookie);
 
-			string docStr = HttpRequest.HttpGet(Config.taobaoSearchUrl, parameters, headers: headers);
+			string docStr = HttpUtils.HttpGet(Config.taobaoSearchUrl, parameters, headers: headers);
 
 			return new TaobaoItem(Config.taobaoItemUrl + "?id=" + Regex.Match(docStr, "(?<=nid\\\":\\\").*?(?=\\\",)").Value, Regex.Match(docStr, "(?<=pic_url\\\":\\\").*?(?=\\\",)").Value);
 		}

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Valet_Backend.Controllers;
+using Valet_Backend.Controllers.HttpResponse;
 using Valet_Backend.Model.Clothes;
 using Valet_Backend.Model.Wardrobe;
 

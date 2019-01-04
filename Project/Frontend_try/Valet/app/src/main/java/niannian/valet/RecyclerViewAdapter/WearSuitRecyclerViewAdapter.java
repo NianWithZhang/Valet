@@ -1,4 +1,4 @@
-package niannian.valet;
+package niannian.valet.RecyclerViewAdapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import niannian.valet.R;
 import niannian.valet.ResponseModel.ClothesResponse;
 import niannian.valet.ResponseModel.SuitResponse;
+import niannian.valet.View.Activity.WearSuitActivity;
 
 public class WearSuitRecyclerViewAdapter extends RecyclerView.Adapter<WearSuitRecyclerViewAdapter.ViewHolder> {
 

@@ -1,4 +1,4 @@
-package niannian.valet;
+package niannian.valet.View.Activity;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -36,6 +36,7 @@ import java.util.List;
 
 import niannian.valet.HttpService.ClothesService;
 import niannian.valet.HttpService.RetrofitClient;
+import niannian.valet.R;
 import niannian.valet.ResponseModel.BooleanResponse;
 import niannian.valet.Utils.GetRealPathFromUri;
 import niannian.valet.Utils.MessageBoxUtil;

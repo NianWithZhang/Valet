@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Valet_Backend.Controllers;
+using Valet_Backend.Controllers.HttpResponse;
 using Valet_Backend.Model.Suit;
 using Valet_Backend.Model.User;
 using Valet_Backend.Model.Wardrobe;
@@ -64,10 +65,33 @@ namespace Valet_Backend.Model.Clothes
 #if DEBUG
 				throw new Exception();
 #else
-			return new ClothesResponseList(new ClothesResponse[0]);
+				return new ClothesResponseList(new ClothesResponse[0]);
 #endif
 
 			return new ClothesResponseList(clothesDb.GetList(x => x.wardrobeID == wardrobeID).OrderByDescending(x => x.lastWearingTime).Select(x => new ClothesResponse(x.id, x.name, x.type)).ToArray());
+		}
+
+		/// <summary>
+		/// 获取两衣物之间的相似度
+		/// </summary>
+		/// <param name="clothes">进行对比的两衣物</param>
+		/// <returns>两衣物间的相似度数值</returns>
+		public static double getSimilarity(KeyValuePair<Clothes, Clothes> clothes)
+		{
+			double ans = 1D;
+
+			//int nameSameLetterNum = 0;
+			//foreach (var letter in clothes.Key.name)
+			//	if (clothes.Value.name.Contains(letter))
+			//		nameSameLetterNum++;
+
+			ans += Math.Pow((Math.Abs(clothes.Key.color - clothes.Value.color) / 360) * Config.clothesAttrCoeffiencient[ClothesAttrType.Color], 2);
+			ans += Math.Pow(Math.Abs(clothes.Key.type - clothes.Value.type) * Config.clothesAttrCoeffiencient[ClothesAttrType.Type], 2);
+			ans += Math.Pow(Math.Abs(clothes.Key.thickness - clothes.Value.thickness) * Config.clothesAttrCoeffiencient[ClothesAttrType.Thickness], 2);
+
+			ans = 1 / (Math.Sqrt(ans));
+
+			return ans;
 		}
 
 		#endregion
@@ -148,7 +172,7 @@ namespace Valet_Backend.Model.Clothes
 				clothesDb.Update(clothes);
 
 				//图片压缩
-				return Utils.ImageUtil.compressImage(tempPath,picPath);
+				return Utils.ImageUtil.compressImage(tempPath, picPath);
 			}
 			else
 				return false;
@@ -258,8 +282,8 @@ namespace Valet_Backend.Model.Clothes
 				return false;
 
 			deleteClothesPic(clothes);
-			
-			return SuitManager.deleteByClothes(clothes.id)&clothesDb.Delete(clothes);
+
+			return SuitManager.deleteByClothes(clothes.id) & clothesDb.Delete(clothes);
 		}
 		/// <summary>
 		/// 根据ID删除单件衣物
@@ -274,8 +298,8 @@ namespace Valet_Backend.Model.Clothes
 				return false;
 
 			deleteClothesPic(clothes);
-			
-			return SuitManager.deleteByClothes(clothesID)&clothesDb.Delete(clothes);
+
+			return SuitManager.deleteByClothes(clothesID) & clothesDb.Delete(clothes);
 		}
 		/// <summary>
 		/// 批量删除衣物
@@ -347,7 +371,7 @@ namespace Valet_Backend.Model.Clothes
 #if DEBUG
 				throw new Exception();
 #else
-			return false;
+				return false;
 #endif
 
 			//更新衣橱被使用信息

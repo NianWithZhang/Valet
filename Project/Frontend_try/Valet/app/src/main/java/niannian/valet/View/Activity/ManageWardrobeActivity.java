@@ -1,4 +1,4 @@
-package niannian.valet;
+package niannian.valet.View.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,11 +22,13 @@ import com.longsh.optionframelibrary.OptionMaterialDialog;
 import java.util.ArrayList;
 import java.util.Map;
 
+import niannian.valet.R;
 import niannian.valet.RecyclerViewAdapter.WardrobeRecyclerViewAdapter;
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.WardrobeService;
 import niannian.valet.ResponseModel.BooleanResponse;
 import niannian.valet.ResponseModel.WardrobeResponseList;
+import niannian.valet.UserInfo.User;
 import niannian.valet.Utils.ActivityOperationUtil;
 import niannian.valet.Utils.MessageBoxUtil;
 import retrofit2.Callback;

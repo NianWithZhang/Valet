@@ -1,13 +1,16 @@
-package niannian.valet;
+package niannian.valet.View.Activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
@@ -33,9 +36,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.longsh.optionframelibrary.OptionMaterialDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,14 +51,22 @@ import java.util.Random;
 
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.SuitService;
+import niannian.valet.HttpService.UserService;
 import niannian.valet.HttpService.WardrobeService;
+import niannian.valet.R;
+import niannian.valet.RecyclerViewAdapter.WearSuitRecyclerViewAdapter;
 import niannian.valet.ResponseModel.SuitResponse;
 import niannian.valet.ResponseModel.SuitResponseList;
+import niannian.valet.ResponseModel.TaobaoItemResponse;
+import niannian.valet.ResponseModel.UrlPic;
 import niannian.valet.ResponseModel.WardrobeResponse;
 import niannian.valet.ResponseModel.WardrobeResponseList;
 import niannian.valet.ResponseModel.WeatherInfo;
+import niannian.valet.UserInfo.User;
 import niannian.valet.Utils.ActivityOperationUtil;
 import niannian.valet.Utils.GetLocationUtil;
+import niannian.valet.View.Fragment.BestSuitFragment;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -82,6 +97,9 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //弹出推荐宝贝信息
+        pushRecommend();
 
         activity = this;
 
@@ -581,8 +599,90 @@ public class MainActivity extends AppCompatActivity
 //        }
 //    }
 
+    private boolean isAppInstalled(Context context, String uri) {
+        PackageManager pm = context.getPackageManager();
+        boolean installed = false;
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            installed = true;
+        } catch (PackageManager.NameNotFoundException e) {
+            installed = false;
+        }
+        return installed;
+    }
 
 
+    private void pushRecommend(){
+
+        UserService service = RetrofitClient.newService(this,UserService.class);
+        retrofit2.Call<TaobaoItemResponse> call = service.getRecommend(User.getInstance().getId());
+        call.enqueue(new Callback<TaobaoItemResponse>() {
+            @Override
+            public void onResponse(Call<TaobaoItemResponse> call, Response<TaobaoItemResponse> response) {
+                final TaobaoItemResponse recommendItem = response.body();
+
+                if(recommendItem!=null&&!recommendItem.itemUrl.isEmpty()&&!recommendItem.picUrl.isEmpty()){
+
+                    final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(MainActivity.this);
+                    final ImageView itemImage=new ImageView(getBaseContext());
+                    itemImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getApplicationContext(),"正在打开你的淘宝",Toast.LENGTH_SHORT).show();
+
+                            String url2 = recommendItem.itemUrl;
+                            if (isAppInstalled(getApplicationContext(), "com.taobao.taobao")) {
+                                Intent intent2 = getPackageManager().getLaunchIntentForPackage("com.taobao.taobao");
+                                intent2.setAction("android.intent.action.VIEW");
+                                intent2.setClassName("com.taobao.taobao", "com.taobao.tao.detail.activity.DetailActivity");
+                                Uri uri = Uri.parse(url2);
+                                intent2.setData(uri);
+                                startActivity(intent2);
+                            }else
+                                Toast.makeText(getApplicationContext(),"你还没有安装淘宝噢",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    UrlPic.setImage(itemImage,"http:"+recommendItem.picUrl);
+                    mMaterialDialog
+                            .setContentView(itemImage)
+                            .setTitle("猜你喜欢")
+//                            .setPositiveButton("不感兴趣", new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//
+////
+//
+//                                    mMaterialDialog.dismiss();
+//                                }
+//                            })
+                            .setNegativeButton("不感兴趣",
+                                    new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            mMaterialDialog.dismiss();
+                                        }
+                                    })
+                            .setCanceledOnTouchOutside(true)
+                            .setOnDismissListener(
+                                    new DialogInterface.OnDismissListener() {
+                                        @Override
+                                        public void onDismiss(DialogInterface dialog) {
+                                            //对话框消失后回调
+                                        }
+                                    })
+                            .show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<TaobaoItemResponse> call, Throwable t) {
+            }
+        });
+
+
+
+    }
 
 
 }

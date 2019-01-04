@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ManageWardrobeActivity"
+    tools:context=".View.Activity.ManageWardrobeActivity"
     tools:showIn="@layout/app_bar_manage_wardrobe">
 
     <android.support.v7.widget.RecyclerView

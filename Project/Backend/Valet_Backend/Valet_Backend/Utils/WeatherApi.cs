@@ -28,7 +28,7 @@ namespace Valet_Backend.Model.Suit
 			parameters.Add("ak", Config.baiduMapAk);
 
 			//执行Http请求并获取结果
-			JObject result = (JObject)JsonConvert.DeserializeObject(HttpRequest.HttpGet(Config.iGeoCodeUrl, parameters));
+			JObject result = (JObject)JsonConvert.DeserializeObject(HttpUtils.HttpGet(Config.iGeoCodeUrl, parameters));
 
 			//如果查找失败则默认为上海
 			int tempInt = 0;
@@ -67,7 +67,7 @@ namespace Valet_Backend.Model.Suit
 			parameters.Add("key", Config.juheKey);
 
 			//进行Http查询并获取结果
-			JObject result = (JObject)JsonConvert.DeserializeObject(HttpRequest.HttpGet(Config.weatherApiUrl, parameters));
+			JObject result = (JObject)JsonConvert.DeserializeObject(HttpUtils.HttpGet(Config.weatherApiUrl, parameters));
 
 			if (result["resultcode"].ToString() != "200")
 #if DEBUG

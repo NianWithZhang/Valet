@@ -7,9 +7,8 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
-import niannian.valet.LoginActivity;
-import niannian.valet.ManageClothesActivity;
-import niannian.valet.User;
+import niannian.valet.View.Activity.LoginActivity;
+import niannian.valet.UserInfo.User;
 
 public class ActivityOperationUtil {
 

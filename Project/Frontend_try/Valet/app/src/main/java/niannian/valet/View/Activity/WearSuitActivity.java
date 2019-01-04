@@ -1,4 +1,4 @@
-package niannian.valet;
+package niannian.valet.View.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 import niannian.valet.HttpService.RetrofitClient;
 import niannian.valet.HttpService.SuitService;
+import niannian.valet.R;
 import niannian.valet.RecyclerViewAdapter.SuitClothesListAdapter;
 import niannian.valet.ResponseModel.BooleanResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;

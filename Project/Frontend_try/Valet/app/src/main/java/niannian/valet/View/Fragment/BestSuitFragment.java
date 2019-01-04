@@ -1,9 +1,7 @@
-package niannian.valet;
+package niannian.valet.View.Fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,16 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 
-import java.io.InputStream;
-
+import niannian.valet.R;
 import niannian.valet.ResponseModel.SuitResponse;
 import niannian.valet.ResponseModel.UrlPic;
+import niannian.valet.View.Activity.WearSuitActivity;
 import okhttp3.Call;
 
 

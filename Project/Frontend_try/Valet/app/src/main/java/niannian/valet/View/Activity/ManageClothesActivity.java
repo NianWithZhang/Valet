@@ -1,4 +1,4 @@
-package niannian.valet;
+package niannian.valet.View.Activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,6 +34,7 @@ import com.longsh.optionframelibrary.OptionMaterialDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import niannian.valet.R;
 import niannian.valet.RecyclerViewAdapter.RecyclerViewAdapter;
 import niannian.valet.HttpService.ClothesService;
 import niannian.valet.HttpService.RetrofitClient;
@@ -43,6 +44,7 @@ import niannian.valet.ResponseModel.ClothesResponse;
 import niannian.valet.ResponseModel.ClothesResponseList;
 import niannian.valet.ResponseModel.WardrobeResponse;
 import niannian.valet.ResponseModel.WardrobeResponseList;
+import niannian.valet.UserInfo.User;
 import niannian.valet.Utils.ActivityOperationUtil;
 import niannian.valet.Utils.MessageBoxUtil;
 import retrofit2.Callback;
@@ -100,6 +102,9 @@ public class ManageClothesActivity extends AppCompatActivity
              */
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                if(wardrobes.first.isEmpty())
+                    return;
+
                 chooseClothesTypeTabClick(tab.getPosition());
             }
             /**
@@ -159,9 +164,6 @@ public class ManageClothesActivity extends AppCompatActivity
 
     public void chooseClothesTypeTabClick(int position){
 //        addSelectedIDListCache();
-
-        if(clothesList.clothes.length == 0)
-            return;
 
         int clothesType=position-1;
         ArrayList<ClothesResponse> typeClothesList=new ArrayList<>();

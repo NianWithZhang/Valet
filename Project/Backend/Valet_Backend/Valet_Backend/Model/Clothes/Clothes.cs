@@ -19,6 +19,17 @@ namespace Valet_Backend.Model.Clothes
 		Shoe = 5
 	}
 
+	/// <summary>
+	/// 衣物属性类型枚举列表
+	/// </summary>
+	public enum ClothesAttrType
+	{
+		Name,
+		Color,
+		Type,
+		Thickness
+	}
+
 	[SugarTable("ClothesTable")]
 	public class Clothes
 	{

@@ -1,4 +1,4 @@
-package niannian.valet;
+package niannian.valet.View.Activity;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -36,6 +36,7 @@ import java.util.List;
 
 import niannian.valet.HttpService.ClothesService;
 import niannian.valet.HttpService.RetrofitClient;
+import niannian.valet.R;
 import niannian.valet.ResponseModel.BooleanResponse;
 import niannian.valet.ResponseModel.ClothesInfoResponse;
 import niannian.valet.ResponseModel.ClothesResponse;
@@ -372,7 +373,10 @@ public class EditClothesActivity extends AppCompatActivity {
 
 //                Date date = new Date();
 //                lastWearingTimeText.setText(String.valueOf(date.compareTo(clothesInfo.lastWearingTime)));
-                lastWearingTimeText.setText(clothesInfo.lastWearingTime.toString());
+                if(clothesInfo.lastWearingTime>365)
+                    lastWearingTimeText.setText("记不清多少");
+                else
+                    lastWearingTimeText.setText(clothesInfo.lastWearingTime.toString());
                 wearingFrequenctText.setText(clothesInfo.wearingFrequency.toString());
             }
 

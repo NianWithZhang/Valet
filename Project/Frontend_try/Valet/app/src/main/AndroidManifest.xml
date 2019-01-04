@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".View.Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".View.Activity.RegisterActivity"
             android:theme="@style/AppTheme" />
 
         <provider
@@ -41,31 +41,31 @@
         </provider>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".View.Activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ManageClothesActivity"
+            android:name=".View.Activity.ManageClothesActivity"
             android:label="@string/title_activity_manage_clothes"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".WearSuitActivity"
+            android:name=".View.Activity.WearSuitActivity"
             android:label="@string/title_activity_wear_suit"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".AddClothesActivity"
+            android:name=".View.Activity.AddClothesActivity"
             android:label="@string/title_activity_add_clothes"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".EditClothesActivity"
+            android:name=".View.Activity.EditClothesActivity"
             android:label="EditClothesActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AddNewSuitActivity"
+            android:name=".View.Activity.AddNewSuitActivity"
             android:label="AddNewSuitActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".ManageWardrobeActivity"
+            android:name=".View.Activity.ManageWardrobeActivity"
             android:label="@string/title_activity_manage_wardrobe"
             android:theme="@style/AppTheme"/>
     </application>
