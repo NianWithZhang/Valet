@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Valet_Backend.Controllers;
+using Valet_Backend.Controllers.HttpResponse;
+using Valet_Backend.Model.Clothes;
 using Valet_Backend.Model.Suit;
 using Valet_Backend.Model.User;
 
@@ -23,7 +25,7 @@ namespace Valet_Backend.Model.Wardrobe
 		/// <returns>添加结果 是否成功添加</returns>
 		public static bool add(string userID, string wardrobeName)
 		{
-			if (UserManager.exist(userID) || wardrobeDb.IsAny(x => x.userID == userID && x.name == wardrobeName))
+			if (!UserManager.exist(userID) || wardrobeDb.IsAny(x => x.userID == userID && x.name == wardrobeName))
 				return false;
 
 			return wardrobeDb.Insert(new Wardrobe(userID, wardrobeName));
@@ -63,6 +65,16 @@ namespace Valet_Backend.Model.Wardrobe
 			return wardrobe.userID;
 		}
 
+		/// <summary>
+		/// 获取指定用户的所有衣橱列表
+		/// </summary>
+		/// <param name="userID">用户ID</param>
+		/// <returns>用户的衣橱列表</returns>
+		public static WardrobeResponseList getByUser(string userID)
+		{
+			return new WardrobeResponseList(wardrobeDb.GetList(x => x.userID == userID).OrderByDescending(x => x.lastUsedTime).Select(x => new WardrobeResponse(x.id, x.name)).ToArray());
+		}
+
 		#endregion
 
 		#region 修改
@@ -98,7 +110,24 @@ namespace Valet_Backend.Model.Wardrobe
 		/// <returns>删除结果 是否成功删除</returns>
 		public static bool delete(int wardrobeID)
 		{
+			ClothesManager.deleteByWardrobe(wardrobeID);
+
 			return wardrobeDb.DeleteById(wardrobeID);
+		}
+
+		/// <summary>
+		/// 批量删除衣橱
+		/// </summary>
+		/// <param name="wardrobeIDs">需要删除的衣橱ID列表</param>
+		/// <returns>删除结果 是否成功删除衣橱</returns>
+		public static bool delete(int[] wardrobeIDs)
+		{
+			bool ans = true;
+
+			foreach (int wardrobeID in wardrobeIDs)
+				ans &= delete(wardrobeID);
+
+			return ans;
 		}
 
 		#endregion
@@ -119,7 +148,7 @@ namespace Valet_Backend.Model.Wardrobe
 #if DEBUG
 				throw new Exception();
 #else
-			return;
+			return false;
 #endif
 
 			wardrobe.wear();

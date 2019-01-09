@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Valet_Backend.Controllers;
+using Valet_Backend.Controllers.HttpResponse;
 using Valet_Backend.Model.Clothes;
 using Valet_Backend.Model.Wardrobe;
 
@@ -113,23 +114,28 @@ namespace Valet_Backend.Model.Suit
 			if (suitPicFile != null)
 			{
 				//获取设置的图片存储路径
-				string fileDir = Config.PicSaveDir;
+				string fileDir = Config.SuitPicSaveDir;
+				string tempDir = Config.TempDir;
 
 				//保证存储路径存在
 				if (!Directory.Exists(fileDir))
 					Directory.CreateDirectory(fileDir);
+				if (!Directory.Exists(tempDir))
+					Directory.CreateDirectory(tempDir);
 
 				//获取穿搭图片存储路径
+				string tempPath = suit.tempPicPath;
 				string picPath = suit.picPath;
 
-				FileStream fs = System.IO.File.Create(picPath);
+				FileStream fs = System.IO.File.Create(tempPath);
 
 				//进行存储操作
 				suitPicFile.CopyTo(fs);
 				fs.Flush();
 				fs.Close();
 
-				return true;
+				//图片压缩
+				return Utils.ImageUtil.compressImage(tempPath,picPath);
 			}
 			else
 				return false;
@@ -194,10 +200,12 @@ namespace Valet_Backend.Model.Suit
 			//找到所有与指定衣物相关的穿搭
 			List<Clothes_Suit> clothes_suitList = clothes_suitDb.GetList(x => x.clothesID == clothesID);
 
-			foreach (var clothes_suit in clothes_suitList)
-				clothes_suitDb.Delete(x => x.suitID == clothes_suit.suitID);
+			bool ans = true;
 
-			return suitDb.DeleteById(clothes_suitList.Select(x => x.suitID).ToArray());
+			foreach (var clothes_suit in clothes_suitList)
+				ans &= delete(clothes_suit.suitID);
+
+			return ans;
 		}
 		#endregion
 

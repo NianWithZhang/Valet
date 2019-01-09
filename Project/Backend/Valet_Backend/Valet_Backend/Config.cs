@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Valet_Backend.Model.Clothes;
 using Valet_Backend.Model.Suit;
 
 namespace Valet_Backend
@@ -12,15 +13,16 @@ namespace Valet_Backend
 	/// </summary>
 	public class Config
 	{
+		#region 数据库
+
 		/// <summary>
 		/// 数据库连接字符串
 		/// </summary>
 		public const string ConnectionString = "server=localhost;uid=root;pwd=1234;database=ValetDB;charset=utf8";
 
-		/// <summary>
-		/// 图片存储路径
-		/// </summary>
-		public static string PicSaveDir => Directory.GetCurrentDirectory() + "\\wwwroot\\";
+		#endregion
+
+		#region 衣物评价
 
 		/// <summary>
 		/// 衣物评价描述列表
@@ -35,6 +37,36 @@ namespace Valet_Backend
 			{ suitEvaluation.Thick,"穿这么多会热的"},
 			{ suitEvaluation.TooThick,"穿这么多会热出毛病的"}
 		};
+
+		#endregion
+
+		#region 图像存储
+
+		#region 路径
+
+		/// <summary>
+		/// 衣物图片存储路径
+		/// </summary>
+		public static string ClothesPicSaveDir => Directory.GetCurrentDirectory() + "\\wwwroot\\clothespics\\";
+
+		/// <summary>
+		/// 穿搭图片存储路径
+		/// </summary>
+		public static string SuitPicSaveDir => Directory.GetCurrentDirectory() + "\\wwwroot\\suitpics\\";
+
+		/// <summary>
+		/// 图片缓存路径
+		/// </summary>
+		public static string TempDir => Directory.GetCurrentDirectory() + "\\wwwroot\\temp\\";
+
+		#endregion
+
+		/// <summary>
+		/// 图片存储时的压缩质量 数字越小压缩率越高 1-100
+		/// </summary>
+		public const int picCompressQuality = 25;
+
+		#endregion
 
 		#region API url&key
 
@@ -80,7 +112,7 @@ namespace Valet_Backend
 		/// 淘宝图片搜索上传图片时的Cookie
 		/// </summary>
 		public const string taobaoPostImgSearchCookie = "miid=78576571323667569; t=6f340eb674a23e1f1fd723e18124551d; cna=TNYzFCaEjDsCAbSgJpWeCsNW; thw=cn; hng=CN%7Czh-CN%7CCNY%7C156; tg=0; x=e%3D1%26p%3D*%26s%3D0%26c%3D0%26f%3D0%26g%3D0%26t%3D0%26__ll%3D-1%26_ato%3D0; UM_distinctid=16623b5c6e81066-05a9eefefbc599-8383268-240000-16623b5c6e9696; enc=7N7hDtElajEtpbapUP%2B08KbRZo6tyLnHIMjjg5nvKb5Gg0vmmknJjbsmaKq8qCnrYH%2BcZP9MkMvJ1bCO%2B8kDqQ%3D%3D; _uab_collina=154324623556526562670981; cookie2=1cb0223843ed09c997058921d406c8a4; _tb_token_=6687e3b5e3db; alitrackid=www.taobao.com; lastalitrackid=www.taobao.com; x5sec=7b227061696c6974616f3b32223a22333435323133623631656235303433343036333532396461666535346436353443505737724f4546454c5077774d75687862665550686f4d4d6a6b784e44557a4e54637a4e7a737a227d; v=0; unb=2914535737; uc1=cookie16=WqG3DMC9UpAPBHGz5QBErFxlCA%3D%3D&cookie21=W5iHLLyFe3xm&cookie15=UtASsssmOIJ0bQ%3D%3D&existShop=false&pas=0&cookie14=UoTYMDi%2FHU%2FsJA%3D%3D&tag=8&lng=zh_CN; sg=%E5%BF%8371; _l_g_=Ug%3D%3D; skt=1a86f732e4a1c358; cookie1=BxpUZnwgGeuhn9OV3U22zquF8QFEauwX%2FM%2FSBhGrxF4%3D; csg=f8d9abb1; uc3=vt3=F8dByRMKNYhRgqzACgU%3D&id2=UUGjNjFpXcdZuQ%3D%3D&nk2=svVEfhbXTYM%3D&lg2=U%2BGCWk%2F75gdr5Q%3D%3D; existShop=MTU0NjMyOTYxNA%3D%3D; tracknick=%5Cu6F3E%5Cu84DD%5Cu4E4B%5Cu5FC3; lgc=%5Cu6F3E%5Cu84DD%5Cu4E4B%5Cu5FC3; _cc_=U%2BGCWk%2F7og%3D%3D; dnk=%5Cu6F3E%5Cu84DD%5Cu4E4B%5Cu5FC3; _nk_=%5Cu6F3E%5Cu84DD%5Cu4E4B%5Cu5FC3; cookie17=UUGjNjFpXcdZuQ%3D%3D; mt=ci=0_0&np=; isg=BFlZdBC-YeO5hDry85G2HE-CaEXzTkycPz-Uu3sO1QD_gnkUwzZdaMeQgAZRIeXQ; l=aBZrAuWGys1uoVbXoManDlu_uxrxygBPzkUy1MazBTqGdP8v7RXy1jno-Vw69_qC559y_K-iI";
-		
+
 		#endregion
 
 		#region Juhe
@@ -94,6 +126,44 @@ namespace Valet_Backend
 		/// </summary>
 		public const string juheKey = "ac3acab2283aa7080a37c17cd722b5d5";
 		#endregion
+
+		#endregion
+
+		#region 相似用户匹配
+
+		/// <summary>
+		/// 匹配寻找的相似用户数量
+		/// </summary>
+		public const int matchUserNum = 5;
+
+		/// <summary>
+		/// 匹配时寻找相似衣物最大件数
+		/// </summary>
+		public const int matchClothesNum = 5;
+
+		/// <summary>
+		/// 各类型衣物的相似度加成系数
+		/// </summary>
+		public static readonly Dictionary<ClothesType, double> clothesTypeCoeffiencient = new Dictionary<ClothesType, double>()
+		{
+			{ ClothesType.Hat,1},
+			{ ClothesType.Coat,2},
+			{ ClothesType.Shirt,1.5},
+			{ ClothesType.Bottom,1.2},
+			{ ClothesType.Sock,0.6},
+			{ ClothesType.Shoe,0.8}
+		};
+
+		/// <summary>
+		/// 衣物各种属性的相似度计算系数
+		/// </summary>
+		public static readonly Dictionary<ClothesAttrType, double> clothesAttrCoeffiencient = new Dictionary<ClothesAttrType, double>()
+		{
+			//{ ClothesAttrType.Name,1},
+			{ ClothesAttrType.Color,1},
+			{ ClothesAttrType.Type,2},
+			{ ClothesAttrType.Thickness,0.8}
+		};
 
 		#endregion
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
+using Valet_Backend.Controllers.HttpResponse;
 using Valet_Backend.Model;
 using Valet_Backend.Model.User;
 
@@ -17,7 +18,7 @@ namespace Valet_Backend.Controllers
 	[ApiController]
 	public class UserController : ControllerBase
 	{
-		#region HttpGet
+		#region HttpGet 查询
 
 		/// <summary>
 		/// 检查用户ID是否已存在
@@ -46,7 +47,7 @@ namespace Valet_Backend.Controllers
 
 		#endregion
 
-		#region HttpPost
+		#region HttpPost 添加
 
 		/// <summary>
 		/// 添加新用户
@@ -62,7 +63,7 @@ namespace Valet_Backend.Controllers
 
 		#endregion
 
-		#region HttpPut
+		#region HttpPut 修改
 
 		/// <summary>
 		/// 获取并清空用户的待推送推荐宝贝信息

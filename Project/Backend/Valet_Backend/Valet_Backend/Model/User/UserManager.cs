@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Valet_Backend.Controllers;
+using Valet_Backend.Model.Clothes;
+using Valet_Backend.Model.Wardrobe;
 
 namespace Valet_Backend.Model.User
 {
@@ -35,6 +38,9 @@ namespace Valet_Backend.Model.User
 		/// <returns>查询结果</returns>
 		public static bool exist(string id)
 		{
+			if (id == null)
+				return false;
+
 			return userDb.GetById(id) != null;
 		}
 
@@ -54,15 +60,6 @@ namespace Valet_Backend.Model.User
 			return user != null && user.password == password;
 		}
 
-		/// <summary>
-		/// 获取指定用户的所有衣橱列表
-		/// </summary>
-		/// <param name="id">用户ID</param>
-		/// <returns>用户的衣橱列表</returns>
-		public static WardrobeResponseList getWardrobes(string id)
-		{
-			return new WardrobeResponseList(wardrobeDb.GetList(x=>x.userID == id).OrderByDescending(x=>x.lastUsedTime).Select(x=>new WardrobeResponse(x.id,x.name)).ToArray());
-		}
 		#endregion
 
 		#region 衣物推荐
@@ -80,7 +77,7 @@ namespace Valet_Backend.Model.User
 
 			foreach (User user in users)
 				user.recommednItem = (recommendInfo as SetRecommendInfo).item;
-			
+
 			userDb.UpdateRange((recommendInfo as SetRecommendInfo).users.ToArray());
 		}
 
@@ -97,11 +94,10 @@ namespace Valet_Backend.Model.User
 #if DEBUG
 				throw new Exception();
 #else
-			return new KeyValuePair<string, string>(null,null);
+				return new TaobaoItem();
 #endif
 			TaobaoItem item = user.recommednItem;
-			
-			//清除该用户推荐宝贝信息
+
 			userDb.Update(user);
 
 			return item;
@@ -116,11 +112,94 @@ namespace Valet_Backend.Model.User
 		{
 			User user = userDb.GetById(id);
 
-			if (user == null)
-				return null;
+			if (user == null || WardrobeManager.getByUser(id).wardrobes.Count() == 0)
+#if DEBUG
+				throw new Exception();
+#else
+				return new List<User>();
+#endif
 
-			//TODO 现在返回的是所有用户
-			return userDb.GetList();
+			//获取源用户衣物列表
+			IEnumerable<int> wardrobeIDs = WardrobeManager.getByUser(user.id).wardrobes.ToList().Select(x => x.id);
+
+			IEnumerable<IEnumerable<int>> clothesIDLists = wardrobeIDs.Select(x => ClothesManager.getByWardrobe(x).clothes.Select(y => y.id));
+
+			List<Clothes.Clothes> clothes = new List<Clothes.Clothes>();
+
+			foreach (var clothesIDs in clothesIDLists)
+				foreach (var clothesID in clothesIDs)
+					clothes.Add(ClothesManager.get(clothesID));
+
+			Dictionary<double, User> similarUsers = new Dictionary<double, User>();
+
+			foreach (User anotherUser in userDb.GetList())
+			{
+				if (anotherUser.id == user.id)
+					continue;
+
+				double similarity = calculateUserSimilarity(anotherUser, clothes);
+
+				if (similarUsers.Count == 0 || similarity > similarUsers.Keys.Min())
+				{
+					if (similarUsers.Count == 0)
+						similarUsers.Add(similarity, anotherUser);
+
+					if (similarUsers.Count >= Config.matchUserNum)
+						similarUsers.Remove(similarUsers.Min().Key);
+
+					if (similarUsers.ContainsKey(similarity))
+						similarity += 0.000001;
+
+					similarUsers.Add(similarity, anotherUser);
+				}
+			}
+
+			return similarUsers.Values;
+		}
+
+		/// <summary>
+		/// 计算从源用户到目标用户的相似度
+		/// </summary>
+		/// <param name="user">目标用户</param>
+		/// <param name="srcClothesList">源用户衣物列表用户</param>
+		/// <returns>相似度值 范围为0-1 值越大相似度越高</returns>
+		private static double calculateUserSimilarity(User user, List<Clothes.Clothes> srcClothesList)
+		{
+			//获取匹配目标用户最近常穿的衣橱
+			IEnumerable<int> wardrobeIDs = WardrobeManager.getByUser(user.id).wardrobes.ToList().Select(x => x.id);
+
+			IEnumerable<IEnumerable<int>> clothesIDLists = wardrobeIDs.Select(x => ClothesManager.getByWardrobe(x).clothes.Select(y => y.id));
+
+			List<Clothes.Clothes> clothesList = new List<Clothes.Clothes>();
+
+			foreach (var clothesIDs in clothesIDLists)
+				foreach (var clothesID in clothesIDs)
+					clothesList.Add(ClothesManager.get(clothesID));
+
+			IEnumerable<Clothes.Clothes> mostDressedClothes = clothesList.OrderByDescending(x => x.wearingFrequency).OrderByDescending(x => x.lastWearingTime).Take(Config.matchClothesNum);
+
+			double ans = 0;
+
+			foreach (var clothes in mostDressedClothes)
+			{
+				double maxSimilarity = double.MinValue;
+
+				foreach (var targetClothes in srcClothesList)
+				{
+					double temp = ClothesManager.getSimilarity(new KeyValuePair<Clothes.Clothes,Clothes.Clothes>(targetClothes,clothes));
+
+					if(temp>maxSimilarity)
+						maxSimilarity = temp;
+				}
+
+				if (maxSimilarity > double.MinValue)
+					ans += maxSimilarity*Config.clothesTypeCoeffiencient[clothes.type];
+			}
+
+			if(mostDressedClothes.Any())
+				ans /= mostDressedClothes.Sum(x=>Config.clothesTypeCoeffiencient[x.type]);
+
+			return ans;
 		}
 
 		#endregion

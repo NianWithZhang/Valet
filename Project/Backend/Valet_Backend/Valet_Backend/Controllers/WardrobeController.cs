@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Valet_Backend.Controllers.HttpResponse;
 using Valet_Backend.Model;
 using Valet_Backend.Model.User;
 using Valet_Backend.Model.Wardrobe;
@@ -12,55 +13,13 @@ using Valet_Backend.Model.Wardrobe;
 namespace Valet_Backend.Controllers
 {
 	/// <summary>
-	/// 衣橱信息格式
-	/// </summary>
-	public class WardrobeResponse
-	{
-		//衣橱ID
-		public int id;
-		
-		//衣橱名称
-		public string name;
-
-		/// <summary>
-		/// 初始化成员变量
-		/// </summary>
-		/// <param name="_id"></param>
-		/// <param name="_name"></param>
-		public WardrobeResponse(int _id, string _name)
-		{
-			id = _id;
-			name = _name;
-		}
-	}
-	/// <summary>
-	/// 衣橱信息列表格式
-	/// </summary>
-	public class WardrobeResponseList
-	{
-		/// <summary>
-		/// 衣橱信息列表
-		/// </summary>
-		public WardrobeResponse[] wardrobes;
-
-		/// <summary>
-		/// 初始化成员变量
-		/// </summary>
-		/// <param name="_wardrobes"></param>
-		public WardrobeResponseList(WardrobeResponse[] _wardrobes)
-		{
-			wardrobes = _wardrobes;
-		}
-	}
-
-	/// <summary>
 	/// 衣橱模块Http服务接口
 	/// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
 	public class WardrobeController : ControllerBase
 	{
-		#region HttpGet
+		#region HttpGet 查询
 
 		/// <summary>
 		/// 获取指定用户所有的所有衣橱列表
@@ -70,12 +29,12 @@ namespace Valet_Backend.Controllers
 		[HttpGet]
 		public WardrobeResponseList get(string id)
 		{
-			return UserManager.getWardrobes(id);
+			return WardrobeManager.getByUser(id);
 		}
 
 		#endregion
 		
-		#region HttpPost
+		#region HttpPost 添加
 
 		/// <summary>
 		/// 新建衣橱
@@ -91,7 +50,34 @@ namespace Valet_Backend.Controllers
 
 		#endregion
 
-		#region HttpPut
+		#region HttpDelete
+
+		/// <summary>
+		/// 删除衣橱
+		/// </summary>
+		/// <param name="id">需要删除的衣橱ID</param>
+		/// <returns>删除结果 是否成功删除衣橱</returns>
+		[HttpDelete]
+		public BooleanResponse deleteWardrobe(int id)
+		{
+			return new BooleanResponse(WardrobeManager.delete(id));
+		}
+
+		/// <summary>
+		/// 批量删除衣橱
+		/// </summary>
+		/// <param name="ids">需要删除的衣橱ID列表</param>
+		/// <returns>删除结果 是否成功删除衣橱</returns>
+		[Route("many")]
+		[HttpDelete]
+		public BooleanResponse deleteWardrobes(int[] ids)
+		{
+			return new BooleanResponse(WardrobeManager.delete(ids));
+		}
+
+		#endregion
+
+		#region HttpPut 修改
 
 		/// <summary>
 		/// 重命名衣橱
@@ -106,20 +92,6 @@ namespace Valet_Backend.Controllers
 		}
 
 		#endregion
-
-		#region HttpDelete
-
-		/// <summary>
-		/// 删除衣橱
-		/// </summary>
-		/// <param name="id">需要删除的衣橱ID</param>
-		/// <returns>删除结果 是否成功删除衣橱</returns>
-		[HttpDelete]
-		public object deleteWardrobe(int id)
-		{
-			return new { ans = WardrobeManager.delete(id) };
-		}
-
-		#endregion
+		
 	}
 }

@@ -4,59 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Valet_Backend.Controllers.HttpResponse;
 using Valet_Backend.Model.Clothes;
 using Valet_Backend.Model.Suit;
 
 namespace Valet_Backend.Controllers
 {
-	/// <summary>
-	///  获取穿搭时返回的单个穿搭信息
-	/// </summary>
-	public class SuitResponse
-	{
-		public int id;
-		public string name;
-		public string evaluation;
-
-		public SuitResponse(int _id,string _name,string _evaluation = "")
-		{
-			id = _id;
-			name = _name;
-			evaluation = _evaluation;
-		}
-	}
-
-	/// <summary>
-	/// 获取穿搭时返回的穿搭信息列表
-	/// 包含穿搭ID列表以及天气信息 若仅为获取穿搭信息则天气信息内容为空
-	/// </summary>
-	public class SuitResponseList
-	{
-		public WeatherInfo weather;
-		public SuitResponse[] suits;
-
-		public SuitResponseList(WeatherInfo _weather,SuitResponse[] _suits)
-		{
-			weather = _weather;
-			suits = _suits;
-		}
-	}
-
-	/// <summary>
-	/// 穿搭冷暖评价信息返回格式
-	/// </summary>
-	public class EvaluationResponse
-	{
-		//表示评价相关衣物和套装是否都正确找到
-		public bool ans;
-		public string description;
-
-		public EvaluationResponse(bool _ans,string _description)
-		{
-			ans = _ans;
-			description = _description;
-		}
-	}
 
 	/// <summary>
 	/// 穿搭相关Http服务接口
@@ -65,7 +18,7 @@ namespace Valet_Backend.Controllers
     [ApiController]
     public class SuitController : ControllerBase
     {
-		#region HttpGet
+		#region HttpGet 查询
 
 		/// <summary>
 		/// 获取指定穿搭的衣物列表
@@ -123,7 +76,7 @@ namespace Valet_Backend.Controllers
 
 		#endregion
 
-		#region HttpPost
+		#region HttpPost 添加
 
 		/// <summary>
 		/// 新增穿搭套装
@@ -141,7 +94,7 @@ namespace Valet_Backend.Controllers
 
 		#endregion
 
-		#region HttpDelete
+		#region HttpDelete 删除
 
 		/// <summary>
 		/// 删除穿搭
@@ -156,7 +109,7 @@ namespace Valet_Backend.Controllers
 
 		#endregion
 
-		#region HttpPut
+		#region HttpPut 修改
 
 		/// <summary>
 		/// 选择今日穿某套穿搭
@@ -182,13 +135,6 @@ namespace Valet_Backend.Controllers
 		}
 
 		#endregion
-
-		//DELETE!!!!!!!!!!!!!!
-		//不需要直接获取天气信息 需要在启动应用时getAdvice时获取
-		//[HttpGet]
-		//public WeatherInfo weather(double latitude,double longitude)
-		//{
-		//	return WeatherApi.getLocationWeather(latitude,longitude);
-		//}
+		
 	}
 }
