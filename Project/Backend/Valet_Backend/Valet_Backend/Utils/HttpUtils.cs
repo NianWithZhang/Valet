@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace Valet_Backend
 {
-
-
 	/// <summary>
 	/// 执行Http请求相关方法
 	/// </summary>
