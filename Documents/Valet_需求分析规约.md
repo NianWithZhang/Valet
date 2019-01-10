@@ -86,7 +86,7 @@ ppt11(p28)Regardless of the level of procedural abstraction, the UML activity di
 #### 2.4.2XXXXXXX(数据建模)
 
 ```
-ER图一个
+分析类图一个
 ```
 
 
