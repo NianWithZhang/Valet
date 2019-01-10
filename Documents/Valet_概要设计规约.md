@@ -14,7 +14,7 @@
 
 [1] RESTful API – Wiki : https://en.wikipedia.org/wiki/Representational_state_transfer
 
-[2] Metirial Design : https://material.io/design/guidelines-overview/
+[2] Material Design : https://material.io/design/guidelines-overview/
 
 ### 1.3 假定和约束 
 
@@ -100,8 +100,6 @@ ORM 包主要负责建立持久化存储数据和软件运行时数据对象间�
 
 User，Taobao Item 以及 User Manager 负责实现该部分系统功能业务逻辑，由 User Controller 负责界面类与实体类之间的信息沟通，接收来自界面类的请求，创建 User Manager 和 User ，并将处理结果返回。
 
-
-
 ##### 2.2.2.2 衣橱管理模块
 
 【图】
@@ -122,8 +120,6 @@ Wardrobe 和 Wardrobe Manager 实现了衣橱相关系统功能的业务逻辑�
 
 Clothes Type 为枚举类，记录和定义了系统所支持的衣物类型。Clothes 和 Clothes Manager 类实现了该部分系统功能的业务逻辑，由 Clothes Controller 负责边界类和实体类之间的信息沟通。
 
-
-
 ##### 2.2.2.4 穿搭管理模块
 
 【图】
@@ -133,8 +129,6 @@ Clothes Type 为枚举类，记录和定义了系统所支持的衣物类型。C
 该部分包括六个界面类 Main Activity， Add New Suit Activity ， Wear Suit Activity ， Best Suit Fragment ， Suit Clothes List Adapter ， Wear Suit Recycler View Adapter，其中Best Suit Fragment 负责 Main Activity 所对应主界面中的今日最适穿搭卡片的用户交互，Wear Suit Recycler View Adapter 负责了主界面中的穿搭列表的用户交互，Suit Clothes List 负责对 Wear Suit Activity 所对应的查看穿搭衣物详情页面的衣物列表的用户交互行为提供支持。
 
 Suit ，Clothes_Suit ，Suit Manager 实现了该部分系统功能的业务逻辑，其中 Clothes_Suit 负责处理由Clothes 到 Suit 之间的对应关系。其中获取天气信息相关功能可能会用到 Utils 包中的 Weather Api 工具类。Suit Controller 负责该部分边界类和实体类之间的信息沟通。
-
-
 
 ##### 2.2.2.5 Http 接口请求类
 
@@ -524,7 +518,7 @@ int clothesID - 指定的衣物ID
 
 #### 2.3.3 前后端之间的接口
 
-本系统安卓手机端和服务器端之间采用Http请求方式进行沟通，以下列出了系统支持的前后端接口规范。
+本系统安卓手机端和服务器端之间采用Http请求方式进行沟通，并对接口的响应格式用HttpResponse包中的类进行了封装，以下列出了系统支持的前后端接口规范，以及对应的Http响应格式类。
 
 ##### 2.3.3.1 用户模块
 
@@ -532,9 +526,9 @@ int clothesID - 指定的衣物ID
 
 【图】
 
-###### 2.3.3.1.1 用户登录检查
+###### 2.3.3.1.1 checkUser() 用户登录检查
 
-接口路径：[POST] /api/user
+接口路径：[GET] /api/user
 
 接口参数：
 
@@ -544,9 +538,165 @@ string password - 尝试的密码
 
 接口响应格式：
 
+BooleanResponse 检查的结果 用户名密码是否正确且匹配
+
 接口说明：
 
 通过该接口对用户登录信息进行检查和校验
+
+###### 2.3.3.1.2 addUser() 添加新用户
+
+接口路径：[POST] /api/user
+
+接口参数：
+
+string id - 新创建用户ID
+
+string password - 新创建用户密码
+
+接口响应格式：
+
+BooleanResponse 创建的结果 是否用户名未重复且成功创建
+
+接口说明：
+
+通过该接口进行用户名重复检查和新用户添加
+
+###### 2.3.3.1.3 getRecommend() 获取用户推荐宝贝信息
+
+接口路径：[PUT] /api/user
+
+接口参数：
+
+string id - 要获取推荐宝贝信息的指定用户ID
+
+接口响应格式：
+
+TaobaoItem 查找到的该用户推荐宝贝信息 若无则信息内容为空
+
+接口说明：
+
+通过该接口查询和获取指定用户的购衣推荐信息，并在成功获取之后清空其信息
+
+##### 2.3.3.2 衣橱管理模块
+
+###### 2.3.3.2.1 get() 获取用户的所有衣橱
+
+接口路径：[GET] /api/wardrobe
+
+接口参数：
+
+string id - 要获取衣橱的指定用户ID
+
+接口响应格式：
+
+WardrobeResponseList 查找到的用户的所有衣橱列表
+
+接口说明：
+
+通过该接口找到指定用户的所有衣橱列表
+
+###### 2.3.3.2.2 addWardrobe() 新建衣橱
+
+接口路径：[POST] /api/wardrobe
+
+接口参数：
+
+string user_id - 要新建的衣橱的所属用户ID
+
+string name - 新建的衣橱的名称
+
+接口响应格式：
+
+BooleanResponse 新建结果 是否成功新建衣橱
+
+接口说明：
+
+通过该接口进行指定名称的衣橱新建操作
+
+###### 2.3.3.2.3 deleteWardrobe() 删除衣橱
+
+接口路径：[DELETE] /api/wardrobe
+
+接口参数：
+
+int id - 要删除的衣橱ID
+
+接口响应格式：
+
+BooleanResponse 删除结果 是否成功删除衣橱
+
+接口说明：
+
+通过该接口删除指定ID的衣橱
+
+###### 2.3.3.2.4 deleteWardrobes() 批量删除衣橱
+
+接口路径：[DELETE] /api/wardrobe/many
+
+接口参数：
+
+int[] ids - 要删除的衣橱ID列表
+
+接口响应格式：
+
+BooleanResponse 删除结果 是否成功删除所有衣橱
+
+接口说明：
+
+通过该接口批量删除一些指定的衣橱
+
+##### 2.3.3.3  衣物管理模块
+
+###### 2.3.3.3.1 getClothesInfo() 获取衣物信息
+
+接口路径：[GET] /api/clothes
+
+接口参数：
+
+int id - 要获取信息的衣物ID
+
+接口响应格式：
+
+ClothesInfoResponse 查询得到的衣物信息
+
+接口说明：
+
+通过该接口查询指定ID的衣物信息
+
+###### 2.3.3.3.2 getByWardrobe() 获取衣橱内衣物
+
+接口路径：[GET] /api/clothes/wardrobe
+
+接口参数：
+
+int id - 要获取衣物信息的指定衣橱ID
+
+接口响应格式：
+
+ClothesResponseList 查询到的衣物列表
+
+接口说明：
+
+通过该接口得到指定衣橱内所包含的所有衣物列表
+
+###### 2.3.3.3.3 addClothes() 添加衣物
+
+接口路径：[POST] /api/clothes
+
+接口参数：
+
+file pic - 新添加衣物的图片
+
+int wardrobe_id
+
+string name
+
+ClothesType
+
+int thickness
+
+
 
 #### 2.3.4 系统与其他系统的接口
 
@@ -917,11 +1067,23 @@ startActivity(intent);
 
 ### 2.4 界面设计
 
-2.4.1 登录界面设计
+#### 2.4.1 登录界面设计
 
-2.4.2 注册界面设计
+iteration1.
 
-2.4.3】
+#### 2.4.2 注册界面设计
+
+#### 2.4.3 今日穿搭界面设计
+
+#### 2.4.4 管理衣橱界面设计
+
+#### 2.4.5 管理衣物界面设计
+
+#### 2.4.6 编辑/添加衣物界面设计
+
+#### 2.4.7 新建穿搭界面设计
+
+#### 2.4.8 购衣推荐界面设计
 
 ### 2.5 数据库设计
 
