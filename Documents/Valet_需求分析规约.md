@@ -92,27 +92,121 @@ McGraw- Hill Higher Education, 2008.
 
 ### 2.4需求分析
 
-#### 2.4.1XXXXXXX(功能建模)
+#### 2.4.1 功能模型—活动图
 
-```
-ppt11(p28)Regardless of the level of procedural abstraction, the UML activity diagram can be used to represent processing details.
-```
+2.4.1.1登录
+
+![FunctionModel__登录__登录活动图_8](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__登录__登录活动图_8.png)
+
+2.4.1.2注册
+
+![FunctionModel__注册__注册活动图_9](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__注册__注册活动图_9.png)
+
+2.4.1.3获取购衣推荐
+
+![FunctionModel__获取购衣推荐__获取购衣推荐活动图_10](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__获取购衣推荐__获取购衣推荐活动图_10.png)
+
+2.4.1.4添加衣物
+
+![FunctionModel__添加衣物__添加衣物活动图_11](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__添加衣物__添加衣物活动图_11.png)
+
+2.4.1.5修改衣物信息
+
+![FunctionModel__修改衣物信息__修改衣物信息活动图_12](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__修改衣物信息__修改衣物信息活动图_12.png)
+
+2.4.1.6删除衣物
+
+![FunctionModel__删除衣物__删除衣物活动图_13](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__删除衣物__删除衣物活动图_13.png)
+
+2.4.1.7衣物切换衣橱
+
+![FunctionModel__衣物切换衣橱__衣物切换衣橱活动图_14](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__衣物切换衣橱__衣物切换衣橱活动图_14.png)
+
+2.4.1.8新建衣橱
+
+![FunctionModel__新建衣橱__新建衣橱活动图_15](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__新建衣橱__新建衣橱活动图_15.png)
+
+2.4.1.9删除衣橱
+
+![FunctionModel__删除衣橱__删除衣橱活动图_16](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__删除衣橱__删除衣橱活动图_16.png)
+
+2.4.1.10选择今日穿搭
+
+![FunctionModel__选择今日穿搭__选择今日穿搭活动图_17](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__选择今日穿搭__选择今日穿搭活动图_17.png)
+
+2.4.1.11获取穿搭建议
+
+![FunctionModel__获取穿搭建议__获取穿搭建议活动图_18](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__获取穿搭建议__获取穿搭建议活动图_18.png)
+
+2.4.1.12新建穿搭套装
+
+![FunctionModel__新建穿搭套装__新建穿搭套装活动图_19](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__新建穿搭套装__新建穿搭套装活动图_19.png)
+
+2.4.1.13删除穿搭套装
+
+![FunctionModel__删除穿搭套装__删除穿搭套装活动图_20](Diagrams/FunctionalModel/ActivityDiagrams/FunctionModel__删除穿搭套装__删除穿搭套装活动图_20.png)
 
 
 
-#### 2.4.2XXXXXXX(数据建模)
-
-```
-分析类图一个
-```
 
 
+#### 2.4.2数据模型--分析类图
 
-#### 2.4.3XXXXXXX(行为建模)
+![DataModel__AnalysisClassDiagram_7](Diagrams/DataModel/DataModel__AnalysisClassDiagram_7.png)
 
-```
-ppt11(p4) create a sequence for each user case, build a state diagram for the system or classes
-```
+
+
+#### 2.4.3行为模型--序列图
+
+2.4.3.1注册
+
+![Model1__Collaboration1__Interaction1__注册序列图_21](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration1__Interaction1__注册序列图_21.png)
+
+2.4.3.2登录
+
+![Model1__Collaboration2__Interaction1__登录序列图_22](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration2__Interaction1__登录序列图_22.png)
+
+2.4.3.3获取购衣推荐
+
+![Model1__Collaboration3__Interaction1__获取购衣推荐序列图_23](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration3__Interaction1__获取购衣推荐序列图_23.png)
+
+2.4.3.4添加衣物
+
+![Model1__Collaboration4__Interaction1__添加衣物序列图_24](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration4__Interaction1__添加衣物序列图_24.png)
+
+2.4.3.5删除衣物
+
+![Model1__Collaboration5__Interaction1__删除衣物序列图_25](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration5__Interaction1__删除衣物序列图_25.png)
+
+2.4.3.6衣物切换衣橱
+
+![Model1__Collaboration6__Interaction1__衣物切换衣橱序列图_26](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration6__Interaction1__衣物切换衣橱序列图_26.png)
+
+2.4.3.7新建衣橱
+
+![Model1__Collaboration7__Interaction1__新建衣橱序列图_27](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration7__Interaction1__新建衣橱序列图_27.png)
+
+2.4.3.8删除衣橱
+
+![Model1__Collaboration8__Interaction1__删除衣橱序列图_28](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration8__Interaction1__删除衣橱序列图_28.png)
+
+2.4.3.9选择今日穿搭
+
+![Model1__Collaboration9__Interaction1__选择今日穿搭序列图_29](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration9__Interaction1__选择今日穿搭序列图_29.png)
+
+2.4.3.10获取穿搭建议
+
+![Model1__Collaboration10__Interaction1__获取穿搭建议序列图_30](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration10__Interaction1__获取穿搭建议序列图_30.png)
+
+2.4.3.11新建穿搭套装
+
+![Model1__Collaboration11__Interaction1__新建穿搭套装序列图_31](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration11__Interaction1__新建穿搭套装序列图_31.png)
+
+2.4.3.12删除穿搭套装
+
+![Model1__Collaboration12__Interaction1__删除穿搭套装序列图_32](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration12__Interaction1__删除穿搭套装序列图_32.png)
+
+
 
 
 
@@ -262,3 +356,4 @@ ppt11(p4) create a sequence for each user case, build a state diagram for the sy
 
 ## 五 需求跟踪
 
+详见ScrumDocument文件夹中的ProjectStoryBacklog.xls，SprintBacklog.xls，ProjectEverySprintEstimation.xls文件。
