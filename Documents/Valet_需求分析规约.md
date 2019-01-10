@@ -162,51 +162,55 @@ McGraw- Hill Higher Education, 2008.
 
 #### 2.4.3行为模型--序列图
 
-2.4.3.1注册
+2.4.3.1系统级状态图
+
+![系统级状态图](Diagrams/BehaviorModel/系统级状态图.png)
+
+2.4.3.2注册
 
 ![Model1__Collaboration1__Interaction1__注册序列图_21](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration1__Interaction1__注册序列图_21.png)
 
-2.4.3.2登录
+2.4.3.3登录
 
 ![Model1__Collaboration2__Interaction1__登录序列图_22](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration2__Interaction1__登录序列图_22.png)
 
-2.4.3.3获取购衣推荐
+2.4.3.4获取购衣推荐
 
 ![Model1__Collaboration3__Interaction1__获取购衣推荐序列图_23](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration3__Interaction1__获取购衣推荐序列图_23.png)
 
-2.4.3.4添加衣物
+2.4.3.5添加衣物
 
 ![Model1__Collaboration4__Interaction1__添加衣物序列图_24](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration4__Interaction1__添加衣物序列图_24.png)
 
-2.4.3.5删除衣物
+2.4.3.6删除衣物
 
 ![Model1__Collaboration5__Interaction1__删除衣物序列图_25](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration5__Interaction1__删除衣物序列图_25.png)
 
-2.4.3.6衣物切换衣橱
+2.4.3.7衣物切换衣橱
 
 ![Model1__Collaboration6__Interaction1__衣物切换衣橱序列图_26](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration6__Interaction1__衣物切换衣橱序列图_26.png)
 
-2.4.3.7新建衣橱
+2.4.3.8新建衣橱
 
 ![Model1__Collaboration7__Interaction1__新建衣橱序列图_27](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration7__Interaction1__新建衣橱序列图_27.png)
 
-2.4.3.8删除衣橱
+2.4.3.9删除衣橱
 
 ![Model1__Collaboration8__Interaction1__删除衣橱序列图_28](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration8__Interaction1__删除衣橱序列图_28.png)
 
-2.4.3.9选择今日穿搭
+2.4.3.10选择今日穿搭
 
 ![Model1__Collaboration9__Interaction1__选择今日穿搭序列图_29](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration9__Interaction1__选择今日穿搭序列图_29.png)
 
-2.4.3.10获取穿搭建议
+2.4.3.11获取穿搭建议
 
 ![Model1__Collaboration10__Interaction1__获取穿搭建议序列图_30](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration10__Interaction1__获取穿搭建议序列图_30.png)
 
-2.4.3.11新建穿搭套装
+2.4.3.12新建穿搭套装
 
 ![Model1__Collaboration11__Interaction1__新建穿搭套装序列图_31](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration11__Interaction1__新建穿搭套装序列图_31.png)
 
-2.4.3.12删除穿搭套装
+2.4.3.13删除穿搭套装
 
 ![Model1__Collaboration12__Interaction1__删除穿搭套装序列图_32](Diagrams/BehaviorModel/SequenceDiagrams/Model1__Collaboration12__Interaction1__删除穿搭套装序列图_32.png)
 
