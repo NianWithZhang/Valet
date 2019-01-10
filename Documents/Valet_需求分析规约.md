@@ -18,6 +18,13 @@
 
 ### 1.2参考资料 
 
+[1] RESTful API – Wiki : https://en.wikipedia.org/wiki/Representational_state_transfer
+
+[2] Metirial Design : https://material.io/design/guidelines-overview/
+
+[3]Pressman R S. Software Engineering A Practitioner's Approach[M]. Seventh Edition.
+McGraw- Hill Higher Education, 2008.
+
 ### 1.3假定和约束 
 
 - 发布时间 ：2018年12月25日发布“Valet”智能衣橱APP测试版 
@@ -183,6 +190,8 @@ ppt11(p4) create a sequence for each user case, build a state diagram for the sy
 
 由于本应用为服务器-客户端模式的移动应用，用户数据基本全都保存在服务器端，因此服务端应当负责数据备份并保证数据的安全性。为了防止网络方面的攻击，本系统应当具备防治黑客入侵随意篡改用户已经生成好的线路的技术，尤其是系统内的一些核心数据，应采取数据加密存储技术，防止不法分子盗用数据，造成用户数据泄露。即使发生灾难造成数据丢失，系统立即通过备份数据进行恢复，并且重新备份，保证系统中始终保持至少一份数据备份。
 
+
+
 ## 四 运行环境规定
 
 ### 4.1设备
@@ -218,6 +227,26 @@ ppt11(p4) create a sequence for each user case, build a state diagram for the sy
 
 
 ### 4.3接口
+
+1)天气查询接口
+
+通过提供用户所在位置获取实时的天气信息，包括温度、风力等基本天气信息要素。
+
+2)逆地理编码接口
+
+通过提供的经纬度坐标信息获取对应位置的政治区域名称。
+
+3)电商（淘宝）搜索接口
+
+通过已有的衣物图片找到相似的淘宝宝贝。
+
+4)安卓系统相册摄像头接口
+
+调用系统的相册或摄像头获取照片。
+
+5)后台数据库接口
+
+通过连接数据库实现数据的持久化存储和加载。
 
 
 

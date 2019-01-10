@@ -10,13 +10,29 @@
 
 ### 1.1 概要设计依据
 
+1）架构设计和数据库设计是需求分析规约中数据建模的分析类图细化得到的；
+
+2）接口设计是基于需求规约中的用例描述和用例图，以及需求分析规约中功能建模的活动图、行为建模的状态图和序列图；
+
+3）由需求工程到概要设计是根据软件工程课程课本中的方法进行设计。
+
 ### 1.2 参考资料 
 
 [1] RESTful API – Wiki : https://en.wikipedia.org/wiki/Representational_state_transfer
 
 [2] Material Design : https://material.io/design/guidelines-overview/
 
+[3] Pressman R S. Software Engineering A Practitioner's Approach[M]. Seventh Edition.
+McGraw- Hill Higher Education, 2008.
+
 ### 1.3 假定和约束 
+
+- 发布时间 ：2018年12月25日发布“Valet”智能衣橱APP测试版 
+- 系统要求： Android 7.1.1及以上版本 
+- 开发条件：成员自备开发使用电脑，并配置相关开发环境
+- 开发效率：采用SCRUM敏捷开发模型，开发冲刺期间避免外界打扰。团队高度自治，队员们熟悉开发过程中涉及到的各种技术，紧密合作，确保每个迭代都朝着最高目标推进。
+- 小组合作：为了加强小组之间的交流并且节约时间，除了线下讨论，还采用线上开会交流，讨论。 
+- 代码托管：为了充分实践软件工程的思想，对项目进行平台化、流程化管理。使用 github进行代码提交、合并、托管，产生最新最完整版的代码。 
 
 ## 二 概要设计
 
