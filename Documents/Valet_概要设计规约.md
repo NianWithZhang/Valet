@@ -1411,7 +1411,59 @@ iteration3.![RecomandClothes](Pages/RecomandClothes.jpg)
 
 #### 2.5.1 实体设计
 
+一个用户对应多个衣橱，一个衣橱只对应一个用户，一对多关系。
+
+一个衣橱对应多个衣物，一个衣物只对应一个衣橱，一对多关系。
+
+一个衣橱对应多个穿搭，一个穿搭只对应一个衣橱，一对多关系。
+
+一个穿搭对应多个衣物，一个衣物对应多个穿搭，多对多关系。
+
 #### 2.5.2 实体属性
+
+2.5.2.1UserTable
+
+| 属性名                 | 类型         | 描述                    |
+| ---------------------- | ------------ | ----------------------- |
+| id                     | varchar(20)  | 用户id，主键            |
+| password               | varchar(20)  | 用户密码                |
+| recommend_item_url     | varchar(128) | 用户衣物推荐url         |
+| recommend_item_pic_url | varchar(128) | 用户衣物推荐的图片的url |
+
+2.5.2.2ClothesTable
+
+| 属性名            | 类型        | 描述                   |
+| ----------------- | ----------- | ---------------------- |
+| id                | int         | 衣物id，主键           |
+| wardrobe_id       | int         | 衣物所在的衣橱id       |
+| name              | varchar(20) | 衣物名称               |
+| color             | double      | 衣物颜色               |
+| type              | int         | 衣物类型               |
+| thickness         | int         | 衣物薄厚度（取值0~10） |
+| last_wearing_time | datetime    | 上次穿着时间           |
+| wearing_frequency | int         | 穿着频率               |
+
+2.5.2.3WardrobeTable
+
+| 属性名         | 类型        | 描述             |
+| -------------- | ----------- | ---------------- |
+| id             | int         | 衣橱id，主键     |
+| user_id        | varchar(20) | 衣橱对应的用户id |
+| name           | varchar(20) | 衣橱名称         |
+| last_used_time | datetime    | 上次使用衣橱时间 |
+
+2.5.2.4SuitTable
+
+| 属性名            | 类型        | 描述               |
+| ----------------- | ----------- | ------------------ |
+| id                | int         | 穿搭id，主键       |
+| wardrobe_id       | int         | 穿搭所在衣橱id     |
+| name              | varchar(20) | 穿搭名称           |
+| warmth_degree     | double      | 穿搭适合的天气温度 |
+| wearing_frequency | int         | 穿着频率           |
+| last_wearing_time | datetime    | 上次穿着时间       |
+
+
 
 #### 2.5.3 文件系统存储设计
 
