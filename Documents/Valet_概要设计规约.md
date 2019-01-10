@@ -108,7 +108,9 @@ ORM 包主要负责建立持久化存储数据和软件运行时数据对象间�
 
 ##### 2.2.2.1 用户模块
 
-【图】
+![ArchitectureDesign__用户模块设计类图_33](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/ArchitectureDesign__用户模块设计类图_33.png)
+
+[用户模块-设计类图]
 
 用户部分的类主要实现的系统功能为新用户的注册，用户信息验证以及获取用户推荐宝贝信息。
 
@@ -118,7 +120,9 @@ User，Taobao Item 以及 User Manager 负责实现该部分系统功能业务�
 
 ##### 2.2.2.2 衣橱管理模块
 
-【图】
+![ArchitectureDesign__衣橱管理模块设计类图_35](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/ArchitectureDesign__衣橱管理模块设计类图_35.png)
+
+[衣橱管理模块-设计类图]
 
 衣橱管理部分主要实现了新建衣橱，删除衣橱功能。
 
@@ -128,7 +132,9 @@ Wardrobe 和 Wardrobe Manager 实现了衣橱相关系统功能的业务逻辑�
 
 ##### 2.2.2.3 衣物管理模块
 
-【图】
+![ArchitectureDesign__衣物管理模块设计类图_34](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/ArchitectureDesign__衣物管理模块设计类图_34.png)
+
+[衣物管理模块-设计类图]
 
 衣物管理部分主要实现了新建衣物，删除衣物和修改衣物功能。
 
@@ -138,7 +144,9 @@ Clothes Type 为枚举类，记录和定义了系统所支持的衣物类型。C
 
 ##### 2.2.2.4 穿搭管理模块
 
-【图】
+![ArchitectureDesign__穿搭管理模块设计类图_36](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/ArchitectureDesign__穿搭管理模块设计类图_36.png)
+
+[穿搭管理模块 - 设计类图]
 
 穿搭管理部分主要实现了推荐今日穿搭，选择今日穿搭，新建穿搭以及删除穿搭功能。
 
@@ -148,7 +156,9 @@ Suit ，Clothes_Suit ，Suit Manager 实现了该部分系统功能的业务逻�
 
 ##### 2.2.2.5 Http 接口请求类
 
-【图】
+![ArchitectureDesign__Http接口请求类图_39](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/ArchitectureDesign__Http接口请求类图_39.png)
+
+[Http接口请求 - 设计类图]
 
 该部分包括对 Retrofit 框架进行封装的 Retrofit Client 类以及各模块 Http 接口定义类。
 
@@ -156,13 +166,17 @@ Suit ，Clothes_Suit ，Suit Manager 实现了该部分系统功能的业务逻�
 
 ##### 2.2.2.6 Http 接口响应类
 
-【图】
+![ArchitectureDesign__Http接口响应类图_40](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/ArchitectureDesign__Http接口响应类图_40.png)
+
+[Http接口响应 - 设计类图]
 
 该部分包括各模块 Http 接口响应格式，为界面类和控制类定义了接口的响应格式规范，控制类通过该部分类生成接口返回值，界面类通过该部分类解析来自控制类的返回值信息，从而规范化了前后端的信息沟通。
 
 ##### 2.2.2.7 工具类和项目配置类
 
-【图】
+![ArchitectureDesign__工具类项目配置类设计类图_37](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/ArchitectureDesign__工具类项目配置类设计类图_37.png)
+
+[工具类项目配置类 - 设计类图]
 
 该部分包含了实现系统功能业务逻辑所需的工具类，以及设置系统配置信息的配置类。
 
@@ -176,7 +190,7 @@ Config 类集中存储了系统运行的配置信息，包括数据库连接字�
 
 ##### 2.3.1.1 Wardrobe 衣橱类
 
-【图】
+![Wardrobe](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/Wardrobe.jpg)
 
 ###### 2.3.1.1.1 wear() 穿着衣橱中衣物
 
@@ -194,7 +208,7 @@ Config 类集中存储了系统运行的配置信息，包括数据库连接字�
 
 ##### 2.3.1.2 Clothes 衣物类
 
-【图】
+![Clothes](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/Clothes.jpg)
 
 ###### 2.3.1.2.1 modify() 修改衣物信息
 
@@ -262,7 +276,7 @@ double 表示当前衣物能够抵御的温度度数
 
 ##### 2.3.1.3 Suit 穿搭类
 
-【图】
+![Suit](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/Suit.jpg)
 
 ###### 2.3.1.3.1 wear() 穿着穿搭
 
@@ -284,7 +298,7 @@ double 表示当前衣物能够抵御的温度度数
 
 用户模块主要由 User Manager 开放接口给其他模块调用。
 
-【图】
+![UserManager](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/UserManager.jpg)
 
 ###### 2.3.2.1.1 exist() 用户存在检查
 
@@ -342,7 +356,7 @@ string id - 匹配的源用户
 
 衣橱管理模块主要由 Wardrobe Manager 开放接口给其他模块调用。
 
-【图】
+![WardrobeManager](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/WardrobeManager.jpg)
 
 ###### 2.3.2.2.1 exist() 衣橱存在检查
 
@@ -420,7 +434,7 @@ bool 操作结果 是否成功找到指定衣橱并完成操作
 
 衣物管理模块主要由 Clothse Manager 开放接口给其他模块调用。
 
-【图】
+![ClothesManager](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/ClothesManager.jpg)
 
 ###### 2.3.2.3.1 get() 获取指定编号的衣物
 
@@ -514,7 +528,7 @@ bool 操作结果 是否成功对所有衣物进行穿着操作
 
 穿搭管理模块主要由 Suit Manager 开放接口给其他模块调用。
 
-【图】
+![SuitManager](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/SuitManager.jpg)
 
 ###### 2.3.2.4.1 regenerateWarmthDegreeByClothes() 更新衣物所属穿搭保暖信息
 
@@ -596,6 +610,10 @@ TaobaoItem 查找到的该用户推荐宝贝信息 若无则信息内容为空
 
 ##### 2.3.3.2 衣橱管理模块
 
+衣橱管理模块的后端接口主要由 WardrobeController 提供服务。
+
+【图】
+
 ###### 2.3.3.2.1 get() 获取用户的所有衣橱
 
 接口路径：[GET] /api/wardrobe
@@ -664,6 +682,10 @@ BooleanResponse 删除结果 是否成功删除所有衣橱
 
 ##### 2.3.3.3  衣物管理模块
 
+衣物管理模块的后端接口主要由 Clothes Controller 提供服务。
+
+【图】
+
 ###### 2.3.3.3.1 getClothesInfo() 获取衣物信息
 
 接口路径：[GET] /api/clothes
@@ -704,15 +726,227 @@ ClothesResponseList 查询到的衣物列表
 
 file pic - 新添加衣物的图片
 
-int wardrobe_id
+int wardrobe_id - 新添加衣物的所属衣橱ID
 
-string name
+string name - 新添加衣物的名称
 
-ClothesType
+ClothesType type - 新添加衣物的类型
 
-int thickness
+int thickness - 新添加衣物的厚度指数
 
+接口响应格式：
 
+BooleanResponse 添加结果 是否成功添加
+
+接口说明：
+
+通过该接口添加新的衣物
+
+###### 2.3.3.3.4 deleteClothes() 删除衣物
+
+接口路径：[DELETE] /api/clothes
+
+接口参数：
+
+int id - 要删除的衣物ID
+
+接口响应格式：
+
+BooleanResponse 删除结果 是否成功删除衣物
+
+接口说明：
+
+通过该接口执行对指定衣物的删除操作
+
+###### 2.3.3.3.5 deleteClothes() 批量删除衣物
+
+接口路径：[DELETE] /api/clothes/many
+
+接口参数：
+
+int[] ids - 要删除的衣物ID列表
+
+接口响应格式：
+
+BooleanResponse 删除结果 是否成功删除所有指定的衣物
+
+接口说明：
+
+通过该接口执行对指定的衣物的批量删除操作
+
+###### 2.3.3.6 changeClothesWardrobe() 更改衣物衣橱
+
+接口路径：[PUT] /api/clothes
+
+接口参数：
+
+int clothes_id - 要执行操作的指定衣物ID
+
+int wardrobe_id - 要切换至的指定衣橱ID
+
+接口响应格式：
+
+BooleanResponse 切换结果 是否成功将指定衣物切换至指定衣橱
+
+接口说明：
+
+通过该接口对指定的衣物切换其所属衣橱
+
+###### 2.3.3.3.7 changeClothesWardrobe() 批量更改衣物衣橱
+
+接口路径：[PUT] /api/clothes/many
+
+接口参数：
+
+int[] clothes_ids - 要更改衣橱的衣物ID列表
+
+int wardrobe_id - 要更改至的衣橱ID
+
+接口响应格式：
+
+BooleanResponse 切换结果 是否所有衣物都切换成功
+
+接口说明：
+
+通过该接口执行对指定衣物的批量更改衣橱操作
+
+###### 2.3.3.3.8 modityClothes() 修改衣物信息
+
+接口路径：[PUT] /api/clothes/modify
+
+接口参数：
+
+file pic - 新的衣物图片
+
+int id - 要修改信息的衣物ID
+
+string name - 衣物的新名称
+
+ClothesType type - 衣物的修改后类型
+
+int thickness - 衣物修改后的厚度参数
+
+接口响应格式：
+
+BooleanResponse 修改结果 是否成功修改衣物信息
+
+接口说明：
+
+通过该接口执行对衣物的信息修改操作 并且返回操作的结果即是否成功
+
+##### 2.3.3.4 穿搭管理模块
+
+穿搭管理模块的后端接口主要由 Suit Controller 提供服务。
+
+【图】
+
+###### 2.3.3.4.1 getClothes() 获取指定穿搭的衣物列表
+
+接口路径：[GET] /api/suit
+
+接口参数：
+
+int id - 要获取衣物列表的指定穿搭ID
+
+接口响应格式：
+
+ClothesResponseList 获取到的衣物列表
+
+接口说明：
+
+通过该接口获取指定穿搭的所属衣物列表
+
+###### 2.3.3.4.2 getByWardrobe() 获取衣橱内的穿搭
+
+接口路径：[GET] /api/suit/wardrobe
+
+接口参数：
+
+int wardrobe_id - 要获取穿搭列表的指定衣橱ID
+
+double temperature - 当前的温度
+
+接口响应格式：
+
+SuitResponseList 获取到的衣橱内穿搭列表 综合天气得到了每个穿搭的保暖程度信息
+
+接口说明：
+
+通过该接口可以得到指定衣橱内的所有穿搭列表，并且该列表包含了结合当前天气的穿搭保暖程度评价信息，列表按照穿搭与天气的适宜程度结合穿搭的近期穿着频率进行排序
+
+###### 2.3.3.4.3 getAdvices() 获取天气及穿搭推荐
+
+接口路径：[GET] /api/suit/advice
+
+接口参数：
+
+int id - 指定的衣橱ID
+
+double latitude - 用户所处的维度
+
+double longitude - 用户所处的经度
+
+接口响应格式：
+
+SuitResponseList 获取到的该衣橱内最适宜当前天气的穿搭列表以及当前位置的天气信息
+
+接口说明：
+
+通过该接口可以得到用户当前位置的天气状况，以及根据天气状况选出的最适宜穿搭列表
+
+###### 2.3.3.4.4 add() 新建穿搭
+
+接口路径：[POST] /api/suit
+
+接口参数：
+
+file pic - 新穿搭图片
+
+string name - 新穿搭名称
+
+int wardrobe_id - 新穿搭所属衣橱ID
+
+int[] clothes - 新穿搭所包含的衣物ID列表
+
+接口响应格式：
+
+BooleanResponse 新建穿搭结果 穿搭是否成功新建
+
+接口说明：
+
+通过该接口可以新建一个新的穿搭，并且返回新建穿搭操作是否成功
+
+###### 2.3.3.4.5 delete() 删除穿搭
+
+接口路径：[DELETE] /api/suit
+
+接口参数：
+
+int id - 要删除的穿搭ID
+
+接口响应格式：
+
+BooleanResponse 删除穿搭结果 是否成功删除
+
+接口说明：
+
+通过该接口可以删除一个指定的穿搭，并且返回删除穿搭操作是否成功
+
+###### 2.3.3.4.6 wear() 穿着穿搭
+
+接口路径：[PUT] /api/suit
+
+接口参数：
+
+int id - 要穿着的穿搭ID
+
+接口响应格式：
+
+BooleanResponse 穿着结果 是否成功对指定穿搭进行穿着操作
+
+接口说明：
+
+通过该接口可以对指定穿搭进行穿着操作，并且返回操作结果即穿着操作是否成功
 
 #### 2.3.4 系统与其他系统的接口
 
