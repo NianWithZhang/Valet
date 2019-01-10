@@ -1317,23 +1317,75 @@ startActivity(intent);
 
 ### 2.4 界面设计
 
+界面设计经过了三次迭代。第一次是在纸上手绘出了几个基本的页面，确定了界面风格；第二次是在Sketch中用Material Design设计出原型界面，但是有一些功能没有完全考虑进设计；第三次在第二次的基础上进行了完善，并且应用在APP的实现中。
+
 #### 2.4.1 登录界面设计
 
 iteration1.
 
+![LoginActivity](DrawPages/LoginActivity.jpg)
+
+iteration2.
+
+![Login](Prototype/Login.jpg)
+
+iteration3.![LoginActivity](Pages/LoginActivity.jpg)
+
 #### 2.4.2 注册界面设计
+
+iteration1.![Register](DrawPages/Register.jpg)
+
+
+
+iteration2.
+
+![Register](Prototype/Register.jpg)
+
+iteration3.![RegisterActivity](Pages/RegisterActivity.jpg)
 
 #### 2.4.3 今日穿搭界面设计
 
+iteration2.![Main](Prototype/Main.jpg)
+
+iteration3.![MainActivity](Pages/MainActivity.jpg)
+
 #### 2.4.4 管理衣橱界面设计
+
+iteration3.![ManageWardrobes](Pages/ManageWardrobes.jpg)
 
 #### 2.4.5 管理衣物界面设计
 
+iteration1.![ManageClothes](DrawPages/ManageClothes.jpg)
+
+iteration2.
+
+![ManageClothes](Prototype/ManageClothes.jpg)
+
+
+
+iteration3.![ManageClothes](Pages/ManageClothes.jpg)
+
 #### 2.4.6 编辑/添加衣物界面设计
+
+iteration1.![AddClothes](DrawPages/AddClothes.jpg)
+
+iteration2.
+
+![EditClothes](Prototype/EditClothes.jpg)
+
+iteration3.![ClothesInfo](Pages/ClothesInfo.jpg)
+
+
 
 #### 2.4.7 新建穿搭界面设计
 
+iteration2.![AddSuit](Prototype/AddSuit.jpg)
+
+iteration3.![AddSuit](Pages/AddSuit.jpg)
+
 #### 2.4.8 购衣推荐界面设计
+
+iteration3.![RecomandClothes](Pages/RecomandClothes.jpg)
 
 ### 2.5 数据库设计
 
