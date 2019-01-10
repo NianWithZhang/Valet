@@ -70,9 +70,7 @@ APP主要具有三大功能模块：衣物管理模块、穿搭推荐模块、�
 
 ## 1.3参考标准
 
-[1] RESTful API – Wiki : https://en.wikipedia.org/wiki/Representational_state_transfer
 
-[2] Metirial Design : https://material.io/design/guidelines-overview/
 
  
 
@@ -162,11 +160,7 @@ APP主要具有三大功能模块：衣物管理模块、穿搭推荐模块、�
 
 # 四 主要的功能需求描述
 
-## 1文字描述
-
-```
-分模块描述一下每个功能点。
-```
+## 1 文字描述
 
 ### 用户模块
 
@@ -230,7 +224,7 @@ APP主要具有三大功能模块：衣物管理模块、穿搭推荐模块、�
 
 
 
-## 2用例模型
+## 2 用例模型
 
 总体描述blabla
 

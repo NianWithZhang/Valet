@@ -12,6 +12,10 @@
 
 ### 1.2参考资料 
 
+[1] RESTful API – Wiki : https://en.wikipedia.org/wiki/Representational_state_transfer
+
+[2] Metirial Design : https://material.io/design/guidelines-overview/
+
 ### 1.3假定和约束 
 
 ## 二 概要设计
@@ -92,7 +96,7 @@ ORM 包主要负责建立持久化存储数据和软件运行时数据对象间�
 
 用户部分的类主要实现的系统功能为新用户的注册，用户信息验证以及获取用户推荐宝贝信息。
 
-该部分包括两个界面类 Login Activity 和 Register Activity 负责接收用户的注册和登录输入数据信息
+该部分包括两个界面类 Login Activity 和 Register Activity 负责接收用户的注册和登录输入数据信息，并进行一些简单的合法性验证，以及。
 
 ##### 2.2.2.2 衣橱管理模块
 
