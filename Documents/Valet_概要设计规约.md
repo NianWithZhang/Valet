@@ -1,8 +1,24 @@
-# 概要设计规约
+# Valet概要设计规约
 
-#### 修订历史:
+1652772 肖   睿
 
-修改或初始编写日期、 SEPG、 版本、 说明、 作者、 评审时间、 评审参与人员、 评审后修改批准日期、确认签字人员
+1652712 赵欣宇
+
+ 
+
+# 〇 修订历史
+
+ 
+
+| **编写日期** | **SEPG** | **版本** | **说明** | **作者**    | **评审时间** | **评审参与人员** | **评审后修改批准日期** | **确认签字人员** |
+| ------------ | -------- | -------- | -------- | ----------- | ------------ | ---------------- | ---------------------- | :--------------: |
+| 2018.10.11   | VA       | 0.1      | 初稿     | 赵欣宇      | 2018.10.8    | 赵欣宇 肖睿      | 2018.10.12             |                  |
+| 2018.11.26   | VA       | 1        | 定稿     | 赵欣宇 肖睿 | 2018.11.23   | 赵欣宇 肖睿      | 2018.11.27             |                  |
+| 2018.12.6    | VA       | 1.1      | 修订稿   | 赵欣宇 肖睿 | 2018.12.3    | 赵欣宇 肖睿      | 2018.12.7              |                  |
+
+ 
+
+
 
 
 
@@ -16,13 +32,17 @@
 
 3）由需求工程到概要设计是根据软件工程课程课本中的方法进行设计。
 
-### 1.2 参考资料 
+### 1.2 参考资料
 
-[1] RESTful API – Wiki : https://en.wikipedia.org/wiki/Representational_state_transfer
+[1] 《Valet 需求规约》
 
-[2] Material Design : https://material.io/design/guidelines-overview/
+[2] 《Valet 需求分析规约》
 
-[3] Pressman R S. Software Engineering A Practitioner's Approach[M]. Seventh Edition.
+[3] RESTful API – Wiki : https://en.wikipedia.org/wiki/Representational_state_transfer
+
+[4] Material Design : https://material.io/design/guidelines-overview/
+
+[5] Pressman R S. Software Engineering A Practitioner's Approach[M]. Seventh Edition.
 McGraw- Hill Higher Education, 2008.
 
 ### 1.3 假定和约束 
@@ -554,7 +574,7 @@ int clothesID - 指定的衣物ID
 
 用户模块的后端接口主要由 User Controller 提供服务。
 
-【图】
+![UserController](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/UserController.jpg)
 
 ###### 2.3.3.1.1 checkUser() 用户登录检查
 
@@ -610,9 +630,9 @@ TaobaoItem 查找到的该用户推荐宝贝信息 若无则信息内容为空
 
 ##### 2.3.3.2 衣橱管理模块
 
-衣橱管理模块的后端接口主要由 WardrobeController 提供服务。
+衣橱管理模块的后端接口主要由 Wardrobe Controller 提供服务。
 
-【图】
+![WardrobeController](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/WardrobeController.jpg)
 
 ###### 2.3.3.2.1 get() 获取用户的所有衣橱
 
@@ -684,7 +704,7 @@ BooleanResponse 删除结果 是否成功删除所有衣橱
 
 衣物管理模块的后端接口主要由 Clothes Controller 提供服务。
 
-【图】
+![ClothesController](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/ClothesController.jpg)
 
 ###### 2.3.3.3.1 getClothesInfo() 获取衣物信息
 
@@ -838,7 +858,7 @@ BooleanResponse 修改结果 是否成功修改衣物信息
 
 穿搭管理模块的后端接口主要由 Suit Controller 提供服务。
 
-【图】
+![SuitController](Diagrams/ArchitectureDiagrams/DesignClassDiagrams/SuitController.jpg)
 
 ###### 2.3.3.4.1 getClothes() 获取指定穿搭的衣物列表
 
