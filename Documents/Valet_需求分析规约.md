@@ -6,6 +6,10 @@
 
  
 
+[TOC]
+
+
+
 # 〇 修订历史
 
  
@@ -304,6 +308,8 @@ McGraw- Hill Higher Education, 2008.
 
 客户端：1.2GHz主频处理器和1GBRAM
 
+
+
 ### 4.2支持软件
 
 1）UI设计：material design （tools：Sketch Zeplin）
@@ -356,4 +362,4 @@ McGraw- Hill Higher Education, 2008.
 
 ## 五 需求跟踪
 
-详见ScrumDocument文件夹中的ProjectStoryBacklog.xls，SprintBacklog.xls，ProjectEverySprintEstimation.xls文件。
+见ScrumDocument文件夹中的ProjectStoryBacklog.xls，SprintBacklog.xls，ProjectEverySprintEstimation.xls文件。
