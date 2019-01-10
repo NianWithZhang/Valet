@@ -21,19 +21,6 @@ namespace Valet_Backend.Controllers
 		#region HttpGet 查询
 
 		/// <summary>
-		/// 检查用户ID是否已存在
-		/// </summary>
-		/// <param name="id">待检查的用户ID</param>
-		/// <returns>是否存在当前用户ID</returns>
-		///
-		[Route("exist")]
-		[HttpGet]
-		public BooleanResponse checkIDExistence(string id)
-		{
-			return new BooleanResponse(UserManager.exist(id));
-		}
-
-		/// <summary>
 		/// 检查用户ID和密码
 		/// </summary>
 		/// <param name="id">用户ID</param>

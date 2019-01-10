@@ -348,25 +348,5 @@ namespace Valet_Backend.Model.Suit
 		}
 		#endregion
 
-		//DELETE!!!!!!!!!!!!!!
-		//		/// <summary>
-		//		/// 对一套穿搭的保暖程度进行评价
-		//		/// </summary>
-		//		/// <param name="suitID"></param>
-		//		/// <param name="temperature"></param>
-		//		/// <returns></returns>
-		//		public static EvaluationResponse evalueate(int suitID,double temperature)
-		//		{
-		//			Suit suit = suitDb.GetById(suitID);
-
-		//			if (suit == null)
-		//#if DEBUG
-		//				throw new Exception();
-		//#else
-		//			return new KeyValuePair<bool,string>(false,"");
-		//#endif
-
-		//			return new EvaluationResponse(true,generateEvaluation(suit.warmthDegree-temperature));
-		//		}
 	}
 }
